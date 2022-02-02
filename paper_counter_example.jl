@@ -12,8 +12,7 @@ n_w = 1;
 # Flexible generation parameters
 p_max = 200.0;
 p_min = 0.0;
-R_D_max = 200.0;
-R_U_max = 200.0;
+R_max = p_max;
 
 # Wind production parameters
 p_w_max = 20.0;
@@ -49,7 +48,6 @@ model = Model(Gurobi.Optimizer)
 @constraint(model, reserve_allocation, sum(alpha[g] for g = 1:n) == 1.0)
 @constraint(model, min_prod[g = 1:n], p_min[g] <= p[g] - phi*agg_cov*alpha[g])
 @constraint(model, max_prod[g = 1:n], p[g] + phi*agg_cov*alpha[g] <= p_max[g])
-@constraint(model, down_ramp[g = 1:n], -R_D_max <= phi*agg_cov*alpha[g])
-@constraint(model, up_ramp[g = 1:n], phi*agg_cov*alpha[g] <= R_U_max)
+@constraint(model, ramp[g = 1:n], phi*agg_cov*alpha[g] <= R_max)
 
 @objective(model, Min, sum(C_Q[g]*(p[g]^2 + cov*alpha[g]^2) + C_L[g]*p[g] for g = 1:n))
