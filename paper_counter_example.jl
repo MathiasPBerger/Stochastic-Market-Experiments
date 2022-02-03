@@ -12,7 +12,7 @@ n_w = 1;
 # Flexible generation parameters
 p_max = [200.0 for g = 1:n_g];
 p_min = [0.0 for g = 1:n_g];
-R_max = [p_max for g = 1:n_g];
+R_max = [p_max[g] for g = 1:n_g];
 
 # Wind production parameters
 p_w_max = 250.0;
@@ -51,3 +51,7 @@ model = Model(Gurobi.Optimizer)
 @constraint(model, ramp[g = 1:n_g], phi*agg_cov*alpha[g] <= R_max[g])
 
 @objective(model, Min, sum(C_Q[g]*(p[g]^2 + cov*alpha[g]^2) + C_L[g]*p[g] for g = 1:n_g))
+
+## Solve
+
+optimize!(model)
