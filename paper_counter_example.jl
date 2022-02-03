@@ -35,6 +35,7 @@ v_Q, s_Q = 0.1, 0.05;
 v_L, s_L = 1.0, 0.1;
 C_Q = [(v_Q + s_Q*g) for g = 1:n_g];
 C_L = [(v_L + s_L*g) for g = 1:n_g];
+#C_L[3] += 1.0
 
 
 ## Model
@@ -55,3 +56,11 @@ model = Model(Gurobi.Optimizer)
 ## Solve
 
 optimize!(model)
+
+## Post-process
+
+println("\n")
+println("Power generation: ", value.(p))
+println("Reserve procurement: ", value.(alpha))
+println("Electricity price: ", dual(power_balance))
+println("Reserve price: ", dual(reserve_allocation))
