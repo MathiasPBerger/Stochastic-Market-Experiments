@@ -34,9 +34,20 @@ phi = quantile(Normal(), (1-epsilon));
 # Cost parameters
 v_Q, s_Q = 0.1, 0.05;
 v_L, s_L = 1.0, 0.1;
-C_Q = [(v_Q + s_Q*g) for g = 1:n_g];
-C_L = [(v_L + s_L*g) for g = 1:n_g];
-#C_L[3] += 1.0
+true_C_Q = [(v_Q + s_Q*g) for g = 1:n_g];
+true_C_L = [(v_L + s_L*g) for g = 1:n_g];
+
+truthful_bidding = true;
+
+if truthful_bidding == true
+    C_Q = deepcopy(true_C_Q);
+    C_L = deepcopy(true_C_L);
+else
+    fake_C_L = zeros(Float64, n_g);
+    fake_C_L[n_g] += 1.0;
+    C_Q = deepcopy(true_C_Q);
+    C_L = deepcopy(true_C_L) .+ fake_C_L;
+end
 
 
 ## Model
@@ -67,9 +78,10 @@ electricity_price = dual(power_balance);
 reserve_price = dual(reserve_allocation);
 energy_revenue = [(electricity_price*p_scheduled[g]) for g = 1:n_g];
 reserve_revenue = [(reserve_price*alpha_scheduled[g]) for g = 1:n_g];
-cost  = [(C_Q[g]*(p_scheduled[g]^2 + cov*alpha_scheduled[g]^2) + C_L[g]*p_scheduled[g]) for g = 1:n_g];
-profit = [(energy_revenue[g] + reserve_revenue[g] - cost[g]) for g = 1:n_g];
-
+true_cost = [(true_C_Q[g]*(p_scheduled[g]^2 + cov*alpha_scheduled[g]^2) + true_C_L[g]*p_scheduled[g]) for g = 1:n_g];
+reported_cost = [(C_Q[g]*(p_scheduled[g]^2 + cov*alpha_scheduled[g]^2) + C_L[g]*p_scheduled[g]) for g = 1:n_g];
+true_profit = [(energy_revenue[g] + reserve_revenue[g] - true_cost[g]) for g = 1:n_g];
+reported_profit = [(energy_revenue[g] + reserve_revenue[g] - reported_cost[g]) for g = 1:n_g];
 
 println("\n")
 println("Power generation: ", p_scheduled)
@@ -78,6 +90,8 @@ println("Electricity price: ", electricity_price)
 println("Reserve price: ", reserve_price)
 println("Energy revenue: ", energy_revenue)
 println("Reserve revenue: ", reserve_revenue)
-println("Cost: ", cost)
-println("Profit: ", profit)
+println("True cost: ", true_cost)
+println("Reported cost: ", reported_cost)
+println("True profit: ", true_profit)
+println("Reported profit: ", reported_profit)
 println("\n")
