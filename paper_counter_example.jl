@@ -12,7 +12,8 @@ n_w = 1;
 # Flexible generation parameters
 p_max = [200.0 for g = 1:n_g];
 p_min = [0.0 for g = 1:n_g];
-R_max = [p_max[g] for g = 1:n_g];
+R_up_max = [p_max[g] for g = 1:n_g];
+R_down_max = [p_max[g] for g = 1:n_g];
 
 # Wind production parameters
 p_w_max = 250.0;
@@ -49,7 +50,8 @@ model = Model(Gurobi.Optimizer)
 @constraint(model, reserve_allocation, sum(alpha[g] for g = 1:n_g) == 1.0)
 @constraint(model, min_prod[g = 1:n_g], p_min[g] <= p[g] - phi*agg_cov*alpha[g])
 @constraint(model, max_prod[g = 1:n_g], p[g] + phi*agg_cov*alpha[g] <= p_max[g])
-@constraint(model, ramp[g = 1:n_g], phi*agg_cov*alpha[g] <= R_max[g])
+@constraint(model, max_up_ramp[g = 1:n_g], phi*agg_cov*alpha[g] <= R_up_max[g])
+@constraint(model, max_down_ramp[g = 1:n_g], phi*agg_cov*alpha[g] <= R_down_max[g])
 
 @objective(model, Min, sum(C_Q[g]*(p[g]^2 + cov*alpha[g]^2) + C_L[g]*p[g] for g = 1:n_g))
 
@@ -59,8 +61,23 @@ optimize!(model)
 
 ## Post-process
 
+p_scheduled = value.(p);
+alpha_scheduled = value.(alpha);
+electricity_price = dual(power_balance);
+reserve_price = dual(reserve_allocation);
+energy_revenue = [(electricity_price*p_scheduled[g]) for g = 1:n_g];
+reserve_revenue = [(reserve_price*alpha_scheduled[g]) for g = 1:n_g];
+cost  = [(C_Q[g]*(p_scheduled[g]^2 + cov*alpha_scheduled[g]^2) + C_L[g]*p_scheduled[g]) for g = 1:n_g];
+profit = [(energy_revenue[g] + reserve_revenue[g] - cost[g]) for g = 1:n_g];
+
+
 println("\n")
-println("Power generation: ", value.(p))
-println("Reserve procurement: ", value.(alpha))
-println("Electricity price: ", dual(power_balance))
-println("Reserve price: ", dual(reserve_allocation))
+println("Power generation: ", p_scheduled)
+println("Reserve procurement: ", alpha_scheduled)
+println("Electricity price: ", electricity_price)
+println("Reserve price: ", reserve_price)
+println("Energy revenue: ", energy_revenue)
+println("Reserve revenue: ", reserve_revenue)
+println("Cost: ", cost)
+println("Profit: ", profit)
+println("\n")
