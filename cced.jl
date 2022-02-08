@@ -76,8 +76,10 @@ p_scheduled = value.(p);
 alpha_scheduled = value.(alpha);
 electricity_price = dual(power_balance);
 reserve_price = dual(reserve_allocation);
-energy_revenue = [(electricity_price*p_scheduled[g]) for g = 1:n_g];
-reserve_revenue = [(reserve_price*alpha_scheduled[g]) for g = 1:n_g];
+load_payment = D*electricity_price;
+wind_energy_revenue = W*electricity_price;
+generator_energy_revenue = [(electricity_price*p_scheduled[g]) for g = 1:n_g];
+generator_reserve_revenue = [(reserve_price*alpha_scheduled[g]) for g = 1:n_g];
 true_cost = [(true_C_Q[g]*(p_scheduled[g]^2 + cov*alpha_scheduled[g]^2) + true_C_L[g]*p_scheduled[g]) for g = 1:n_g];
 reported_cost = [(C_Q[g]*(p_scheduled[g]^2 + cov*alpha_scheduled[g]^2) + C_L[g]*p_scheduled[g]) for g = 1:n_g];
 true_profit = [(energy_revenue[g] + reserve_revenue[g] - true_cost[g]) for g = 1:n_g];
@@ -88,8 +90,11 @@ println("Power generation: ", p_scheduled)
 println("Reserve procurement: ", alpha_scheduled)
 println("Electricity price: ", electricity_price)
 println("Reserve price: ", reserve_price)
-println("Energy revenue: ", energy_revenue)
-println("Reserve revenue: ", reserve_revenue)
+println("Load Payment: ", load_payment)
+println("Wind energy revenue: ", wind_energy_revenue)
+println("Generators energy revenue: ", energy_revenue)
+println("Generators reserve revenue: ", reserve_revenue)
+println("Generators commitment revenue: ", commitment_revenue)
 println("True cost: ", true_cost)
 println("Reported cost: ", reported_cost)
 println("True profit: ", true_profit)
