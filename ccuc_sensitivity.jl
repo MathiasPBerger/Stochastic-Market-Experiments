@@ -2,6 +2,7 @@ using JuMP
 using Gurobi
 using LinearAlgebra
 using Distributions
+using Plots
 
 ## Comments
 #
@@ -58,7 +59,7 @@ end
 S = 10; # number of scenarios
 
 mu = 0.0; # mean forecast error
-agg_cov_vec = [p_w_max*(0.1 + 0.01*s) for s = 1:S]; # standard deviation of forecast error
+agg_cov_vec = [p_w_max*(0.1 + 0.05*s) for s = 1:S]; # standard deviation of forecast error
 cov_vec = agg_cov_vec.^2;
 Q_eps = quantile(Normal(), (1-epsilon));
 
@@ -140,3 +141,13 @@ for s = 1:S
     empty!(LP_model)
 
 end
+
+## Post-processing
+
+fig_electricity_price = plot(agg_cov_vec./D, electricity_price, title="Electricity Price vs Standard Deviation of Forecast Error", color="red", legend=:bottomright)
+plot!(xlabel="Standard Deviation of Forecast Error (fraction of demand)", ylabel="Electricity Price")
+savefig(fig_electricity_price, "electricity_price_sensitivity.png")
+
+fig_reserve_price = plot(agg_cov_vec./D, reserve_price, title="Reserve Price vs Standard Deviation of Forecast Error", color="red", legend=:bottomright)
+plot!(xlabel="Standard Deviation of Forecast Error (fraction of demand)", ylabel="Reserve Price")
+savefig(fig_reserve_price, "reserve_price_sensitivity.png")
