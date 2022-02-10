@@ -19,7 +19,7 @@ R_down_max = [p_max[g] for g = 1:n_g];
 p_w_max = 250.0;
 std = p_w_max*0.075;
 var = std^2;
-cov_mat = var .* convert.(Float64, Matrix(I, n_g, n_g));
+cov_mat = var .* convert.(Float64, Matrix(I, n_w, n_w));
 cov = sum(cov_mat);
 agg_cov = sqrt(cov);
 W = 0.8*p_w_max*n_w;

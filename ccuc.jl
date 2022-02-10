@@ -19,7 +19,7 @@ R_down_max = [p_max[g] for g = 1:n_g];
 p_w_max = 250.0;
 std = p_w_max*0.025;
 var = std^2;
-cov_mat = var .* convert.(Float64, Matrix(I, n_g, n_g));
+cov_mat = var .* convert.(Float64, Matrix(I, n_w, n_w));
 cov = sum(cov_mat);
 agg_cov = sqrt(cov);
 W = 0.8*p_w_max*n_w;
@@ -114,8 +114,8 @@ generator_reserve_revenue = [(reserve_price*alpha_scheduled[g]) for g = 1:n_g];
 generator_commitment_revenue = [(commitment_price[g]*z_scheduled[g]) for g = 1:n_g];
 true_cost = [(true_C_Q[g]*(p_scheduled[g]^2 + cov*alpha_scheduled[g]^2) + true_C_L[g]*p_scheduled[g] + true_C_f[g]*z_scheduled[g]) for g = 1:n_g];
 reported_cost = [(C_Q[g]*(p_scheduled[g]^2 + cov*alpha_scheduled[g]^2) + C_L[g]*p_scheduled[g] + C_f[g]*z_scheduled[g]) for g = 1:n_g];
-true_profit = [(energy_revenue[g] + reserve_revenue[g] - true_cost[g]) for g = 1:n_g];
-reported_profit = [(energy_revenue[g] + reserve_revenue[g] - reported_cost[g]) for g = 1:n_g];
+true_profit = [(generator_energy_revenue[g] + generator_reserve_revenue[g] + generator_commitment_revenue[g] - true_cost[g]) for g = 1:n_g];
+reported_profit = [(generator_energy_revenue[g] + generator_reserve_revenue[g] + generator_commitment_revenue[g] - reported_cost[g]) for g = 1:n_g];
 
 println("\n")
 println("Power generation: ", p_scheduled)
@@ -126,9 +126,9 @@ println("Reserve price: ", reserve_price)
 println("Commitment price: ", commitment_price)
 println("Load Payment: ", load_payment)
 println("Wind energy revenue: ", wind_energy_revenue)
-println("Generators energy revenue: ", energy_revenue)
-println("Generators reserve revenue: ", reserve_revenue)
-println("Generators commitment revenue: ", commitment_revenue)
+println("Generators energy revenue: ", generator_energy_revenue)
+println("Generators reserve revenue: ", generator_reserve_revenue)
+println("Generators commitment revenue: ", generator_commitment_revenue)
 println("True cost: ", true_cost)
 println("Reported cost: ", reported_cost)
 println("True profit: ", true_profit)
