@@ -1,0 +1,233 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+
+\title{Properties of Chance-Constrained Stochastic Electricity Markets}
+\author{Mathias Berger}
+\date{Spring 2022}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+We consider a chance-constrained stochastic market design problem \cite{Kuang2018,Dvorkin2020} including energy, reserve and commitment decisions and analyse its properties. 
+
+\section{Problem Statement}
+
+\subsection{Preliminaries}
+
+We consider a setting with $K \in \mathbb{N}$ dispatchable generators and some wind farms that should supply some inflexible electricity demand $D \in \mathbb{R}$. The power output of wind farms is uncertain. Although a forecast $W \in \mathbb{R}$ is available for the aggregate production from wind farms, the actual aggregate output may deviate from $W$ by some amount $\omega$. For simplicity, in this document, we assume that $\omega$ follows a Gaussian distribution with zero mean and standard deviation $\sigma$, that is, $\omega \sim \mathcal{N}(0, \sigma^2)$. Each generator may contribute to the provision of reserves in the system, such that its actual power output $p_k(\omega)$ is given by an affine  control law. For generator $k$, this law can be expressed as $p_k(\omega) = p_k - \alpha_k \omega$, where $p_k$ denotes the scheduled power output and $\alpha_k$ is the share of the deviation covered by generator $k$ through the reserve mechanism. Naturally, the shares of all generators should sum to 1. Since the actual power output of generators directly depends on the uncertain wind production and only becomes known when $\omega$ is revealed, it must be ensured that power generation bounds of generators are not exceeded. Chance (i.e., probabilistic) constraints can be used for this purpose, and $\epsilon_k$ denotes the tolerance for constraint violations (e.g., constraints may be violated $100 \times \epsilon_k \%$ of the time).
+
+All power plants act as price takers and the goal of the market operator is therefore to 1) identify a set of prices for energy, reserves and commitment decisions, 2) allocate energy production and reserve procurement across generators such that 1) the market clears and 2) the prices and decisions maximise the profits of generators. 
+
+\subsection{Stochastic Market Clearing Problem Formulation}
+
+The deterministic equivalent of the stochastic market clearing problem reads
+
+\begin{align}
+\underset{p_k, \alpha_k, z_k}{\min} \hspace{10pt} & \sum_k (c_k p_k + f_k z_k)\\
+\mbox{s.t. } & \underline{p}_k z_k + \phi_{\epsilon} \sigma \alpha_k \le p_k, \mbox{ }\forall k,  \\
+& p_k \le \overline{p}_k z_k - \phi_{\epsilon} \sigma \alpha_k, \mbox{ }\forall k,  \\
+& \sum_k p_k + W = D,\\
+& \sum_k \alpha_k = 1, \\
+& \alpha_k \le z_k, \mbox{ }\forall k, \\
+& \alpha_k \ge 0, z_k \in \{0, 1\}, p_k \in \mathbb{R},
+\end{align}
+where $\phi_{\epsilon} = \Phi^{-1}(1 - \epsilon)$ and $\Phi^{-1}:[0, 1] \rightarrow \mathbb{R}$ is the quantile function of $\mathcal{N}(0, \sigma^2)$. Note that $\phi_\epsilon \ge 0$ for $\epsilon \in (0, 0.5]$.
+
+The two-step approach of O'Neill et al. \cite{ONeill2005} is employed to obtain prices for energy, reserve and commitment decisions. In the first step, the MILP problem above is solved in order to compute optimal commitment decisions $z_k^*, \forall k$. In the second step, these commitment decisions are enforced via cuts and the integrality constraints of $z_k$ are relaxed, leading to the following linear program:
+
+\begin{align}
+\underset{p_k, \alpha_k, z_k}{\min} \hspace{10pt} & \sum_k (c_k p_k + f_k z_k)\\
+\mbox{s.t. } & \underline{p}_k z_k + \phi_{\epsilon} \sigma \alpha_k \le p_k, \mbox{ }\forall k, \hspace{10pt} (\underline{\mu}_k)\\
+& p_k \le \overline{p}_k z_k - \phi_{\epsilon} \sigma \alpha_k, \mbox{ }\forall k, \hspace{10pt} (\overline{\mu}_k) \\
+& \sum_k p_k + W = D,\hspace{42pt} (\lambda)\\
+& \sum_k \alpha_k = 1,\hspace{67pt} (\chi) \\
+& \alpha_k \le z_k, \mbox{ }\forall k, \hspace{60pt} (v_k) \\
+& z_k = z_k^*, \mbox{ } \forall k, \hspace{60pt} (\mu_k)\\
+& \alpha_k \ge 0, 0 \le z_k \le 1, p_k \in \mathbb{R}.
+\end{align}
+
+Solving it yields the desired prices for energy, reserves and commitment decisions via dual variables $\lambda$, $\chi$ and $\mu_k$, respectively.
+
+It is useful to introduce the dual of the linear program presented above:
+
+\begin{align}
+\underset{\lambda, \chi, \mu_k, \underline{\mu}_k, \overline{\mu}_k, v_k} \max \hspace{10pt} & \lambda(D - W) + \chi + \sum_k \mu_k z_k^* \\
+\mbox{s.t. } & c_k - \lambda - \underline{\mu}_k + \overline{\mu}_k = 0, \mbox{ }\forall k, \hspace{57pt} (p_k)\\
+& f_k + \underline{\mu}_k \underline{p}_k - \overline{\mu}_k \overline{p}_k - \mu_k - v_k = 0, \mbox{ }\forall k, \hspace{10pt} (z_k) \\
+& \underline{\mu}_k \phi_{\epsilon} \sigma + \overline{\mu}_k \phi_{\epsilon} \sigma - \chi + v_k \ge 0, \mbox{ } \forall k, \hspace{25pt} (\alpha_k)\\
+& \lambda \in \mathbb{R}, \chi \in \mathbb{R}, \underline{\mu}_k \ge 0, \overline{\mu}_k \ge 0, \mu_k \in \mathbb{R}, v_k \ge 0, \forall k.
+\end{align}
+
+It is also useful to write down the complementary slackness conditions associated with the inequality constraints of the primal and dual problems:
+
+\begin{align}
+0 \le \underline{\mu}_k &\perp p_k - \underline{p}_k z_k + \phi_{\epsilon} \sigma \alpha_k \ge 0\\
+0 \le \overline{\mu}_k &\perp \overline{p}_k z_k + \phi_{\epsilon} \alpha_k - p_k \ge 0\\
+0 \le \alpha_k &\perp \underline{\mu}_k \phi_{\epsilon} \sigma + \overline{\mu}_k \phi_{\epsilon} \sigma - \chi + v_k \ge 0,\\
+0 \le v_k & \perp z_k - \alpha_k \ge 0,
+\end{align}
+which must be satisfied at optimality.
+
+\subsection{Equilibrium Problem Formulation}
+
+The stochastic market clearing problem introduced in the previous section can alternatively be cast as an equilibrium problem, which lends itself to further economic analysis. Note that this equivalence stems from the fact that the augmented stochastic market clearing problem (with fixed commitment decisions) and the equilibrium problem share the same Karuhn-Kush-Tucker (KKT) conditions, as detailed in Appendix A.
+
+\subsubsection{Flexible Generators}
+The deterministic equivalent of the chance-constrained profit-maximisation problem faced by producer $k$ reads:
+
+\begin{align}
+\min \hspace{10pt} & c_k p_k + f_k z_k - \lambda p_k - \chi \alpha_k - \mu_k z_k\\
+\mbox{s.t. } & \underline{p}_k z_k + \phi_{\epsilon} \sigma \alpha_k \le p_k, \hspace{30pt} (\underline{\mu}_k)\\
+& p_k \le \overline{p}_k z_k - \phi_{\epsilon} \sigma \alpha_k, \hspace{30pt} (\overline{\mu}_k)\\
+& \alpha_k \le z_k, \hspace{80pt} (v_k)\\
+& \alpha_k \ge 0, 0 \le z_k \le 1, p_k \in \mathbb{R}.
+\end{align}
+
+\subsubsection{Market Operator}
+
+The market operator seeks to clear the energy market, procures reserve services and enforces commitment decisions,
+\begin{align}
+& \sum_k p_k + W = D, \hspace{10pt} (\lambda)\\
+& \sum_k \alpha_k = 1, \hspace{35pt} (\chi)\\
+&z_k = z_k^*, \forall k \hspace{35pt} (\mu_k)
+\end{align}
+
+\subsubsection{Wind Producers}
+
+Wind producers are price takers and do not control their output (i.e., no curtailment is allowed), and therefore do not solve any optimisation problem either.
+
+\subsubsection{Electricity Consumers}
+
+The demand is assumed to be inflexible and electricity consumers do not solve any optimisation problem.
+
+\section{Market Properties}
+
+We analyse four key properties of the proposed stochastic market design, namely whether it supports a \textit{competitive equilibrium}, guarantees \textit{cost recovery} for flexible generators, \textit{revenue adequacy} for the market operator, and is \textit{incentive compatible}.
+
+\begin{definition}
+(Competitive Equilibrium) A competitive equilibrium for the stochastic market is a set of decisions $\{p_k^*, z_k^*, \alpha_k^*\}$ and prices $\{\lambda^*, \chi^*, \mu_k^*\}$ that\vspace{-5pt}
+\begin{enumerate}
+\item clear the market: $\sum_k p_k^* + W = D$ and $\sum_k \alpha_k^* = 1$\vspace{-5pt}
+\item maximise the profit of flexible generators
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}
+(\textcolor{green}{Competitive Equilibrium}) The stochastic market clearing problem produces prices and decisions maximising the profit of each flexible generator and supporting a competitive equilibrium from which they have no incentive to deviate.
+\end{proposition}
+\begin{proof}
+The proof showing that decisions $\{p_k^*, z_k^*, \alpha_k^*\}$ and prices $\{\lambda^*, \chi^*, \mu_k^*\}$ support a competitive equilibrium proceeds in two steps. The first step consists in finding the (negative) profit earned by each producer for prices and decisions computed by the market operator. The second step consists in showing that this profit is optimal for the problem faced by each producer.
+
+\textit{First Step:} Let $V_k^*$ denote the value of the objective of producer $k$ under said market prices and decisions
+\begin{align}
+    V_k^* =& c_k p_k^* + f_k z_k^* - \lambda^* p_k^* - \chi^* \alpha_k^* - \mu_k^* z_k^* \\
+    =& c_k p_k^* + f_k z_k^* - \lambda^* p_k^* - \chi^* \alpha_k^* - \mu_k^* z_k^* + \underline{\mu}_k^*(-p_k^*  + \underline{p}_k z_k^* + \phi_{\epsilon} \sigma \alpha_k^*)\\
+    & + \overline{\mu}_k^* (-\overline{p}_k z_k^* + \phi_{\epsilon} \sigma \alpha_k^* + p_k^*) + v_k^*(\alpha_k^* - z_k^*)\\
+    =& (c_k - \lambda^* - \underline{\mu}_k^* + \overline{\mu}_k^*) p_k^*+ (f_k - \mu_k^* + \underline{\mu}_k^* \underline{p}_k - \overline{\mu}_k^* \overline{p}_k - v_k^*) z_k^*\\
+    &+ (-\chi^* + \phi_{\epsilon} \sigma \underline{\mu}_k^* + \phi_{\epsilon} \sigma \overline{\mu}_k^* + v_k^*) \alpha_k^*\\
+    =& 0
+\end{align}
+The second line results from the fact that the three new terms added to the objective are equal to zero (complementary slackness). The third line is obtained by re-arranging terms. The fourth line follows from the fact that the first two terms in parentheses are equal to zero (dual feasibility of market prices) and the last term is also equal to zero (complementary slackness).
+
+\textit{Second Step:} Now, let $\{p_k^\star, z_k^\star, \alpha_k^\star\}$ denote the solution of the problem faced by producer $k$ under prices $\{\lambda^*, \chi^*, \mu_k^*\}$, and let $V_k^\star$ denote the corresponding objective. One successively finds
+\begin{align}
+    V_k^\star =& c_k p_k^\star + f_k z_k^\star - \lambda^* p_k^\star - \chi^* \alpha_k^\star - \mu_k^*z_k^\star\\
+    \ge& (c_k p_k^\star + f_k z_k^\star - \lambda^* p_k^\star - \chi^* \alpha_k^\star - \mu_k^*z_k^\star) + v_k^*(\alpha_k^\star - z_k^\star)\\
+    &+ \underline{\mu}_k^*(-p_k^\star  + \underline{p}_k z_k^\star + \phi_{\epsilon} \sigma \alpha_k^\star) + \overline{\mu}_k^* (-\overline{p}_k z_k^\star + \phi_{\epsilon} \sigma \alpha_k^\star + p_k^\star)\\
+    =& (c_k - \lambda^* - \underline{\mu}_k^* + \overline{\mu}_k^*) p_k^\star+(f_k - \mu_k^* + \underline{\mu}_k^* \underline{p}_k - \overline{\mu}_k^* \overline{p}_k - v_k^*) z_k^\star\\
+    &+ (-\chi^* + \phi_{\epsilon} \sigma \underline{\mu}_k^* + \phi_{\epsilon} \sigma \overline{\mu}_k^* + v_k^*) \alpha_k^\star\\
+    \ge& 0\\
+    =& V_k^*
+\end{align}
+The second line stems from the fact that market prices are dual feasible (thus nonnegative), while terms in parentheses are nonpositive (primal feasibility for problem faced by producer $k$), such that the product terms added to the objective are nonpositive. The third line is obtained by re-arranging terms. The fourth line follows from the fact that 1) the first two terms in parentheses are equal to zero (dual feasibility of market prices), 2) the third term in parentheses is nonnegative (dual feasibility of market prices) and $\alpha_k^\star \ge 0$ (primal feasibility in profit-maximisation problem of producer $k$). Thus, $V_k^\star \ge V_k^*, \forall k$. In other words, market prices and decisions maximise the profit of each producer, resulting in a competitive equilibrium.
+\end{proof}
+
+\begin{proposition}
+(\textcolor{orange}{Cost Recovery}) The stochastic market clearing problem produces prices and decisions that guarantee a nonnegative pay-off for flexible generators.
+\end{proposition}
+\begin{proof}
+Can be shown by taking the dual problem of profit-maximising agent where the commitment decision is enforced and using strong duality (\textcolor{red}{but strong duality doesn't hold for these problems, however. In Yury's paper, this is circumvented by assuming that the commitment decisions are already provided but I am not sure how that can be justified. This would also imply that profits $\ge 0$, while the competitive equilibrium proof suggests that profits $= 0$. How do we make sense of this?}).
+\end{proof}
+
+\begin{proposition}
+(\textcolor{red}{Revenue Adequacy}) The stochastic market clearing problem \textcolor{red}{does not} produce prices and decisions guaranteeing that the market operator does not incur any financial loss.
+\end{proposition}
+\begin{proof}
+Let $\{\lambda^*, \chi^*, \{\mu_k^*\}_k\}$ and $\{\{p_k^*\}_k, \{\alpha_k^*\}_k, \{z_k^*\}_k\}$ denote prices and decisions calculated by the market operator. Consumers only pay the market operator for the electricity consumed, while producers receive payments covering energy, reserves and commitment decisions. Hence, the balance of payments collected by and made to the market operator can be computed as
+\begin{align*}
+\Delta^* &= D\lambda^* - W \lambda^* - \sum_k p_k^* \lambda^* - \sum_k \alpha_k^* \chi^* - \sum_k \mu_k z_k^*\\
+&= -\chi^* - \sum_k \mu_k^* z_k^*,
+\end{align*}
+where the second equality stems from the fact that the market clears (power balance and reserve procurement constraints are enforced in the primal problem solved by the market operator). Since $\chi^* \in \mathbb{R}$, $z_k^* \in \{0, 1\}$ and $\mu_k^* \in \mathbb{R}$, \textcolor{red}{it may happen that $\Delta^* < 0$}, which would imply that the market operator incurs a financial deficit.
+\end{proof}
+
+\begin{proposition}
+(\textcolor{red}{Incentive Compatibility}) The stochastic market clearing problem \textcolor{red}{does not produce} prices and decisions guaranteeing that each flexible generator maximises its profit by bidding truthfully.
+\end{proposition}
+\begin{proof}
+See counter-example implemented in Julia \cite{SMER2022}, where a producer operating in an electricity market with a finite number of producers can increase its profit by bidding untruthfully (even in the convex case).
+\end{proof}
+
+Market properties are also discussed in \cite{Ratha2019} in a simplified set-up. The proof of incentive compatibility seems wrong, however, and there are also errors in the proof of the revenue adequacy property.
+
+\section{Comments}
+
+The profit accrued to producer $k$ is nonpositive (or equal to 0). How should this be interpreted?
+
+\section{Appendix A}
+This section provides optimality conditions (KKT conditions) for the stochastic market clearing and equilibrium problems and show that they essentially lead to the same complementarity problem.
+\subsection{Stochastic Market Clearing Problem}
+For simplicity, let 
+\begin{align*}
+x &= \begin{pmatrix} \{p_k\}_k, \{\alpha_k\}_k, \{z_k\}_k \end{pmatrix}^\top,\\
+\pi &= \begin{pmatrix} \lambda, \chi, \{\mu_k\}_k, \{\underline{\mu}_k\}, \{\overline{\mu}_k\}, \{v_k\}_k \end{pmatrix}^\top
+\end{align*}
+denote the set of primal and dual variables, respectively. Let us form the Lagrangian function of the stochastic market clearing problem:
+\begin{align*}
+\mathcal{L}(x, \pi) =& \sum_k (c_k p_k + f_k z_k) + \sum_k \underline{\mu}_k (\underline{p}_k z_k + \phi_{\epsilon} \sigma \alpha_k - p_k) + \sum_k \overline{\mu}_k (p_k - \overline{p}_k z_k + \phi_{\epsilon} \sigma \alpha_k)\\
+& + \lambda(D - \sum_k p_k - W) + \chi(1 - \sum_k \alpha_k) + \sum_k v_k (\alpha_k - z_k) + \sum_k \mu_k(z_k^*- z_k)
+\end{align*}
+The KKT conditions associated with the stochastic market clearing problem therefore read
+\begin{align*}
+&\frac{\partial \mathcal{L}}{\partial p_k} = c_k - \underline{\mu}_k + \overline{\mu}_k - \lambda = 0, \forall k\\
+&\frac{\partial \mathcal{L}}{\partial \alpha_k} = \phi_{\epsilon} \sigma \underline{\mu}_k + \phi_{\epsilon} \sigma \overline{\mu}_k - \chi + v_k = 0, \forall k\\
+&\frac{\partial \mathcal{L}}{\partial z_k} = f_k + \underline{\mu}_k \underline{p}_k - \overline{\mu}_k \overline{p}_k - v_k - \mu_k = 0, \forall k\\
+&\sum_k p_k + W = D\\
+&\sum_k \alpha_k = 1\\
+&z_k = z_k^*, \forall k\\
+&0 \le \underline{\mu}_k \perp p_k - \underline{p}_k z_k - \phi_{\epsilon} \sigma \alpha_k \ge 0, \forall k\\
+&0 \le \overline{\mu}_k \perp \overline{p}_k z_k - \phi_{\epsilon} \sigma \alpha_k - p_k \ge 0, \forall k\\
+&0\le v_k\perp z_k-\alpha_k\ge0, \forall k,
+\end{align*}
+from which the range constraints of $\alpha_k$ and $z_k$ were omitted for conciseness. Since the objective function is convex, the functions forming the constraints are continuously differentiable and the problem satisfies Slater's condition, the KKT conditions are necessary and sufficient. Thus, a solution to the complementarity problem gives a (globally) optimal solution of the augmented market clearing problem.
+\subsection{Equilibrium Problem}
+We start by forming the Lagrangian function of producer $k$
+\begin{align*}
+\mathcal{L}_k(p_k, \alpha_k, z_k, \lambda, \chi, \mu_k, \underline{\mu}_k, \overline{\mu}_k, v_k) =& c_k p_k + f_k z_k - \lambda p_k - \chi \alpha_k - \mu_k z_k + \underline{\mu}_k (\underline{p}_k z_k + \phi_{\epsilon} \sigma \alpha_k - p_k)\\
+&+ \overline{\mu}_k (p_k - \overline{p}_k z_k + \phi_{\epsilon} \sigma \alpha_k) + v_k (\alpha_k - z_k)
+\end{align*}
+and then write the KKT conditions of the problem faced by producer $k$
+\begin{align*}
+&\frac{\partial \mathcal{L}_k}{\partial p_k} = c_k - \lambda - \underline{\mu}_k + \overline{\mu}_k = 0\\
+&\frac{\partial \mathcal{L}_k}{\partial \alpha_k} = - \chi + \phi_{\epsilon} \sigma \underline{\mu}_k + \phi_{\epsilon} \sigma \overline{\mu}_k + v_k = 0\\
+&\frac{\partial \mathcal{L}_k}{\partial z_k} = f_k - \mu_k + \underline{\mu}_k \underline{p}_k - \overline{\mu}_k \overline{p}_k - v_k = 0\\
+&0 \le \underline{\mu}_k \perp p_k - \underline{p}_k z_k - \phi_{\epsilon} \sigma \alpha_k \ge 0\\
+&0 \le \overline{\mu}_k \perp \overline{p}_k z_k - \phi_{\epsilon} \sigma \alpha_k - p_k \ge 0\\
+&0\le v_k\perp z_k-\alpha_k\ge0,
+\end{align*}
+where the range constraints for $z_k$ and $\alpha_k$ were omitted. Gathering the KKT conditions of each producer and adding the constraints of the market operator yields the same complementarity problem as the one formed by writing the KKT conditions of the stochastic market clearing problem.
+
+\bibliographystyle{plain} % We choose the "plain" reference style
+\bibliography{references}
+
+\end{document}
