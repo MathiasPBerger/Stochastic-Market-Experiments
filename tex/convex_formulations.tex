@@ -301,7 +301,7 @@ We derive the Lagrange dual of the following quadratic program:
 \mbox{s.t. } & Ax \le b \hspace{15pt} (\pi)\\
 &x \in \mathbb{R}^n,
 \end{align*}
-where $Q \succeq 0$ (i.e., it is positive semi-definite) and $A \in \mathbb{R}^{m \times n}$. We start by writing the Lagrange function:
+where $Q \succeq 0$ (i.e., it is positive semi-definite) and $A \in \mathbb{R}^{m \times n}$. We start by writing the Lagrange function
 \begin{equation*}
 \mathcal{L}(x, \pi) = \frac{1}{2}x^\top Q x + c^\top x + \pi^\top(b - Ax)
 \end{equation*}
@@ -309,11 +309,11 @@ and form the dual function
 \begin{equation*}
 d(\pi) = \underset{x \in \mathbb{R}^n}{\inf} \mathcal{L}(x, \pi).
 \end{equation*}
-The stationarity conditions of the Lagrangian with respect to $x$ read
+Stationary points $\hat{x}$ of the Lagrangian must satisfy
 \begin{equation*}
-Qx = A^\top \pi -c
+Q\hat{x} = A^\top \pi -c,
 \end{equation*}
-These conditions are necessary for optimality and allow us the dual problem
+which can simply be obtained by setting the partial derivatives of $\mathcal{L}$ with respect to the entries of $x$ to $0$. These conditions are necessary for optimality and allow us to write the dual problem
 \begin{equation*}
 \underset{\pi \le 0}{\max} \mbox{ }d(\pi)
 \end{equation*}
@@ -327,11 +327,11 @@ Note that the objective follows from the identities
 \begin{equation*}
 c^\top x + \pi^\top(b - Ax) = \pi^\top b - (A^\top \pi - c)^\top x =  \pi^\top b - x^\top Q x,
 \end{equation*}
-for $x, \pi$ jointly satisfying the first-order stationarity conditions given above. Note that $Q^\top = Q$ by definition. 
+for any pair $(x, \pi)$ jointly satisfying the first-order stationarity conditions given above. Note that $Q^\top = Q$ by definition. 
 
 If $Q \succ 0$ (i.e., it is positive definite), the first-order stationarity conditions can be re-written as
 \begin{equation*}
-x = Q^{-1}(A^\top \pi - c),
+\hat{x} = Q^{-1}(A^\top \pi - c),
 \end{equation*}
 and the dual problem becomes
 \begin{align*}
@@ -350,7 +350,7 @@ We first re-write the problem faced by producer $k$ in the standard QP form intr
 \end{align*}
 where
 \begin{equation*}
-x = \begin{pmatrix} p_k \\ \alpha_k \end{pmatrix}, \pi = \begin{pmatrix} -\overline{\nu}_k \\ -\underline{\nu}_k \end{pmatrix}, c = \begin{pmatrix} c_k^L - \lambda \\ -c_k^L \mu - \lambda \mu - \chi \end{pmatrix}, A = \begin{pmatrix} 1 & \phi_k \\ -1 & \phi_k \end{pmatrix}, b = \begin{pmatrix} \overline{p}_k\\0\end{pmatrix}.
+x = \begin{pmatrix} p_k \\ \alpha_k \end{pmatrix}, c = \begin{pmatrix} c_k^L - \lambda \\ -c_k^L \mu - \lambda \mu - \chi \end{pmatrix}, A = \begin{pmatrix} 1 & \phi_k \\ -1 & \phi_k \end{pmatrix}, b = \begin{pmatrix} \overline{p}_k\\0\end{pmatrix}, \pi = \begin{pmatrix} -\overline{\nu}_k \\ -\underline{\nu}_k \end{pmatrix}.
 \end{equation*}
 Note that the entries of $\pi$ must be nonpositive (following the convention used in Appendix B), and a minus sign must therefore be added in front of $\overline{\nu}_k$ and $\underline{\nu}_k$. The Hessian of the objective and its inverse read
 \begin{equation*}
