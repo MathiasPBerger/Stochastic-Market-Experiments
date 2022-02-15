@@ -205,7 +205,7 @@ The second line stems from the fact that market prices are dual feasible (thus n
 (\textcolor{orange}{Cost Recovery}) The stochastic market clearing problem produces prices and decisions that guarantee a nonnegative pay-off for flexible generators.
 \end{proposition}
 \begin{proof}
-We start by constructing the dual problem of an arbitrarily-selected producer $k$.
+Can be proved using strong duality for convex quadratic programs and the fact that the dual objective is nonpositive. See Appendix C for details.
 \end{proof}
 
 \begin{proposition}
@@ -295,74 +295,116 @@ The KKT conditions associated with the stochastic market clearing problem theref
 from which the range constraints of $\alpha_k$ were omitted for conciseness. Since the objective function is convex, the functions forming the constraints are continuously differentiable and the problem satisfies Slater's condition, the KKT conditions are necessary and sufficient. Thus, a solution to the complementarity problem gives a (globally) optimal solution of the market clearing problem. In addition, since the objective is strongly convex and the feasible set is convex (and non-empty), there is also a unique optimal solution to the problem.
 
 \section*{Appendix B}
-
-We start from the stationarity conditions of producer $k$ derived above,
-\begin{align*}
-&\frac{\partial \mathcal{L}_k}{\partial p_k} = c_k^L + 2 c_k^Q (p_k - \alpha_k \mu) - \lambda - \underline{\nu}_k + \overline{\nu}_k = 0,\\
-&\frac{\partial \mathcal{L}_k}{\partial \alpha_k} = - c_k^L \mu + 2 c_k^Q(\alpha_k(\mu^2 + \sigma^2) - p_k \mu) \textcolor{red}{+ \lambda \mu} - \chi + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k = 0,\\
-\end{align*}
-and derive expressions for $p_k$ and $\alpha_k$ in terms of $\underline{\nu}_k$ and $\overline{\nu}_k$. First, we get
-\begin{equation*}
-p_k = \frac{\lambda + \underline{\nu}_k - \overline{\nu}_k - c_k^L}{2 c_k^Q} + \alpha_k \mu,
-\end{equation*}
-and substituting in the second equation yields
-\begin{align*}
-&- c_k^L \mu + 2 c_k^Q\Big(\alpha_k(\mu^2 + \sigma^2) - \mu\big(\frac{\lambda + \underline{\nu}_k - \overline{\nu}_k - c_k^L}{2 c_k^Q} + \alpha_k \mu\big)\Big) \textcolor{red}{+ \lambda \mu} - \chi + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k = 0\\
-\Leftrightarrow & 2 c_k^Q\alpha_k \sigma^2 - \mu \underline{\nu}_k + \mu \overline{\nu}_k - \chi + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k = 0\\
-\Leftrightarrow &\alpha_k = \frac{1}{2 c_k^Q \sigma^2}\big(\chi + \underline{\nu}_k(\mu - \phi_k) - \overline{\nu}_k (\mu + \phi_k)\big),
-\end{align*}
-from which an expression for $p_k$ can be obtained:
-\begin{align*}
-&p_k = \frac{\lambda + \underline{\nu}_k - \overline{\nu}_k - c_k^L}{2 c_k^Q} + \frac{\mu}{2 c_k^Q \sigma^2}\big(\chi + \underline{\nu}_k(\mu - \phi_k) - \overline{\nu}_k (\mu + \phi_k)\big)\\
-\Leftrightarrow & p_k = \frac{1}{2 c_k^Q}\Big(\lambda - c_k^L + \frac{\mu \chi}{\sigma^2} + \frac{\sigma^2 + \mu(\mu - \phi_k)}{\sigma^2}\underline{\nu}_k - \frac{\sigma^2 + \mu(\mu + \phi_k)}{\sigma^2} \overline{\nu}_k\Big)
-\end{align*}
-We now compute
-
-\section*{Appendix C}
 We derive the Lagrange dual of the following quadratic program:
 \begin{align*}
 \underset{x}{\min} \hspace{10pt} & \frac{1}{2}x^\top Q x + c^\top x\\
-\mbox{s.t. } & Ax \le b\\
+\mbox{s.t. } & Ax \le b \hspace{15pt} (\pi)\\
 &x \in \mathbb{R}^n,
 \end{align*}
 where $Q \succeq 0$ (i.e., it is positive semi-definite) and $A \in \mathbb{R}^{m \times n}$. We start by writing the Lagrange function:
 \begin{equation*}
-\mathcal{L}(x, \lambda) = \frac{1}{2}x^\top Q x + c^\top x + \lambda^\top(b - Ax)
+\mathcal{L}(x, \pi) = \frac{1}{2}x^\top Q x + c^\top x + \pi^\top(b - Ax)
 \end{equation*}
 and form the dual function
 \begin{equation*}
-d(\lambda) = \underset{x \in \mathbb{R}^n}{\inf} \mathcal{L}(x, \lambda).
+d(\pi) = \underset{x \in \mathbb{R}^n}{\inf} \mathcal{L}(x, \pi).
 \end{equation*}
 The stationarity conditions of the Lagrangian with respect to $x$ read
 \begin{equation*}
-Qx = A^\top \lambda -c
+Qx = A^\top \pi -c
 \end{equation*}
 These conditions are necessary for optimality and allow us the dual problem
 \begin{equation*}
-\underset{\lambda \le 0}{\max} \mbox{ }d(\lambda)
+\underset{\pi \le 0}{\max} \mbox{ }d(\pi)
 \end{equation*}
 as
 \begin{align*}
-\underset{x, \lambda}{\max} \hspace{10pt} & -\frac{1}{2}x^T Q x + \lambda^\top b\\
-\mbox{s.t. } & Qx = A^\top \lambda -c\\
-&x \in \mathbb{R}^n, \lambda \le 0.
+\underset{x, \pi}{\max} \hspace{10pt} & -\frac{1}{2}x^T Q x + \pi^\top b\\
+\mbox{s.t. } & Qx = A^\top \pi -c\\
+&x \in \mathbb{R}^n, \pi \le 0.
 \end{align*}
 Note that the objective follows from the identities
 \begin{equation*}
-c^\top x + \lambda^\top(b - Ax) = \lambda^\top b - (A^\top \lambda - c)^\top x =  \lambda^\top b - x^\top Q x,
+c^\top x + \pi^\top(b - Ax) = \pi^\top b - (A^\top \pi - c)^\top x =  \pi^\top b - x^\top Q x,
 \end{equation*}
-for $x, \lambda$ jointly satisfying the first-order stationarity conditions given above. Note that $Q^\top = Q$ by definition. 
+for $x, \pi$ jointly satisfying the first-order stationarity conditions given above. Note that $Q^\top = Q$ by definition. 
 
 If $Q \succ 0$ (i.e., it is positive definite), the first-order stationarity conditions can be re-written as
 \begin{equation*}
-x = Q^{-1}(A^\top \lambda - c),
+x = Q^{-1}(A^\top \pi - c),
 \end{equation*}
 and the dual problem becomes
 \begin{align*}
-\underset{\lambda}{\max} \hspace{10pt} & -\frac{1}{2}(A^\top \lambda -c) Q^{-1} (A^\top \lambda -c) + \lambda^\top b\\
-\mbox{s.t. } & \lambda \le 0.
+\underset{\pi}{\max} \hspace{10pt} & -\frac{1}{2}(A^\top \pi -c)^\top Q^{-1} (A^\top \pi -c) + \pi^\top b\\
+\mbox{s.t. } & \pi \le 0.
 \end{align*}
+Note that duality results for (convex) quadratic programs can also be obtained via linear programming duality \cite{Dorn1960}.
 
+\section*{Appendix C}
+
+We first re-write the problem faced by producer $k$ in the standard QP form introduced in Appendix B,
+\begin{align*}
+\underset{x}{\min} \hspace{10pt} & \frac{1}{2}x^\top Q x + c^\top x\\
+\mbox{s.t. } & Ax \le b \hspace{15pt} (\pi)\\
+&x \in \mathbb{R}^n,
+\end{align*}
+where
+\begin{equation*}
+x = \begin{pmatrix} p_k \\ \alpha_k \end{pmatrix}, \pi = \begin{pmatrix} -\overline{\nu}_k \\ -\underline{\nu}_k \end{pmatrix}, c = \begin{pmatrix} c_k^L - \lambda \\ -c_k^L \mu - \lambda \mu - \chi \end{pmatrix}, A = \begin{pmatrix} 1 & \phi_k \\ -1 & \phi_k \end{pmatrix}, b = \begin{pmatrix} \overline{p}_k\\0\end{pmatrix}.
+\end{equation*}
+Note that the entries of $\pi$ must be nonpositive (following the convention used in Appendix B), and a minus sign must therefore be added in front of $\overline{\nu}_k$ and $\underline{\nu}_k$. The Hessian of the objective and its inverse read
+\begin{equation*}
+Q = 2 c_k^Q  \begin{pmatrix} 1 & -\mu \\ -\mu & \mu^2 + \sigma^2 \end{pmatrix} \mbox{ and } Q^{-1} = \frac{1}{2 c_k^Q \sigma^2} \begin{pmatrix} \mu^2 + \sigma^2 & \mu \\ \mu & 1 \end{pmatrix},
+\end{equation*}
+where $Q^{-1}$ can be obtained by Cramer's rule. By Sylvester's criterion, $Q$ is positive definite. Indeed its leading principal minors, which are equal to 
+\begin{equation*}
+2c_k^Q \mbox{ and } 2c_k^Q\sigma^2,
+\end{equation*}
+are both positive (unless $\sigma = 0$). It also follows that $Q^{-1}$ is positive definite. By virtue of Appendix B, the dual problem of producer $k$ reads 
+\begin{align*}
+\underset{\pi}{\max} \hspace{10pt} & -\frac{1}{2}(A^\top \pi -c)^\top Q^{-1} (A^\top \pi -c) + \pi^\top b\\
+\mbox{s.t. } & \pi \le 0.
+\end{align*}
+Note that the first term in the dual objective is nonpositive, since $Q^{-1}$ is positive definite. In addition,
+\begin{equation*}
+\pi^\top b = \begin{pmatrix}-\overline{\nu}_k & -\underline{\nu}_k \end{pmatrix}\begin{pmatrix} \overline{p}_k\\0\end{pmatrix} = -\overline{\nu}_k \overline{p}_k \le 0,
+\end{equation*}
+as $\overline{\nu}_k \ge 0$ for any dual feasible solution and it is assumed that $\overline{p}_k > 0$. The optimal dual objective is therefore nonpositive. Then, strong duality for convex quadratic programs \cite{Dorn1960} implies that the primal and dual objectives are equal at optimality. Let $(p_k^*, \alpha_k^*)$ be an optimal primal solution. It follows that
+\begin{equation*}
+c_k^L(p_k^* - \alpha_k^* \mu) + c_k^Q \big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2 \sigma^2\big) - \lambda (p_k^* - \alpha_k^* \mu) - \chi \alpha_k^* \le 0,
+\end{equation*}
+which in turn implies that
+\begin{align*}
+\mathbb{E}[\lambda (p_k^* - \alpha_k^* \boldsymbol{\omega}) + \chi \alpha_k^*] &= \lambda (p_k^* - \alpha_k^* \mu) - \chi \alpha_k^*\\
+&\ge c_k^L(p_k^* - \alpha_k^* \mu) + c_k^Q \big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2 \sigma^2\big)\\ 
+&= \mathbb{E}[c_k^L(p_k^* - \alpha_k^* \boldsymbol{\omega}) + c_k^Q (p_k^* - \alpha_k^* \boldsymbol{\omega})^2],
+\end{align*}
+or, alternatively,
+\begin{equation*}
+\mathbb{E}[\lambda (p_k^* - \alpha_k^* \boldsymbol{\omega}) + \chi \alpha_k^* - c_k^L(p_k^* - \alpha_k^* \boldsymbol{\omega}) - c_k^Q (p_k^* - \alpha_k^* \boldsymbol{\omega})^2] \ge 0.
+\end{equation*}
+In other words, the expected revenue of producer $k$ is greater than or equal to its expected cost. The cost recovery property is therefore satisfied in expectation.
+%We start from the stationarity conditions of producer $k$ derived above,
+%\begin{align*}
+%&\frac{\partial \mathcal{L}_k}{\partial p_k} = c_k^L + 2 c_k^Q (p_k - \alpha_k \mu) - \lambda - \underline{\nu}_k + \overline{\nu}_k = 0,\\
+%&\frac{\partial \mathcal{L}_k}{\partial \alpha_k} = - c_k^L \mu + 2 c_k^Q(\alpha_k(\mu^2 + \sigma^2) - p_k \mu) \textcolor{red}{+ \lambda \mu} - \chi + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k = 0,\\
+%\end{align*}
+%and derive expressions for $p_k$ and $\alpha_k$ in terms of $\underline{\nu}_k$ and $\overline{\nu}_k$. First, we get
+%\begin{equation*}
+%p_k = \frac{\lambda + \underline{\nu}_k - \overline{\nu}_k - c_k^L}{2 c_k^Q} + \alpha_k \mu,
+%\end{equation*}
+%and substituting in the second equation yields
+%\begin{align*}
+%&- c_k^L \mu + 2 c_k^Q\Big(\alpha_k(\mu^2 + \sigma^2) - \mu\big(\frac{\lambda + \underline{\nu}_k - \overline{\nu}_k - c_k^L}{2 c_k^Q} + \alpha_k \mu\big)\Big) \textcolor{red}{+ \lambda \mu} - \chi + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k = 0\\
+%\Leftrightarrow & 2 c_k^Q\alpha_k \sigma^2 - \mu \underline{\nu}_k + \mu \overline{\nu}_k - \chi + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k = 0\\
+%\Leftrightarrow &\alpha_k = \frac{1}{2 c_k^Q \sigma^2}\big(\chi + \underline{\nu}_k(\mu - \phi_k) - \overline{\nu}_k (\mu + \phi_k)\big),
+%\end{align*}
+%from which an expression for $p_k$ can be obtained:
+%\begin{align*}
+%&p_k = \frac{\lambda + \underline{\nu}_k - \overline{\nu}_k - c_k^L}{2 c_k^Q} + \frac{\mu}{2 c_k^Q \sigma^2}\big(\chi + \underline{\nu}_k(\mu - \phi_k) - \overline{\nu}_k (\mu + \phi_k)\big)\\
+%\Leftrightarrow & p_k = \frac{1}{2 c_k^Q}\Big(\lambda - c_k^L + \frac{\mu \chi}{\sigma^2} + \frac{\sigma^2 + \mu(\mu - \phi_k)}{\sigma^2}\underline{\nu}_k - \frac{\sigma^2 + \mu(\mu + \phi_k)}{\sigma^2} \overline{\nu}_k\Big)
+%\end{align*}
+%We now compute
 
 \bibliographystyle{plain} % We choose the "plain" reference style
 \bibliography{references}
