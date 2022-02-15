@@ -24,7 +24,7 @@ We analyse the properties of a chance-constrained stochastic market for energy a
 
 \subsection{Preliminaries}
 
-We consider four types of agents, namely flexible electricity generators, stochastic wind power producers and inflexible electricity consumers, which we describe further below.
+We consider four types of agents, namely flexible electricity generators, stochastic wind power producers, inflexible electricity consumers and a market operator, which we describe further below.
 
 \textit{Wind Producers}: We consider a set of stochastic wind farms. Although a forecast $\tilde{W} \in \mathbb{R}_+$ is available for the aggregate production from wind farms, the actual aggregate output $\mathbf{p}_w(\boldsymbol{\omega}) \in \mathbb{R}_+$ may deviate from $\tilde{W}$ by some amount given by random variable $\boldsymbol{\omega} \in \Omega \subseteq \mathbb{R}$, such that $\mathbf{p}_w(\boldsymbol{\omega}) = \tilde{W} + \boldsymbol{\omega}$. Note that we use bold symbols to denote random variables. The first and second-order moments (i.e., the mean and variance) of the distribution of the forecast error $\boldsymbol{\omega}$ are denoted by $\mathbb{E}[\boldsymbol{\omega}] = \mu$ and $\mbox{Var}[\boldsymbol{\omega}] = \sigma^2$, respectively. All agents are assumed to have access to the same amount of information about $\mathbf{p}(\boldsymbol{\omega})$. Wind producers are assumed to have zero marginal cost.
 
@@ -32,7 +32,7 @@ We consider four types of agents, namely flexible electricity generators, stocha
 
 \textit{Inflexible Consumers}: We consider a set of consumers with aggregate demand $D \in \mathbb{R}_+$, which is assumed inelastic and known with certainty.
 
-\textit{Market Operator}: A market operator (also known as a \textit{social planner}) seeks to identify prices for energy and reserves so that the markets for energy and reserves clear. \textcolor{orange}{clarify its role in the equilibrium problem formulation; allocate energy production and reserve procurement across generators such that 1) the market clears and 2) the prices and decisions maximise the profits of generators}. 
+\textit{Market Operator}: A market operator (also known as a \textit{social planner}) seeks to identify prices for energy and reserves so that the markets for energy and reserves clear. \textcolor{orange}{clarify its role/interpretation in the equilibrium problem formulation; allocate energy production and reserve procurement across generators such that 1) the market clears and 2) the prices and decisions maximise the profits of generators}. 
 
 \section{Equilibrium Problem Formulation}
 
@@ -96,7 +96,7 @@ where $\Phi^{-1}: (0, 1) \rightarrow \mathbb{R}$ is the quantile function of the
 &\mathbb{P}[0 \le \mathbf{p}_k(\boldsymbol{\omega})] \ge 1 - \epsilon_k\\
 \Leftrightarrow & \alpha_k \phi_k \le p_k.
 \end{align*}
-Thus, the deterministic equivalent to the stochastic profit-maximisation problem of producer $k$ reads
+Thus, the deterministic equivalent of the stochastic profit-maximisation problem of producer $k$ reads
 \begin{align}
 \underset{p_k, \alpha_k}{\max} \hspace{10pt} & \lambda (p_k - \alpha_k \mu) + \chi \alpha_k - c_k^L(p_k - \alpha_k \mu) - c_k^Q \big((p_k - \alpha_k \mu)^2 + \alpha_k^2 \sigma^2\big)\\
 \mbox{s.t. } & p_k \le \overline{p}_k - \alpha_k \phi_k, \hspace{25pt} (\overline{\nu}_k)\\
@@ -119,7 +119,7 @@ The market operator seeks to clear the energy market and procure enough reserves
 Simply substituting the affine control law of flexible generators yields
 \begin{align}
 & \sum_k p_k + \tilde{W} = D, \hspace{10pt} (\lambda)\\
-& \sum_k \alpha_k = 1, \hspace{37pt} (\chi)
+& \sum_k \alpha_k = 1, \hspace{35pt} (\chi)
 \end{align}
 \textcolor{orange}{where electricity and reserve prices are obtained as the dual variables of the power balance and reserve allocation constraints.}
 \subsection{Wind Producers}
@@ -205,50 +205,52 @@ The second line stems from the fact that market prices are dual feasible (thus n
 (\textcolor{orange}{Cost Recovery}) The stochastic market clearing problem produces prices and decisions that guarantee a nonnegative pay-off for flexible generators.
 \end{proposition}
 \begin{proof}
-Can be shown by taking the dual problem of profit-maximising agent where the commitment decision is enforced and using strong duality (\textcolor{red}{but strong duality doesn't hold for these problems, however. In Yury's paper, this is circumvented by assuming that the commitment decisions are already provided but I am not sure how that can be justified. This would also imply that profits $\ge 0$, while the competitive equilibrium proof suggests that profits $= 0$. How do we make sense of this?}).
+We start by constructing the dual problem of an arbitrarily-selected producer $k$.
 \end{proof}
 
 \begin{proposition}
-(\textcolor{red}{Revenue Adequacy}) The stochastic market clearing problem \textcolor{red}{does not} produce prices and decisions guaranteeing that the market operator does not incur any financial loss in expectation.
+(\textcolor{red}{Revenue Adequacy}) The stochastic market clearing problem \textcolor{red}{does not} produce prices and decisions guaranteeing that the market operator does not incur any financial loss.
 \end{proposition}
 \begin{proof}
-Let $\{\lambda^*, \chi^*\}$ and $\{\{p_k^*\}_{\forall k}, \{\alpha_k^*\}_{\forall k}\}$ denote prices and decisions calculated by the market operator. Consumers only pay the market operator for the electricity consumed, while producers receive payments covering energy and reserves. Hence, the surplus collected by the market operator can be expressed as follows
+Let $\{\lambda^*, \chi^*\}$ and $\{\{p_k^*\}_{\forall k}, \{\alpha_k^*\}_{\forall k}\}$ denote prices and decisions calculated by the market operator. Consumers only pay the market operator for the electricity consumed, while producers receive payments covering energy and reserves. Hence, \textcolor{red}{under the assumption that wind producers and flexible generators get paid for their real-time in-feed}, the surplus collected by the market operator can be expressed as follows
 \begin{align*}
-\boldsymbol{\Delta}^* &= \lambda^*D - \lambda^*\mathbf{p}_w(\boldsymbol{\omega}) - \sum_k \lambda^*\mathbf{p}_k(\boldsymbol{\omega})\\
+\boldsymbol{\Delta}^* &= \lambda^*D - \lambda^*\mathbf{p}_w(\boldsymbol{\omega}) - \sum_k \lambda^*\mathbf{p}_k(\boldsymbol{\omega}) - \sum_k \alpha_k^* \chi^*\\
 &= \lambda^*D - \lambda^*(\tilde{W} + \boldsymbol{\omega}) - \sum_k \lambda^*(p_k^* - \alpha_k^* \boldsymbol{\omega}) - \sum_k \alpha_k^* \chi^*\\
 &= \lambda^*\big(D - \tilde{W} - \boldsymbol{\omega} - \sum_k (p_k^* - \alpha_k^* \boldsymbol{\omega})\big) - \chi^* \sum_k \alpha_k^*\\
-&= -\chi^*
+&= -\chi^*,
 \end{align*}
-%\begin{align*}
-%\mathbb{E}[\Delta^*] &= \mathbb{E}\Big[\lambda^*D - \lambda^*(\tilde{W} + \boldsymbol{\omega}) - \sum_k \lambda^*(p_k^* - \alpha_k^* \boldsymbol{\omega}) - \sum_k \alpha_k^* \chi^*\Big]\\
-%&= \mathbb{E}\Big[\lambda^*\big(D - \tilde{W} - \boldsymbol{\omega} - \sum_k (p_k^* - \alpha_k^* \boldsymbol{\omega})\big) - \chi^* \sum_k \alpha_k^*\Big]\\
-%&= \mathbb{E}[-\chi^*]\\
-%&= -\chi^*
-%\end{align*}
 where the fourth equality stems from the fact that the market clears (power balance and reserve procurement constraints are enforced in the primal problem solved by the market operator) for any realisation of $\boldsymbol{\omega}$. Since $\chi^* \in \mathbb{R}$, \textcolor{red}{it may happen that $\boldsymbol{\Delta}^* < 0$}, which implies that the market operator may incur a financial deficit.
+\textcolor{red}{On the other hand, if wind producers and flexible generators only got paid for their forecast and scheduled production, respectively, the surplus collected by the market operator would be:}
+\begin{align*}
+\Delta^* &= \lambda^*D - \lambda^*\tilde{W} - \sum_k \lambda^*p_k^* - \sum_k \alpha_k^* \chi^*\\
+&= \lambda^*\big(D - \tilde{W} - \sum_k p_k^*\big) - \chi^* \sum_k \alpha_k^*\\
+&= -\chi^*.
+\end{align*}
+Note that this result holds for any forecast error realisation.
 \end{proof}
 
 \begin{proposition}
 (\textcolor{red}{Incentive Compatibility}) The stochastic market clearing problem \textcolor{red}{does not produce} prices and decisions guaranteeing that each flexible generator maximises its profit by bidding truthfully.
 \end{proposition}
 \begin{proof}
-See counter-example implemented in Julia \cite{SMER2022}, where a producer operating in an electricity market with a finite number of producers can increase its profit by bidding untruthfully.
+By contradiction. Assume that incentive compatibility holds and see counter-example implemented in Julia \cite{SMER2022}, where a producer operating in an electricity market with a finite number of producers can increase its profit by bidding untruthfully.
 \end{proof}
 
-Market properties are also discussed in \cite{Ratha2019} in a similar set-up. The proof of incentive compatibility seems wrong, however, and there are also errors in the proof of the revenue adequacy property.
+Market properties are also discussed in \cite{Ratha2019} in a similar set-up. The proofs of incentive compatibility and revenue adequacy seem weird, however.
 
 \section{Comments}
 
-The profit accrued to producer $k$ is nonpositive (or equal to 0). How should this be interpreted?
+\begin{itemize} 
+\item The profit accrued to producer $k$ is nonpositive (or equal to 0). How should this be interpreted?
+\item Do flexible generators get paid for the scheduled production $p_k$ or the expected real-time production $\mathbb{E}[\mathbf{p}_k(\boldsymbol{\omega})] = p_k - \alpha_k \mu$? The complementarity problems associated with the equilibrium problem and the market clearing problem would be identical if the former held true, but they would otherwise be different (the problematic term in the $\alpha_k$ stationarity condition of producer $k$ is highlighted in red)
+\item Likewise, do wind producers get paid for the forecast production $\tilde{W}$ or the expected production $\mathbb{E}[\mathbf{p}_w(\boldsymbol{\omega})] = \tilde{W} + \mu$?
+\end{itemize}
 
-\section{Appendix A}
+\section*{Appendix A}
 This section derives complementary problems based on the KKT conditions of the deterministic equivalent of the equilibrium and market problems and \textcolor{red}{shows that they are identical (hence the equivalence between solutions of the two problems}.
 
-\subsection{Equilibrium Problem}
+\subsection*{Equilibrium Problem}
 To ease the writing of KKT conditions, the problem faced by producer $k$ is first re-written as a minimisation problem,
-%\begin{equation*}
-%\lambda (p_k - \alpha_k \mu) + \chi \alpha_k - c_k^L(p_k - \alpha_k \mu) - c_k^Q \big((p_k - \alpha_k \mu)^2 + \alpha_k^2 \sigma^2\big)
-%\end{equation*}
 \begin{align}
 -\underset{p_k, \alpha_k}{\min} \hspace{10pt} & c_k^L(p_k - \alpha_k \mu) + c_k^Q \big((p_k - \alpha_k \mu)^2 + \alpha_k^2 \sigma^2\big) - \lambda (p_k - \alpha_k \mu) - \chi \alpha_k\\
 \mbox{s.t. } & p_k \le \overline{p}_k - \alpha_k \phi_k, \hspace{25pt} (\overline{\nu}_k)\\
@@ -263,15 +265,14 @@ Then, the Lagrangian function of producer $k$ can be expressed as
 \end{align*}
 The KKT conditions of the problem faced by producer $k$ now follow
 \begin{align*}
-&\frac{\partial \mathcal{L}_k}{\partial p_k} = c_k^L + 2 c_k^Q (p_k - \alpha_k \mu) - \lambda - \underline{\nu}_k + \overline{\nu}_k = 0\\
-&\frac{\partial \mathcal{L}_k}{\partial \alpha_k} = - c_k^L \mu + 2 c_k^Q(\alpha_k(\mu^2 + \sigma^2) - p_k \mu) \textcolor{red}{+ \lambda \mu} - \chi + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k = 0\\
-&0 \le \underline{\nu}_k \perp p_k - \alpha_k \phi_k \ge 0\\
+&\frac{\partial \mathcal{L}_k}{\partial p_k} = c_k^L + 2 c_k^Q (p_k - \alpha_k \mu) - \lambda - \underline{\nu}_k + \overline{\nu}_k = 0,\\
+&\frac{\partial \mathcal{L}_k}{\partial \alpha_k} = - c_k^L \mu + 2 c_k^Q(\alpha_k(\mu^2 + \sigma^2) - p_k \mu) \textcolor{red}{+ \lambda \mu} - \chi + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k = 0,\\
+&0 \le \underline{\nu}_k \perp p_k - \alpha_k \phi_k \ge 0,\\
 &0 \le \overline{\nu}_k \perp \overline{p}_k - \alpha_k \phi_k - p_k \ge 0,
 \end{align*}
 where the range constraints for $\alpha_k$ were omitted for conciseness. Gathering the KKT conditions of each producer and adding the market clearing constraints yields the complementarity problem associated with the equilibrium problem.
 
-\subsection{Stochastic Market Clearing Problem}
-\textcolor{red}{The KKT conditions do not seem to coincide with the ones of the equilibrum problem (we're missing a term in the $\alpha_k$ stationarity condition): do producers get paid for the scheduled production $p_k$ or the real-time production $\mathbf{p}_k(\boldsymbol{\omega})$? The KKT conditions would be identical if the former held true (the problematic term in the $\alpha_k$ stationarity condition of producer $k$, which is highlighted in red, would then disappear)}
+\subsection*{Stochastic Market Clearing Problem}
 For simplicity, let 
 \begin{align*}
 x &= \begin{pmatrix} \{p_k\}_{\forall k}, \{\alpha_k\}_{\forall k} \end{pmatrix}^\top,\\
@@ -280,18 +281,88 @@ x &= \begin{pmatrix} \{p_k\}_{\forall k}, \{\alpha_k\}_{\forall k} \end{pmatrix}
 denote the set of primal and dual variables, respectively. Let us form the Lagrangian function of the stochastic market clearing problem:
 \begin{align*}
 \mathcal{L}(x, \pi) =& \sum_k \Big(c_k^L(p_k - \alpha_k \mu) + c_k^Q \big((p_k - \alpha_k \mu)^2 + \alpha_k^2 \sigma^2\big)\Big) + \sum_k \underline{\nu}_k (\alpha_k \phi_k - p_k)\\
-& + \sum_k \overline{\nu}_k (p_k - \overline{p}_k + \alpha_k \phi_k) + \lambda(D - \sum_k p_k - \tilde{W}) + \chi(1 - \sum_k \alpha_k)
+& + \sum_k \overline{\nu}_k (p_k - \overline{p}_k + \alpha_k \phi_k) + \lambda(D - \sum_k p_k - \tilde{W}) + \chi(1 - \sum_k \alpha_k).
 \end{align*}
 The KKT conditions associated with the stochastic market clearing problem therefore read
 \begin{align*}
-&\frac{\partial \mathcal{L}}{\partial p_k} = c_k^L + 2 c_k^Q (p_k - \alpha_k \mu) - \underline{\nu}_k + \overline{\nu}_k - \lambda = 0, \forall k\\
-&\frac{\partial \mathcal{L}}{\partial \alpha_k} = - c_k^L \mu + 2 c_k^Q(\alpha_k(\mu^2 + \sigma^2) - p_k \mu) + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k  - \chi = 0, \forall k\\
-&\sum_k p_k + \tilde{W} = D\\
-&\sum_k \alpha_k = 1\\
-&0 \le \underline{\nu}_k \perp p_k - \alpha_k \phi_k \ge 0, \forall k\\
-&0 \le \overline{\nu}_k \perp \overline{p}_k -  \alpha_k \phi_k- p_k \ge 0, \forall k
+&\frac{\partial \mathcal{L}}{\partial p_k} = c_k^L + 2 c_k^Q (p_k - \alpha_k \mu) - \underline{\nu}_k + \overline{\nu}_k - \lambda = 0, \forall k,\\
+&\frac{\partial \mathcal{L}}{\partial \alpha_k} = - c_k^L \mu + 2 c_k^Q(\alpha_k(\mu^2 + \sigma^2) - p_k \mu) + \underline{\nu}_k, \phi_k + \overline{\nu}_k \phi_k  - \chi = 0, \forall k,\\
+&\sum_k p_k + \tilde{W} = D,\\
+&\sum_k \alpha_k = 1,\\
+&0 \le \underline{\nu}_k \perp p_k - \alpha_k \phi_k \ge 0, \forall k,\\
+&0 \le \overline{\nu}_k \perp \overline{p}_k -  \alpha_k \phi_k- p_k \ge 0, \forall k,
 \end{align*}
 from which the range constraints of $\alpha_k$ were omitted for conciseness. Since the objective function is convex, the functions forming the constraints are continuously differentiable and the problem satisfies Slater's condition, the KKT conditions are necessary and sufficient. Thus, a solution to the complementarity problem gives a (globally) optimal solution of the market clearing problem. In addition, since the objective is strongly convex and the feasible set is convex (and non-empty), there is also a unique optimal solution to the problem.
+
+\section*{Appendix B}
+
+We start from the stationarity conditions of producer $k$ derived above,
+\begin{align*}
+&\frac{\partial \mathcal{L}_k}{\partial p_k} = c_k^L + 2 c_k^Q (p_k - \alpha_k \mu) - \lambda - \underline{\nu}_k + \overline{\nu}_k = 0,\\
+&\frac{\partial \mathcal{L}_k}{\partial \alpha_k} = - c_k^L \mu + 2 c_k^Q(\alpha_k(\mu^2 + \sigma^2) - p_k \mu) \textcolor{red}{+ \lambda \mu} - \chi + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k = 0,\\
+\end{align*}
+and derive expressions for $p_k$ and $\alpha_k$ in terms of $\underline{\nu}_k$ and $\overline{\nu}_k$. First, we get
+\begin{equation*}
+p_k = \frac{\lambda + \underline{\nu}_k - \overline{\nu}_k - c_k^L}{2 c_k^Q} + \alpha_k \mu,
+\end{equation*}
+and substituting in the second equation yields
+\begin{align*}
+&- c_k^L \mu + 2 c_k^Q\Big(\alpha_k(\mu^2 + \sigma^2) - \mu\big(\frac{\lambda + \underline{\nu}_k - \overline{\nu}_k - c_k^L}{2 c_k^Q} + \alpha_k \mu\big)\Big) \textcolor{red}{+ \lambda \mu} - \chi + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k = 0\\
+\Leftrightarrow & 2 c_k^Q\alpha_k \sigma^2 - \mu \underline{\nu}_k + \mu \overline{\nu}_k - \chi + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k = 0\\
+\Leftrightarrow &\alpha_k = \frac{1}{2 c_k^Q \sigma^2}\big(\chi + \underline{\nu}_k(\mu - \phi_k) - \overline{\nu}_k (\mu + \phi_k)\big),
+\end{align*}
+from which an expression for $p_k$ can be obtained:
+\begin{align*}
+&p_k = \frac{\lambda + \underline{\nu}_k - \overline{\nu}_k - c_k^L}{2 c_k^Q} + \frac{\mu}{2 c_k^Q \sigma^2}\big(\chi + \underline{\nu}_k(\mu - \phi_k) - \overline{\nu}_k (\mu + \phi_k)\big)\\
+\Leftrightarrow & p_k = \frac{1}{2 c_k^Q}\Big(\lambda - c_k^L + \frac{\mu \chi}{\sigma^2} + \frac{\sigma^2 + \mu(\mu - \phi_k)}{\sigma^2}\underline{\nu}_k - \frac{\sigma^2 + \mu(\mu + \phi_k)}{\sigma^2} \overline{\nu}_k\Big)
+\end{align*}
+We now compute
+
+\section*{Appendix C}
+We derive the Lagrange dual of the following quadratic program:
+\begin{align*}
+\underset{x}{\min} \hspace{10pt} & \frac{1}{2}x^\top Q x + c^\top x\\
+\mbox{s.t. } & Ax \le b\\
+&x \in \mathbb{R}^n,
+\end{align*}
+where $Q \succeq 0$ (i.e., it is positive semi-definite) and $A \in \mathbb{R}^{m \times n}$. We start by writing the Lagrange function:
+\begin{equation*}
+\mathcal{L}(x, \lambda) = \frac{1}{2}x^\top Q x + c^\top x + \lambda^\top(b - Ax)
+\end{equation*}
+and form the dual function
+\begin{equation*}
+d(\lambda) = \underset{x \in \mathbb{R}^n}{\inf} \mathcal{L}(x, \lambda).
+\end{equation*}
+The stationarity conditions of the Lagrangian with respect to $x$ read
+\begin{equation*}
+Qx = A^\top \lambda -c
+\end{equation*}
+These conditions are necessary for optimality and allow us the dual problem
+\begin{equation*}
+\underset{\lambda \le 0}{\max} \mbox{ }d(\lambda)
+\end{equation*}
+as
+\begin{align*}
+\underset{x, \lambda}{\max} \hspace{10pt} & -\frac{1}{2}x^T Q x + \lambda^\top b\\
+\mbox{s.t. } & Qx = A^\top \lambda -c\\
+&x \in \mathbb{R}^n, \lambda \le 0.
+\end{align*}
+Note that the objective follows from the identities
+\begin{equation*}
+c^\top x + \lambda^\top(b - Ax) = \lambda^\top b - (A^\top \lambda - c)^\top x =  \lambda^\top b - x^\top Q x,
+\end{equation*}
+for $x, \lambda$ jointly satisfying the first-order stationarity conditions given above. Note that $Q^\top = Q$ by definition. 
+
+If $Q \succ 0$ (i.e., it is positive definite), the first-order stationarity conditions can be re-written as
+\begin{equation*}
+x = Q^{-1}(A^\top \lambda - c),
+\end{equation*}
+and the dual problem becomes
+\begin{align*}
+\underset{\lambda}{\max} \hspace{10pt} & -\frac{1}{2}(A^\top \lambda -c) Q^{-1} (A^\top \lambda -c) + \lambda^\top b\\
+\mbox{s.t. } & \lambda \le 0.
+\end{align*}
+
 
 \bibliographystyle{plain} % We choose the "plain" reference style
 \bibliography{references}
