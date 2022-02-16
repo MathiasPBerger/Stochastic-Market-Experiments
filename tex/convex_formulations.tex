@@ -157,9 +157,8 @@ Using techniques introduced earlier yields the following equivalent deterministi
 & p_k \in \mathbb{R}, 0 \le \alpha_k \le 1,
 \end{align}
 where the dual variables of the energy balance and reserve allocation constraints are used to set energy and reserve prices, respectively. Note that computing expectations and treating chance constraints in the problem solved by the market operator in the same way as in the problem of a market participant is only possible under the assumption that they all share the same information about $\boldsymbol{\omega}$. It will become apparent later that this is also a pre-requisite for the pricing scheme of the market operator to support a competitive equilibrium (since the complementarity problems stemming from the equilibrium and market clearing approaches would otherwise be different). This topic is also discussed in the context of a stochastic programming-based market design by Dvorkin et al. \cite{DvorkinV2019}.
-\section{Market Properties}
 
-\textcolor{red}{Propositions 1 and 2 should be updated}.
+\section{Market Properties}
 
 We analyse four key properties of the proposed stochastic market design, namely whether it supports a \textit{competitive equilibrium}, guarantees \textit{cost recovery} for flexible generators, \textit{revenue adequacy} for the market operator, and is \textit{incentive compatible}.
 
@@ -175,37 +174,67 @@ We analyse four key properties of the proposed stochastic market design, namely 
 (\textcolor{green}{Competitive Equilibrium}) The stochastic market clearing problem produces prices and decisions maximising the profit of each flexible generator and supporting a competitive equilibrium from which they have no incentive to deviate.
 \end{proposition}
 \begin{proof}
-The proof showing that decisions $\{p_k^*, z_k^*, \alpha_k^*\}$ and prices $\{\lambda^*, \chi^*, \mu_k^*\}$ support a competitive equilibrium proceeds in two steps. The first step consists in finding the (negative) profit earned by each producer for prices and decisions computed by the market operator. The second step consists in showing that this profit is optimal for the problem faced by each producer.
+The proof showing that decisions $\{p_k^*, \alpha_k^*\}$ and prices $\{\lambda^*, \chi^*\}$ support a competitive equilibrium proceeds in two steps. The first step consists in finding an expression for the profit earned by each producer for prices and decisions computed by the market operator. The second step consists in showing that this profit is optimal for the problem faced by each producer.
 
 \textit{First Step:} Let $V_k^*$ denote the value of the objective of producer $k$ under said market prices and decisions
-\begin{align}
-    V_k^* =& c_k p_k^* + f_k z_k^* - \lambda^* p_k^* - \chi^* \alpha_k^* - \mu_k^* z_k^* \\
-    =& c_k p_k^* + f_k z_k^* - \lambda^* p_k^* - \chi^* \alpha_k^* - \mu_k^* z_k^* + \underline{\mu}_k^*(-p_k^*  + \underline{p}_k z_k^* + \phi_{\epsilon} \sigma \alpha_k^*)\\
-    & + \overline{\mu}_k^* (-\overline{p}_k z_k^* + \phi_{\epsilon} \sigma \alpha_k^* + p_k^*) + v_k^*(\alpha_k^* - z_k^*)\\
-    =& (c_k - \lambda^* - \underline{\mu}_k^* + \overline{\mu}_k^*) p_k^*+ (f_k - \mu_k^* + \underline{\mu}_k^* \underline{p}_k - \overline{\mu}_k^* \overline{p}_k - v_k^*) z_k^*\\
-    &+ (-\chi^* + \phi_{\epsilon} \sigma \underline{\mu}_k^* + \phi_{\epsilon} \sigma \overline{\mu}_k^* + v_k^*) \alpha_k^*\\
-    =& 0
-\end{align}
-The second line results from the fact that the three new terms added to the objective are equal to zero (complementary slackness). The third line is obtained by re-arranging terms. The fourth line follows from the fact that the first two terms in parentheses are equal to zero (dual feasibility of market prices) and the last term is also equal to zero (complementary slackness).
+\begin{align*}
+    V_k^* =& \lambda^*(p_k^* - \alpha_k^* \mu) + \alpha_k^*\chi^* - c_k^L(p_k^* - \alpha_k^* \mu) - c_k^Q\big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2\sigma^2\big) \\
+    =& \lambda^*(p_k^* - \alpha_k^* \mu) + \alpha_k^*\chi^* - c_k^L(p_k^* - \alpha_k^* \mu) - c_k^Q\big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2\sigma^2\big)\\
+    & + \underline{\nu}_k^* (p_k^* - \alpha_k^* \phi_k) + \overline{\nu}_k^*(-p_k^* - \alpha_k^* \phi_k + \bar{p}_k)\\
+    =& p_k^*\big(\lambda^* - c_k^L + \underline{\nu}_k^* - \overline{\nu}_k^*\big) - c_k^Q(p_k^* - \alpha_k^* \mu)^2 + \overline{\nu}_k^* \overline{p}_k\\
+    &+ \alpha_k^*\big(\chi^* - \mu \lambda^* + c_k^L \mu - \underline{\nu}_k^* \phi_k - \overline{\nu}_k^* \phi_k\big) - c_k^Q (\alpha_k^*)^2 \sigma^2 \\
+    =& p_k^*\big(2c_k^Q(p_k^* - \alpha_k^* \mu)\big) - c_k^Q(p_k^* - \alpha_k^* \mu)^2 + \overline{\nu}_k^* \overline{p}_k\\ 
+    &+ \alpha_k^*\big(2c_k^Q(\alpha_k^*(\mu^2+\sigma^2) - p_k^* \mu)\big) - c_k^Q (\alpha_k^*)^2 \sigma^2\\
+    &= 2c_k^Q(p_k^* - \alpha_k^* \mu)^2 + 2c_k^Q \alpha_k^* \sigma^2 + \overline{\nu}_k^* \overline{p}_k - c_k^Q(p_k^* - \alpha_k^* \mu)^2 - c_k^Q (\alpha_k^*)^2 \sigma^2\\
+    &= c_k^Q(p_k^* - \alpha_k^* \mu)^2 + c_k^Q \alpha_k^* \sigma^2 + \overline{\nu}_k^* \overline{p}_k\\
+    &\ge 0
+\end{align*}
+The second line results from the fact that the two new terms added to the objective are equal to zero (complementary slackness). The third line is obtained by re-arranging terms. The fourth line follows from the stationary conditions of the Lagrangian with respect to $p_k$ and $\alpha_k$, respectively (see KKT conditions in Appendix A). The fifth and sixth lines follow from re-arranging and cancelling terms out. The last line follows from the fact that the first two terms are nonnegative (quadratic terms with positive coefficient), and the third term is nonnegative too, since $\overline{\nu}_k^* \ge 0$ (dual feasibility) and $\overline{p}_k > 0$ (by assumption). Note that this result also amounts to proving that the cost recovery property holds (since the revenue earned by producer $k$ is greater than or equal to the costs she incurs).
 
-\textit{Second Step:} Now, let $\{p_k^\star, z_k^\star, \alpha_k^\star\}$ denote the solution of the problem faced by producer $k$ under prices $\{\lambda^*, \chi^*, \mu_k^*\}$, and let $V_k^\star$ denote the corresponding objective. One successively finds
-\begin{align}
-    V_k^\star =& c_k p_k^\star + f_k z_k^\star - \lambda^* p_k^\star - \chi^* \alpha_k^\star - \mu_k^*z_k^\star\\
-    \ge& (c_k p_k^\star + f_k z_k^\star - \lambda^* p_k^\star - \chi^* \alpha_k^\star - \mu_k^*z_k^\star) + v_k^*(\alpha_k^\star - z_k^\star)\\
-    &+ \underline{\mu}_k^*(-p_k^\star  + \underline{p}_k z_k^\star + \phi_{\epsilon} \sigma \alpha_k^\star) + \overline{\mu}_k^* (-\overline{p}_k z_k^\star + \phi_{\epsilon} \sigma \alpha_k^\star + p_k^\star)\\
-    =& (c_k - \lambda^* - \underline{\mu}_k^* + \overline{\mu}_k^*) p_k^\star+(f_k - \mu_k^* + \underline{\mu}_k^* \underline{p}_k - \overline{\mu}_k^* \overline{p}_k - v_k^*) z_k^\star\\
-    &+ (-\chi^* + \phi_{\epsilon} \sigma \underline{\mu}_k^* + \phi_{\epsilon} \sigma \overline{\mu}_k^* + v_k^*) \alpha_k^\star\\
-    \ge& 0\\
-    =& V_k^*
-\end{align}
-The second line stems from the fact that market prices are dual feasible (thus nonnegative), while terms in parentheses are nonpositive (primal feasibility for problem faced by producer $k$), such that the product terms added to the objective are nonpositive. The third line is obtained by re-arranging terms. The fourth line follows from the fact that 1) the first two terms in parentheses are equal to zero (dual feasibility of market prices), 2) the third term in parentheses is nonnegative (dual feasibility of market prices) and $\alpha_k^\star \ge 0$ (primal feasibility in profit-maximisation problem of producer $k$). Thus, $V_k^\star \ge V_k^*, \forall k$. In other words, market prices and decisions maximise the profit of each producer, resulting in a competitive equilibrium.
+\textit{Second Step:} Now, let $\{p_k^\star, \alpha_k^\star\}$ denote the solution of the problem faced by producer $k$ under prices $\{\lambda^*, \chi^*\}$, and let $V_k^\star$ denote the corresponding objective. We essentially seek to show that $V_k^\star \le V_k^*$. One successively finds
+\begin{align*}
+    V_k^\star =& \lambda^*(p_k^\star - \alpha_k^* \mu) + \chi^* \alpha_k^\star - c_k^L(p_k^\star - \alpha_k^\star \mu) - c_k^Q\big((p_k^\star - \alpha_k^\star \mu)^2 + (\alpha_k^\star)^2\sigma^2\big)\\
+    &\le \lambda^*(p_k^\star - \alpha_k^* \mu) + \chi^* \alpha_k^\star - c_k^L(p_k^\star - \alpha_k^\star \mu) - c_k^Q\big((p_k^\star - \alpha_k^\star \mu)^2 + (\alpha_k^\star)^2\sigma^2\big)\\
+    &+ \underline{\nu}_k^* (p_k^\star - \alpha_k^\star \phi_k) + \overline{\nu}_k^*(-p_k^\star - \alpha_k^\star \phi_k + \bar{p}_k)\\
+    =& p_k^\star\big(\lambda^* - c_k^L + \underline{\nu}_k^* - \overline{\nu}_k^*\big) - c_k^Q(p_k^\star - \alpha_k^\star \mu)^2 + \overline{\nu}_k^* \overline{p}_k\\
+    &+ \alpha_k^\star\big(\chi^* - \mu \lambda^* + c_k^L \mu - \underline{\nu}_k^* \phi_k - \overline{\nu}_k^* \phi_k\big) - c_k^Q (\alpha_k^\star)^2 \sigma^2 \\
+   =& p_k^\star\big(2c_k^Q(p_k^* - \alpha_k^* \mu)\big) - c_k^Q(p_k^\star - \alpha_k^\star \mu)^2 + \overline{\nu}_k^* \overline{p}_k\\ 
+    &+ \alpha_k^\star\big(2c_k^Q(\alpha_k^*(\mu^2+\sigma^2) - p_k^* \mu)\big) - c_k^Q (\alpha_k^\star)^2 \sigma^2,
+\end{align*}
+and define $f:\mathbb{R}^2 \rightarrow \mathbb{R}$ such that
+\begin{align*}
+f(x, y) =& x \big(2c_k^Q(p_k^* - \alpha_k^* \mu)\big) - c_k^Q(x - y \mu)^2 + \overline{\nu}_k^* \overline{p}_k\\ 
+    &+ y \big(2c_k^Q(\alpha_k^*(\mu^2+\sigma^2) - p_k^* \mu)\big) - c_k^Q y^2 \sigma^2.
+\end{align*}
+We first note that
+\begin{align*}
+V_k^\star \le f(p_k^\star, \alpha_k^\star),
+\end{align*} 
+and
+\begin{equation*}
+f(p_k^*, \alpha_k^*) = V_k^*,
+\end{equation*}
+which directly follows from the derivations in the first step of this proof. We now seek to show that $f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*)$. To achieve this, we proceed in two steps. First, we check that $(x, y) = (p_k^*, \alpha_k^*)$ is a stationary point of $f$. Then, we check that it also corresponds to a maximum of $f$ via the second-derivative test. We first compute
+\begin{align*}
+\frac{\partial f}{\partial x} &= 2c_k^Q(p_k^* - \alpha_k^*\mu) - 2 c_k^Q x + 2c_k^Q y \mu\\
+\frac{\partial f}{\partial y} &= - 2c_k^Q y \mu^2 + 2 c_k^Q x \mu + 2c_k^Q\big(\alpha_k^*(\mu^2 + \sigma^2) - p_k^* \mu\big) - 2c_k^Q y \sigma^2,
+\end{align*}
+from which it is clear that setting $(x, y) = (p_k^*, \alpha_k^*)$ cancels both derivatives. We then derive an expression for the Hessian,
+\begin{equation*}
+H(x,y) = \begin{pmatrix} \frac{\partial^2 f}{\partial x^2} & \frac{\partial^2 f}{\partial x \partial y} \\ \frac{\partial^2 f}{\partial y \partial x} & \frac{\partial^2 f}{\partial y^2} \end{pmatrix} = 2c_k^Q \begin{pmatrix} -1 & \mu \\ \mu & -\mu^2 - \sigma^2 \end{pmatrix}.
+\end{equation*}
+We note that the first entry on the diagonal is negative. In addition, we have that $\mbox{det}|H(p_k^*, \alpha_k^*)| = 2 c_k^Q \sigma^2 > 0$ (unless $\sigma = 0$). Thus, by virtue of the second-derivative test, $(x, y) = (p_k^*, \alpha_k^*)$ is a local maximum of $f$. In other words, $f(p_k^*, \alpha_k^*) \ge f(x, y), \forall (x, y),$ and thus $f(p_k^*, \alpha_k^*) \ge f(p_k^\star, \alpha_k^\star)$. It then follows that
+\begin{equation*}
+V_k^\star \le f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*) = V_k^*.
+\end{equation*}
+Since this applies to any arbitrary producer $k$, $V_k^\star \le V_k^*, \forall k$. In other words, market prices and decisions identified by the market operator maximise the profit of each producer, resulting in a competitive equilibrium.
 \end{proof}
 
 \begin{proposition}
 (\textcolor{orange}{Cost Recovery}) The stochastic market clearing problem produces prices and decisions that guarantee a nonnegative pay-off for flexible generators.
 \end{proposition}
 \begin{proof}
-Can be proved using strong duality for convex quadratic programs and the fact that the dual objective is nonpositive. See Appendix C for details.
+Can be proved using strong duality for convex quadratic programs and the fact that the dual objective is nonpositive. See Appendix C for details. Can also be proved much more simply using the complementary slackness conditions of the problem faced by the producer (in a fashion similar to the proof of the competitive equilibrium property above). 
 \end{proof}
 
 \begin{proposition}
