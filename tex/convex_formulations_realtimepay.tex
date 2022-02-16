@@ -26,13 +26,13 @@ We analyse the properties of a chance-constrained stochastic market for energy a
 
 We consider four types of agents, namely flexible electricity generators, stochastic wind power producers, inflexible electricity consumers and a market operator, which we describe further below.
 
-\textit{Wind Producers}: We consider a set of stochastic wind farms. Although a forecast $\tilde{W} \in \mathbb{R}_+$ is available for the aggregate production from wind farms, the actual aggregate output $\mathbf{p}_w(\boldsymbol{\omega}) \in \mathbb{R}_+$ may deviate from $\tilde{W}$ by some amount given by random variable $\boldsymbol{\omega} \in \Omega \subseteq \mathbb{R}$, such that $\mathbf{p}_w(\boldsymbol{\omega}) = \tilde{W} + \boldsymbol{\omega}$. Note that we use bold symbols to denote random variables. The first and second-order moments (i.e., the mean and variance) of the distribution of the forecast error $\boldsymbol{\omega}$ are denoted by $\mathbb{E}[\boldsymbol{\omega}] = \mu$ and $\mbox{Var}[\boldsymbol{\omega}] = \sigma^2$, respectively. All agents are assumed to have access to the same amount of information about $\mathbf{p}(\boldsymbol{\omega})$. Wind producers are assumed to have zero marginal cost and be paid for their forecast production.
+\textit{Wind Producers}: We consider a set of stochastic wind farms. Although a forecast $\tilde{W} \in \mathbb{R}_+$ is available for the aggregate production from wind farms, the actual aggregate output $\mathbf{p}_w(\boldsymbol{\omega}) \in \mathbb{R}_+$ may deviate from $\tilde{W}$ by some amount given by random variable $\boldsymbol{\omega} \in \Omega \subseteq \mathbb{R}$, such that $\mathbf{p}_w(\boldsymbol{\omega}) = \tilde{W} + \boldsymbol{\omega}$. Note that we use bold symbols to denote random variables. The first and second-order moments (i.e., the mean and variance) of the distribution of the forecast error $\boldsymbol{\omega}$ are denoted by $\mathbb{E}[\boldsymbol{\omega}] = \mu$ and $\mbox{Var}[\boldsymbol{\omega}] = \sigma^2$, respectively. All agents are assumed to have access to the same amount of information about $\mathbf{p}(\boldsymbol{\omega})$. Wind producers are assumed to have zero marginal cost.
 
-\textit{Flexible Generators}: We consider $K \in \mathbb{N}$ dispatchable generators. Each generator may produce electricity and contribute to the provision of reserves in the system. Hence, the actual power output $\mathbf{p}_k(\boldsymbol{\omega})$ is given by an affine control law. For generator $k$, this law can be expressed as $\mathbf{p}_k(\boldsymbol{\omega}) = p_k - \alpha_k \boldsymbol{\omega}$, where $p_k$ denotes the scheduled power output and $\alpha_k$ is the share of the forecast error covered by generator $k$ through the reserve mechanism. It is assumed that generators are paid for their scheduled production $p_k$ (not their real-time production $\mathbf{p}_k(\boldsymbol{\omega})$) in the energy market and their contribution $\alpha_k$ to reserve procurement. Since the actual power output of generators directly depends on the uncertain wind production and only becomes known when $\boldsymbol{\omega}$ is revealed, it must be ensured that power generation bounds are not exceeded. Chance (i.e., probabilistic) constraints can be used for this purpose, and $\epsilon_k$ denotes the tolerance for constraint violations (e.g., constraints may be violated $100 \times \epsilon_k \%$ of the time). Generator $k$ is assumed to have linear and quadratic marginal production cost components denoted by $c_k^L \in \mathbb{R}_+$ and $c_k^Q \in \mathbb{R}_+$, respectively.
+\textit{Flexible Generators}: We consider $K \in \mathbb{N}$ dispatchable generators. Each generator may produce electricity and contribute to the provision of reserves in the system. Hence, the actual power output $\mathbf{p}_k(\boldsymbol{\omega})$ is given by an affine control law. For generator $k$, this law can be expressed as $\mathbf{p}_k(\boldsymbol{\omega}) = p_k - \alpha_k \boldsymbol{\omega}$, where $p_k$ denotes the scheduled power output and $\alpha_k$ is the share of the forecast error covered by generator $k$ through the reserve mechanism. Since the actual power output of generators directly depends on the uncertain wind production and only becomes known when $\boldsymbol{\omega}$ is revealed, it must be ensured that power generation bounds are not exceeded. Chance (i.e., probabilistic) constraints can be used for this purpose, and $\epsilon_k$ denotes the tolerance for constraint violations (e.g., constraints may be violated $100 \times \epsilon_k \%$ of the time). Generator $k$ is assumed to have linear and quadratic marginal production cost components denoted by $c_k^L \in \mathbb{R}_+$ and $c_k^Q \in \mathbb{R}_+$, respectively.
 
 \textit{Inflexible Consumers}: We consider a set of consumers with aggregate demand $D \in \mathbb{R}_+$, which is assumed inelastic and known with certainty.
 
-\textit{Market Operator}: In an equilibrium problem, a market operator (also known as a \textit{social planner}) can be interpreted as an auctioneer seeking to identify prices for energy and reserves so that the markets for energy and reserves clear (akin to a Walras auctioneer \cite{Uzawa1960}). 
+\textit{Market Operator}: A market operator (also known as a \textit{social planner}) seeks to identify prices for energy and reserves so that the markets for energy and reserves clear. \textcolor{orange}{clarify its role/interpretation in the equilibrium problem formulation; allocate energy production and reserve procurement across generators such that 1) the market clears and 2) the prices and decisions maximise the profits of generators}. 
 
 \section{Equilibrium Problem Formulation}
 
@@ -44,10 +44,10 @@ We start by describing the stochastic optimisation problems faced by flexible ge
 
 \subsubsection{Stochastic Formulation}
 
-We consider risk-neutral flexible generators (i.e., generators only care about the expected pay-off and not its variance). Thus, flexible generator $k$ seeks to maximise its expected profit subject to chance constraints on its power output:
+We consider risk-neutral flexible generators (i.e., \textcolor{orange}{generators only care about the expected pay-off and not its distribution around the mean}). Thus, flexible generator $k$ seeks to maximise its expected profit subject to chance constraints on its power output:
 
 \begin{align}
-\underset{p_k, \alpha_k}{\max} \hspace{10pt} & \mathbb{E}[\lambda p_k + \chi \alpha_k - c_k^L \mathbf{p}_k(\boldsymbol{\omega}) - c_k^Q (\mathbf{p}_k(\boldsymbol{\omega}))^2]\\
+\underset{p_k, \alpha_k}{\max} \hspace{10pt} & \mathbb{E}[\lambda \mathbf{p}_k(\boldsymbol{\omega}) + \chi \alpha_k - c_k^L \mathbf{p}_k(\boldsymbol{\omega}) - c_k^Q (\mathbf{p}_k(\boldsymbol{\omega}))^2]\\
 \mbox{s.t. } & \mathbb{P}[\mathbf{p}_k(\boldsymbol{\omega}) \le \overline{p}_k] \ge 1 - \epsilon_k,\\
 & \mathbb{P}[0 \le \mathbf{p}_k(\boldsymbol{\omega})] \ge 1 - \epsilon_k,\\
 &p_k \in \mathbb{R}, 0 \le \alpha_k \le 1.
@@ -59,12 +59,13 @@ The stochastic expected profit maximisation problem faced by producer $k$ can be
 
 First, by linearity of the expectation operator, the expected profit can be successively re-written as
 \begin{align*}
-\Pi_k(p_k, \alpha_k) &= \mathbb{E}[\lambda p_k + \chi \alpha_k - c_k^L \mathbf{p}_k(\boldsymbol{\omega}) - c_k^Q (\mathbf{p}_k(\boldsymbol{\omega}))^2]\\
-&= \mathbb{E}[\lambda p_k] + \mathbb{E}[\chi \alpha_k] - \mathbb{E}[c_k^L \mathbf{p}_k(\boldsymbol{\omega})] - \mathbb{E}[c_k^Q (\mathbf{p}_k(\boldsymbol{\omega}))^2].
+\Pi_k(p_k, \alpha_k) &= \mathbb{E}[\lambda \mathbf{p}_k(\boldsymbol{\omega}) + \chi \alpha_k - c_k^L \mathbf{p}_k(\boldsymbol{\omega}) - c_k^Q (\mathbf{p}_k(\boldsymbol{\omega}))^2]\\
+&= \mathbb{E}[\lambda \mathbf{p}_k(\boldsymbol{\omega})] + \mathbb{E}[\chi \alpha_k] - \mathbb{E}[c_k^L \mathbf{p}_k(\boldsymbol{\omega})] - \mathbb{E}[c_k^Q (\mathbf{p}_k(\boldsymbol{\omega}))^2].
 \end{align*}
 We focus on each term separately and obtain
 \begin{align*}
-\mathbb{E}[\lambda p_k] &= \lambda p_k,\\
+\mathbb{E}[\lambda \mathbf{p}_k(\boldsymbol{\omega})] &= \mathbb{E}[\lambda (p_k - \alpha_k \boldsymbol{\omega})]\\
+& = \lambda (p_k - \alpha_k \mu),\\
 \mathbb{E}[\chi \alpha_k] &= \chi \alpha_k,\\
 \mathbb{E}[c_k^L \mathbf{p}_k(\boldsymbol{\omega})] &= \mathbb{E}[c_k (p_k - \alpha_k \boldsymbol{\omega})]\\
 &= c_k^L(p_k - \alpha_k \mu),\\
@@ -77,9 +78,9 @@ We focus on each term separately and obtain
 \end{align*}
 Thus, the expected profit of producer $k$ becomes
 \begin{equation*}
-\Pi_k(p_k, \alpha_k) = \lambda p_k + \chi \alpha_k - c_k^L(p_k - \alpha_k \mu) - c_k^Q \big((p_k - \alpha_k \mu)^2 + \alpha_k^2 \sigma^2\big).
+\Pi_k(p_k, \alpha_k) = \lambda (p_k - \alpha_k \mu) + \chi \alpha_k - c_k^L(p_k - \alpha_k \mu) - c_k^Q \big((p_k - \alpha_k \mu)^2 + \alpha_k^2 \sigma^2\big).
 \end{equation*}
-The first term represents the expected revenue accruing from the sale of electricity. The second term is the expected revenue from reserve procurement. The third term represents the expected linear cost component. The last term represents the expected quadratic cost component. Note that the quadratic cost component depends both on the expected production level and the variance of the forecast error.
+The first term represents the expected revenue accruing from the sale of electricity. Note that this revenue is computed based on the expected production level and factors in reserve procurement decisions. The second term is the expected revenue from reserve services. The third term represents the expected linear cost component. The last term represents the expected quadratic cost component. Note that the quadratic cost component depends both on the expected production level and the variance of the forecast error.
 
 Then, the chance constraints imposed on generation bounds should also be re-formulated to obtain a tractable (hopefully convex) mathematical program. Depending on the underlying forecast error distribution, chance constraints may be recast as convex constraints involving moments of said distribution. In particular, one-sided chance constraints involving a scalar random variable following a Gaussian distribution or approximations of distributionally-robust chance constraints may lead to simple linear inequality constraints \cite{Dvorkin2020}. In other settings, distributionally-robust chance constraints may be recast as second-order cone constraints \cite{Xie2018}. For simplicity, we assume that $\boldsymbol{\omega} \sim \mathcal{N}(\mu, \sigma^2)$. The derivation then goes as follows:
 \begin{align*}
@@ -97,7 +98,7 @@ where $\Phi^{-1}: (0, 1) \rightarrow \mathbb{R}$ is the quantile function of the
 \end{align*}
 Thus, the deterministic equivalent of the stochastic profit-maximisation problem of producer $k$ reads
 \begin{align}
-\underset{p_k, \alpha_k}{\max} \hspace{10pt} & \lambda p_k + \chi \alpha_k - c_k^L(p_k - \alpha_k \mu) - c_k^Q \big((p_k - \alpha_k \mu)^2 + \alpha_k^2 \sigma^2\big)\\
+\underset{p_k, \alpha_k}{\max} \hspace{10pt} & \lambda (p_k - \alpha_k \mu) + \chi \alpha_k - c_k^L(p_k - \alpha_k \mu) - c_k^Q \big((p_k - \alpha_k \mu)^2 + \alpha_k^2 \sigma^2\big)\\
 \mbox{s.t. } & p_k \le \overline{p}_k - \alpha_k \phi_k, \hspace{25pt} (\overline{\nu}_k)\\
 & \alpha_k \phi_k \le p_k, \hspace{48pt}(\underline{\nu}_k)\\
 &p_k \in \mathbb{R}, 0 \le \alpha_k \le 1,
@@ -120,10 +121,10 @@ Simply substituting the affine control law of flexible generators yields
 & \sum_k p_k + \tilde{W} = D, \hspace{10pt} (\lambda)\\
 & \sum_k \alpha_k = 1, \hspace{35pt} (\chi)
 \end{align}
-where electricity and reserve prices are obtained as the dual variables of the power balance and reserve allocation constraints.
+\textcolor{orange}{where electricity and reserve prices are obtained as the dual variables of the power balance and reserve allocation constraints.}
 \subsection{Wind Producers}
 
-Wind producers are price takers and do not control their output (i.e., no spillage is allowed), and therefore do not solve any optimisation problem \textit{per se}. It is assumed that wind producers are paid for their forecast production, and their expected revenue can thus be computed as $R = \mathbb{E}[\lambda \tilde{W}] = \lambda \tilde{W}$.
+Wind producers are price takers and do not control their output (i.e., no spillage is allowed), and therefore do not solve any optimisation problem \textit{per se}. Their expected revenue can be computed as $R = \mathbb{E}[\lambda \mathbf{p}_w(\boldsymbol{\omega})] = \lambda(\tilde{W} + \mu)$.
 
 \subsection{Electricity Consumers}
 
@@ -162,7 +163,7 @@ where the dual variables of the energy balance and reserve allocation constraint
 We analyse four key properties of the proposed stochastic market design, namely whether it supports a \textit{competitive equilibrium}, guarantees \textit{cost recovery} for flexible generators, \textit{revenue adequacy} for the market operator, and is \textit{incentive compatible}.
 
 \begin{definition}
-(Competitive Equilibrium) A competitive equilibrium for the stochastic market is a set prices $\{\lambda^*, \chi^*\}$ and decisions $\{p_k^*, \alpha_k^*\}_{\forall k}$ that\vspace{-5pt}
+(Competitive Equilibrium) A competitive equilibrium for the stochastic market is a set prices $\{\lambda^*, \chi^*\}$ and decisons $\{p_k^*, \alpha_k^*\}_{\forall k}$ that\vspace{-5pt}
 \begin{enumerate}
 \item clear the market: $\sum_k p_k^* + \tilde{W} = D$ and $\sum_k \alpha_k^* = 1$\vspace{-5pt}
 \item maximise the profit of flexible generators
@@ -177,26 +178,26 @@ The proof showing that decisions $\{p_k^*, \alpha_k^*\}$ and prices $\{\lambda^*
 
 \textit{First Step:} Let $V_k^*$ denote the value of the objective of producer $k$ under said market prices and decisions
 \begin{align*}
-    V_k^* =& \lambda^*p_k^* + \alpha_k^*\chi^* - c_k^L(p_k^* - \alpha_k^* \mu) - c_k^Q\big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2\sigma^2\big) \\
-    =& \lambda^*p_k^* + \alpha_k^*\chi^* - c_k^L(p_k^* - \alpha_k^* \mu) - c_k^Q\big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2\sigma^2\big)\\
+    V_k^* =& \lambda^*(p_k^* - \alpha_k^* \mu) + \alpha_k^*\chi^* - c_k^L(p_k^* - \alpha_k^* \mu) - c_k^Q\big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2\sigma^2\big) \\
+    =& \lambda^*(p_k^* - \alpha_k^* \mu) + \alpha_k^*\chi^* - c_k^L(p_k^* - \alpha_k^* \mu) - c_k^Q\big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2\sigma^2\big)\\
     & + \underline{\nu}_k^* (p_k^* - \alpha_k^* \phi_k) + \overline{\nu}_k^*(-p_k^* - \alpha_k^* \phi_k + \bar{p}_k)\\
     =& p_k^*\big(\lambda^* - c_k^L + \underline{\nu}_k^* - \overline{\nu}_k^*\big) - c_k^Q(p_k^* - \alpha_k^* \mu)^2 + \overline{\nu}_k^* \overline{p}_k\\
-    &+ \alpha_k^*\big(\chi^* + c_k^L \mu - \underline{\nu}_k^* \phi_k - \overline{\nu}_k^* \phi_k\big) - c_k^Q (\alpha_k^*)^2 \sigma^2 \\
+    &+ \alpha_k^*\big(\chi^* - \mu \lambda^* + c_k^L \mu - \underline{\nu}_k^* \phi_k - \overline{\nu}_k^* \phi_k\big) - c_k^Q (\alpha_k^*)^2 \sigma^2 \\
     =& p_k^*\big(2c_k^Q(p_k^* - \alpha_k^* \mu)\big) - c_k^Q(p_k^* - \alpha_k^* \mu)^2 + \overline{\nu}_k^* \overline{p}_k\\ 
     &+ \alpha_k^*\big(2c_k^Q(\alpha_k^*(\mu^2+\sigma^2) - p_k^* \mu)\big) - c_k^Q (\alpha_k^*)^2 \sigma^2\\
     &= 2c_k^Q(p_k^* - \alpha_k^* \mu)^2 + 2c_k^Q (\alpha_k^*)^2 \sigma^2 + \overline{\nu}_k^* \overline{p}_k - c_k^Q(p_k^* - \alpha_k^* \mu)^2 - c_k^Q (\alpha_k^*)^2 \sigma^2\\
     &= c_k^Q(p_k^* - \alpha_k^* \mu)^2 + c_k^Q (\alpha_k^*)^2 \sigma^2 + \overline{\nu}_k^* \overline{p}_k\\
     &\ge 0
 \end{align*}
-The second line results from the fact that the two new terms added to the objective are equal to zero (complementary slackness). The third line is obtained by re-arranging terms. The fourth line follows from the stationarity of the Lagrangian with respect to $p_k$ and $\alpha_k$, respectively (see KKT conditions in Appendix A). The fifth and sixth lines follow from re-arranging and cancelling terms out. The last line follows from the fact that the first two terms are non-negative (quadratic terms with positive coefficient), and the third term is non-negative too, since $\overline{\nu}_k^* \ge 0$ (dual feasibility) and $\overline{p}_k > 0$ (by assumption). Note that this result also amounts to proving that the cost recovery property holds in expectation (since the expected revenue earned by producer $k$ is greater than or equal to the expected costs she incurs).
+The second line results from the fact that the two new terms added to the objective are equal to zero (complementary slackness). The third line is obtained by re-arranging terms. The fourth line follows from the stationarity of the Lagrangian with respect to $p_k$ and $\alpha_k$, respectively (see KKT conditions in Appendix A). The fifth and sixth lines follow from re-arranging and cancelling terms out. The last line follows from the fact that the first two terms are nonnegative (quadratic terms with positive coefficient), and the third term is nonnegative too, since $\overline{\nu}_k^* \ge 0$ (dual feasibility) and $\overline{p}_k > 0$ (by assumption). Note that this result also amounts to proving that the cost recovery property holds in expectation (since the expected revenue earned by producer $k$ is greater than or equal to the expected costs she incurs).
 
 \textit{Second Step:} Now, let $\{p_k^\star, \alpha_k^\star\}$ denote the solution of the problem faced by producer $k$ under prices $\{\lambda^*, \chi^*\}$, and let $V_k^\star$ denote the corresponding objective. We essentially seek to show that $V_k^\star \le V_k^*$. One successively finds
 \begin{align*}
-    V_k^\star =& \lambda^*p_k^\star + \chi^* \alpha_k^\star - c_k^L(p_k^\star - \alpha_k^\star \mu) - c_k^Q\big((p_k^\star - \alpha_k^\star \mu)^2 + (\alpha_k^\star)^2\sigma^2\big)\\
-    \le& \lambda^*p_k^\star + \chi^* \alpha_k^\star - c_k^L(p_k^\star - \alpha_k^\star \mu) - c_k^Q\big((p_k^\star - \alpha_k^\star \mu)^2 + (\alpha_k^\star)^2\sigma^2\big)\\
+    V_k^\star =& \lambda^*(p_k^\star - \alpha_k^\star \mu) + \chi^* \alpha_k^\star - c_k^L(p_k^\star - \alpha_k^\star \mu) - c_k^Q\big((p_k^\star - \alpha_k^\star \mu)^2 + (\alpha_k^\star)^2\sigma^2\big)\\
+    \le& \lambda^*(p_k^\star - \alpha_k^\star \mu) + \chi^* \alpha_k^\star - c_k^L(p_k^\star - \alpha_k^\star \mu) - c_k^Q\big((p_k^\star - \alpha_k^\star \mu)^2 + (\alpha_k^\star)^2\sigma^2\big)\\
     &+ \underline{\nu}_k^* (p_k^\star - \alpha_k^\star \phi_k) + \overline{\nu}_k^*(-p_k^\star - \alpha_k^\star \phi_k + \bar{p}_k)\\
     =& p_k^\star\big(\lambda^* - c_k^L + \underline{\nu}_k^* - \overline{\nu}_k^*\big) - c_k^Q(p_k^\star - \alpha_k^\star \mu)^2 + \overline{\nu}_k^* \overline{p}_k\\
-    &+ \alpha_k^\star\big(\chi^* + c_k^L \mu - \underline{\nu}_k^* \phi_k - \overline{\nu}_k^* \phi_k\big) - c_k^Q (\alpha_k^\star)^2 \sigma^2 \\
+    &+ \alpha_k^\star\big(\chi^* \textcolor{red}{- \mu \lambda^*} + c_k^L \mu - \underline{\nu}_k^* \phi_k - \overline{\nu}_k^* \phi_k\big) - c_k^Q (\alpha_k^\star)^2 \sigma^2 \\
    =& p_k^\star\big(2c_k^Q(p_k^* - \alpha_k^* \mu)\big) - c_k^Q(p_k^\star - \alpha_k^\star \mu)^2 + \overline{\nu}_k^* \overline{p}_k\\ 
     &+ \alpha_k^\star\big(2c_k^Q(\alpha_k^*(\mu^2+\sigma^2) - p_k^* \mu)\big) - c_k^Q (\alpha_k^\star)^2 \sigma^2,
 \end{align*}
@@ -222,56 +223,65 @@ from which it is clear that setting $(x, y) = (p_k^*, \alpha_k^*)$ cancels both 
 \begin{equation*}
 H(x,y) = \begin{pmatrix} \frac{\partial^2 f}{\partial x^2} & \frac{\partial^2 f}{\partial x \partial y} \\ \frac{\partial^2 f}{\partial y \partial x} & \frac{\partial^2 f}{\partial y^2} \end{pmatrix} = 2c_k^Q \begin{pmatrix} -1 & \mu \\ \mu & -\mu^2 - \sigma^2 \end{pmatrix}.
 \end{equation*}
-We note that the first entry on the diagonal is negative. In addition, we have that $\mbox{det}|H(p_k^*, \alpha_k^*)| = 2 c_k^Q \sigma^2 > 0$ (unless $\sigma = 0$), which in turn implies that the Hessian is negative definite. This result has two further implications. First, by virtue of the second-derivative test, $(x, y) = (p_k^*, \alpha_k^*)$ is a local maximum of $f$. Second, since the Hessian is negative definite and independent of $(x, y)$, $f$ is concave and $(x, y) = (p_k^*, \alpha_k^*)$ is a global maximum. In other words, $f(x, y) \le f(p_k^*, \alpha_k^*), \forall (x, y),$ and thus $ f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*)$. It then follows that
+We note that the first entry on the diagonal is negative. In addition, we have that $\mbox{det}|H(p_k^*, \alpha_k^*)| = 2 c_k^Q \sigma^2 > 0$ (unless $\sigma = 0$), which in turn implies that the Hessian is negative definite. This result has two further implications. First, by virtue of the second-derivative test, $(x, y) = (p_k^*, \alpha_k^*)$ is a local maximum of $f$. Second, since the Hessian is negative definite and independent of $(x, y)$, $f$ is concave and $(x, y) = (p_k^*, \alpha_k^*)$ is a global maximum. In other words, $f(p_k^*, \alpha_k^*) \ge f(x, y), \forall (x, y),$ and thus $f(p_k^*, \alpha_k^*) \ge f(p_k^\star, \alpha_k^\star)$. It then follows that
 \begin{equation*}
 V_k^\star \le f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*) = V_k^*.
 \end{equation*}
-Since this applies to any arbitrary producer $k$, $V_k^\star \le V_k^*, \forall k$. Prices and decisions identified by the market operator therefore maximise the profit of each producer, resulting in a competitive equilibrium.
+Since this applies to any arbitrary producer $k$, $V_k^\star \le V_k^*, \forall k$. In other words, market prices and decisions identified by the market operator maximise the profit of each producer, resulting in a competitive equilibrium.
 \end{proof}
 
 \begin{proposition}
-(\textcolor{green}{Cost Recovery}) The stochastic market clearing problem produces prices and decisions that guarantee a non-negative pay-off for flexible generators.
+(\textcolor{green}{Cost Recovery}) The stochastic market clearing problem produces prices and decisions that guarantee a nonnegative pay-off for flexible generators.
 \end{proposition}
 \begin{proof}
-Can be proved using strong duality for convex quadratic programs and the fact that the dual objective is non-positive. See Appendix C for details. Can also be proved much more simply using the complementary slackness conditions of the problem faced by the producer (in a fashion similar to the proof of the competitive equilibrium property above). 
+Can be proved using strong duality for convex quadratic programs and the fact that the dual objective is nonpositive. See Appendix C for details. Can also be proved much more simply using the complementary slackness conditions of the problem faced by the producer (in a fashion similar to the proof of the competitive equilibrium property above). 
 \end{proof}
 
 \begin{proposition}
-(\textcolor{red}{Revenue Adequacy}) The stochastic market clearing problem does not produce prices and decisions guaranteeing that the market operator does not incur any financial loss.
+(\textcolor{red}{Revenue Adequacy}) The stochastic market clearing problem \textcolor{red}{does not} produce prices and decisions guaranteeing that the market operator does not incur any financial loss.
 \end{proposition}
 \begin{proof}
-Let $\{\lambda^*, \chi^*\}$ and $\{\{p_k^*\}_{\forall k}, \{\alpha_k^*\}_{\forall k}\}$ denote prices and decisions calculated by the market operator. Consumers only pay the market operator for the electricity consumed, while producers receive payments covering energy and reserves. More precisely, under the assumption that wind producers are paid for their forecast production $\tilde{W}$, while flexible generators are paid for their scheduled production $p_k^*$ and contribution to reserve procurement $\alpha_k^*$, respectively, the surplus collected by the market operator is as follows,
+Let $\{\lambda^*, \chi^*\}$ and $\{\{p_k^*\}_{\forall k}, \{\alpha_k^*\}_{\forall k}\}$ denote prices and decisions calculated by the market operator. Consumers only pay the market operator for the electricity consumed, while producers receive payments covering energy and reserves. Hence, \textcolor{red}{under the assumption that wind producers and flexible generators get paid for their real-time in-feed}, the surplus collected by the market operator can be expressed as follows
+\begin{align*}
+\boldsymbol{\Delta}^* &= \lambda^*D - \lambda^*\mathbf{p}_w(\boldsymbol{\omega}) - \sum_k \lambda^*\mathbf{p}_k(\boldsymbol{\omega}) - \sum_k \alpha_k^* \chi^*\\
+&= \lambda^*D - \lambda^*(\tilde{W} + \boldsymbol{\omega}) - \sum_k \lambda^*(p_k^* - \alpha_k^* \boldsymbol{\omega}) - \sum_k \alpha_k^* \chi^*\\
+&= \lambda^*\big(D - \tilde{W} - \boldsymbol{\omega} - \sum_k (p_k^* - \alpha_k^* \boldsymbol{\omega})\big) - \chi^* \sum_k \alpha_k^*\\
+&= -\chi^*,
+\end{align*}
+where the fourth equality stems from the fact that the market clears (power balance and reserve procurement constraints are enforced in the primal problem solved by the market operator) for any realisation of $\boldsymbol{\omega}$. Since $\chi^* \in \mathbb{R}$, \textcolor{red}{it may happen that $\boldsymbol{\Delta}^* < 0$}, which implies that the market operator may incur a financial deficit.
+\textcolor{red}{On the other hand, if wind producers and flexible generators only got paid for their forecast and scheduled production, respectively, the surplus collected by the market operator would be:}
 \begin{align*}
 \Delta^* &= \lambda^*D - \lambda^*\tilde{W} - \sum_k \lambda^*p_k^* - \sum_k \alpha_k^* \chi^*\\
 &= \lambda^*\big(D - \tilde{W} - \sum_k p_k^*\big) - \chi^* \sum_k \alpha_k^*\\
-&= -\chi^*,
+&= -\chi^*.
 \end{align*}
-where the third line follows the fact that the markets for energy and reserves clear (primal feasibility of market clearing problem). Note that this result holds for any forecast error realisation.
+Note that this result holds for any forecast error realisation.
 \end{proof}
 
 \begin{proposition}
-(\textcolor{red}{Incentive Compatibility}) The stochastic market clearing problem does not produce prices and decisions guaranteeing that each flexible generator maximises its profit by bidding truthfully.
+(\textcolor{red}{Incentive Compatibility}) The stochastic market clearing problem \textcolor{red}{does not produce} prices and decisions guaranteeing that each flexible generator maximises its profit by bidding truthfully.
 \end{proposition}
 \begin{proof}
 By contradiction. Assume that incentive compatibility holds and see counter-example implemented in Julia \cite{SMER2022}, where a producer operating in an electricity market with a finite number of producers can increase its profit by bidding untruthfully.
 \end{proof}
 
-Market properties are also discussed in \cite{Ratha2019} in a similar set-up. The proofs of incentive compatibility and revenue adequacy seem weird, however. The proof of cost recovery looks weird too (specifically the fact that the dual problem is a linear program, in spite of the fact that the primal problem is a quadratic program). 
+Market properties are also discussed in \cite{Ratha2019} in a similar set-up. The proofs of incentive compatibility and revenue adequacy seem weird, however.
 
 \section{Comments}
 
 \begin{itemize} 
-\item It was assumed that flexible generators get paid for the scheduled production $p_k$ in the current document. Interestingly, if they get paid for the (expected) real-time production $\mathbb{E}[\mathbf{p}_k(\boldsymbol{\omega})] = p_k - \alpha_k \mu$, the complementarity problems associated with the equilibrium problem and the market clearing problem are different (an additional term  appears in the $\alpha_k$ stationarity condition of producer $k$)
-\item Likewise, it was assumed that wind producers get paid for the forecast production $\tilde{W}$, but assuming that they get paid for the expected production $\mathbb{E}[\mathbf{p}_w(\boldsymbol{\omega})] = \tilde{W} + \mu$ could have an impact on strategic behaviour.
+\item The profit accrued to producer $k$ is nonpositive (or equal to 0). How should this be interpreted?
+\item Do flexible generators get paid for the scheduled production $p_k$ or the expected real-time production $\mathbb{E}[\mathbf{p}_k(\boldsymbol{\omega})] = p_k - \alpha_k \mu$? The complementarity problems associated with the equilibrium problem and the market clearing problem would be identical if the former held true, but they would otherwise be different (the problematic term in the $\alpha_k$ stationarity condition of producer $k$ is highlighted in red)
+\item Likewise, do wind producers get paid for the forecast production $\tilde{W}$ or the expected production $\mathbb{E}[\mathbf{p}_w(\boldsymbol{\omega})] = \tilde{W} + \mu$?
 \end{itemize}
 
 \section*{Appendix A}
-This section derives complementary problems based on the KKT conditions of the deterministic equivalent of the equilibrium and market problems and shows that they are identical (hence the equivalence between solutions of the two problems.
+This section derives complementary problems based on the KKT conditions of the deterministic equivalent of the equilibrium and market problems and \textcolor{red}{shows that they are identical (hence the equivalence between solutions of the two problems}.
 
 \subsection*{Equilibrium Problem}
 To ease the writing of KKT conditions, the problem faced by producer $k$ is first re-written as a minimisation problem,
 \begin{align}
--\underset{p_k, \alpha_k}{\min} \hspace{10pt} & c_k^L(p_k - \alpha_k \mu) + c_k^Q \big((p_k - \alpha_k \mu)^2 + \alpha_k^2 \sigma^2\big) - \lambda p_k - \chi \alpha_k\\
+-\underset{p_k, \alpha_k}{\min} \hspace{10pt} & c_k^L(p_k - \alpha_k \mu) + c_k^Q \big((p_k - \alpha_k \mu)^2 + \alpha_k^2 \sigma^2\big) - \lambda (p_k - \alpha_k \mu) - \chi \alpha_k\\
 \mbox{s.t. } & p_k \le \overline{p}_k - \alpha_k \phi_k, \hspace{25pt} (\overline{\nu}_k)\\
 & \alpha_k \phi_k \le p_k, \hspace{48pt}(\underline{\nu}_k)\\
 &p_k \in \mathbb{R}, 0 \le \alpha_k \le 1.
@@ -279,13 +289,13 @@ To ease the writing of KKT conditions, the problem faced by producer $k$ is firs
 Then, the Lagrangian function of producer $k$ can be expressed as
 \begin{align*}
 \mathcal{L}_k(p_k, \alpha_k, \lambda, \chi, \underline{\nu}_k, \overline{\nu}_k) =& c_k^L(p_k - \alpha_k \mu) + c_k^Q \big((p_k - \alpha_k \mu)^2 + \alpha_k^2 \sigma^2\big)\\
-&- \lambda p_k - \chi \alpha_k + \underline{\nu}_k(\alpha_k \phi_k - p_k)\\
+&- \lambda (p_k - \alpha_k \mu) - \chi \alpha_k + \underline{\nu}_k(\alpha_k \phi_k - p_k)\\
 &+ \overline{\nu}_k (p_k - \overline{p}_k + \alpha_k \phi_k).
 \end{align*}
 The KKT conditions of the problem faced by producer $k$ now follow
 \begin{align*}
 &\frac{\partial \mathcal{L}_k}{\partial p_k} = c_k^L + 2 c_k^Q (p_k - \alpha_k \mu) - \lambda - \underline{\nu}_k + \overline{\nu}_k = 0,\\
-&\frac{\partial \mathcal{L}_k}{\partial \alpha_k} = - c_k^L \mu + 2 c_k^Q(\alpha_k(\mu^2 + \sigma^2) - p_k \mu) - \chi + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k = 0,\\
+&\frac{\partial \mathcal{L}_k}{\partial \alpha_k} = - c_k^L \mu + 2 c_k^Q(\alpha_k(\mu^2 + \sigma^2) - p_k \mu) \textcolor{red}{+ \lambda \mu} - \chi + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k = 0,\\
 &0 \le \underline{\nu}_k \perp p_k - \alpha_k \phi_k \ge 0,\\
 &0 \le \overline{\nu}_k \perp \overline{p}_k - \alpha_k \phi_k - p_k \ge 0,
 \end{align*}
@@ -305,7 +315,7 @@ denote the set of primal and dual variables, respectively. Let us form the Lagra
 The KKT conditions associated with the stochastic market clearing problem therefore read
 \begin{align*}
 &\frac{\partial \mathcal{L}}{\partial p_k} = c_k^L + 2 c_k^Q (p_k - \alpha_k \mu) - \underline{\nu}_k + \overline{\nu}_k - \lambda = 0, \forall k,\\
-&\frac{\partial \mathcal{L}}{\partial \alpha_k} = - c_k^L \mu + 2 c_k^Q(\alpha_k(\mu^2 + \sigma^2) - p_k \mu) + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k  - \chi = 0, \forall k,\\
+&\frac{\partial \mathcal{L}}{\partial \alpha_k} = - c_k^L \mu + 2 c_k^Q(\alpha_k(\mu^2 + \sigma^2) - p_k \mu) + \underline{\nu}_k, \phi_k + \overline{\nu}_k \phi_k  - \chi = 0, \forall k,\\
 &\sum_k p_k + \tilde{W} = D,\\
 &\sum_k \alpha_k = 1,\\
 &0 \le \underline{\nu}_k \perp p_k - \alpha_k \phi_k \ge 0, \forall k,\\
@@ -369,9 +379,9 @@ We first re-write the problem faced by producer $k$ in the standard QP form intr
 \end{align*}
 where
 \begin{equation*}
-x = \begin{pmatrix} p_k \\ \alpha_k \end{pmatrix}, c = \begin{pmatrix} c_k^L - \lambda \\ -c_k^L \mu - \chi \end{pmatrix}, A = \begin{pmatrix} 1 & \phi_k \\ -1 & \phi_k \end{pmatrix}, b = \begin{pmatrix} \overline{p}_k\\0\end{pmatrix}, \pi = \begin{pmatrix} -\overline{\nu}_k \\ -\underline{\nu}_k \end{pmatrix}.
+x = \begin{pmatrix} p_k \\ \alpha_k \end{pmatrix}, c = \begin{pmatrix} c_k^L - \lambda \\ -c_k^L \mu - \lambda \mu - \chi \end{pmatrix}, A = \begin{pmatrix} 1 & \phi_k \\ -1 & \phi_k \end{pmatrix}, b = \begin{pmatrix} \overline{p}_k\\0\end{pmatrix}, \pi = \begin{pmatrix} -\overline{\nu}_k \\ -\underline{\nu}_k \end{pmatrix}.
 \end{equation*}
-Note that the entries of $\pi$ must be non-positive (following the convention used in Appendix B), and a minus sign must therefore be added in front of $\overline{\nu}_k$ and $\underline{\nu}_k$. The Hessian of the objective and its inverse read
+Note that the entries of $\pi$ must be nonpositive (following the convention used in Appendix B), and a minus sign must therefore be added in front of $\overline{\nu}_k$ and $\underline{\nu}_k$. The Hessian of the objective and its inverse read
 \begin{equation*}
 Q = 2 c_k^Q  \begin{pmatrix} 1 & -\mu \\ -\mu & \mu^2 + \sigma^2 \end{pmatrix} \mbox{ and } Q^{-1} = \frac{1}{2 c_k^Q \sigma^2} \begin{pmatrix} \mu^2 + \sigma^2 & \mu \\ \mu & 1 \end{pmatrix},
 \end{equation*}
@@ -384,25 +394,46 @@ are both positive (unless $\sigma = 0$). It also follows that $Q^{-1}$ is positi
 \underset{\pi}{\max} \hspace{10pt} & -\frac{1}{2}(A^\top \pi -c)^\top Q^{-1} (A^\top \pi -c) + \pi^\top b\\
 \mbox{s.t. } & \pi \le 0.
 \end{align*}
-Note that the first term in the dual objective is non-positive, since $Q^{-1}$ is positive definite. In addition,
+Note that the first term in the dual objective is nonpositive, since $Q^{-1}$ is positive definite. In addition,
 \begin{equation*}
 \pi^\top b = \begin{pmatrix}-\overline{\nu}_k & -\underline{\nu}_k \end{pmatrix}\begin{pmatrix} \overline{p}_k\\0\end{pmatrix} = -\overline{\nu}_k \overline{p}_k \le 0,
 \end{equation*}
-as $\overline{\nu}_k \ge 0$ for any dual feasible solution and it is assumed that $\overline{p}_k > 0$. The optimal dual objective is therefore non-positive. Then, strong duality for convex quadratic programs \cite{Dorn1960} implies that the primal and dual objectives are equal at optimality. Let $(p_k^*, \alpha_k^*)$ be an optimal primal solution. It follows that
+as $\overline{\nu}_k \ge 0$ for any dual feasible solution and it is assumed that $\overline{p}_k > 0$. The optimal dual objective is therefore nonpositive. Then, strong duality for convex quadratic programs \cite{Dorn1960} implies that the primal and dual objectives are equal at optimality. Let $(p_k^*, \alpha_k^*)$ be an optimal primal solution. It follows that
 \begin{equation*}
-c_k^L(p_k^* - \alpha_k^* \mu) + c_k^Q \big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2 \sigma^2\big) - \lambda p_k^* - \chi \alpha_k^* \le 0,
+c_k^L(p_k^* - \alpha_k^* \mu) + c_k^Q \big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2 \sigma^2\big) - \lambda (p_k^* - \alpha_k^* \mu) - \chi \alpha_k^* \le 0,
 \end{equation*}
 which in turn implies that
 \begin{align*}
-\mathbb{E}[\lambda p_k^* + \chi \alpha_k^*] &= \lambda p_k^* + \chi \alpha_k^*\\
+\mathbb{E}[\lambda (p_k^* - \alpha_k^* \boldsymbol{\omega}) + \chi \alpha_k^*] &= \lambda (p_k^* - \alpha_k^* \mu) - \chi \alpha_k^*\\
 &\ge c_k^L(p_k^* - \alpha_k^* \mu) + c_k^Q \big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2 \sigma^2\big)\\ 
 &= \mathbb{E}[c_k^L(p_k^* - \alpha_k^* \boldsymbol{\omega}) + c_k^Q (p_k^* - \alpha_k^* \boldsymbol{\omega})^2],
 \end{align*}
 or, alternatively,
 \begin{equation*}
-\mathbb{E}[\lambda p_k^* + \chi \alpha_k^* - c_k^L(p_k^* - \alpha_k^* \boldsymbol{\omega}) - c_k^Q (p_k^* - \alpha_k^* \boldsymbol{\omega})^2] \ge 0.
+\mathbb{E}[\lambda (p_k^* - \alpha_k^* \boldsymbol{\omega}) + \chi \alpha_k^* - c_k^L(p_k^* - \alpha_k^* \boldsymbol{\omega}) - c_k^Q (p_k^* - \alpha_k^* \boldsymbol{\omega})^2] \ge 0.
 \end{equation*}
 In other words, the expected revenue of producer $k$ is greater than or equal to its expected cost. The cost recovery property is therefore satisfied in expectation.
+%We start from the stationarity conditions of producer $k$ derived above,
+%\begin{align*}
+%&\frac{\partial \mathcal{L}_k}{\partial p_k} = c_k^L + 2 c_k^Q (p_k - \alpha_k \mu) - \lambda - \underline{\nu}_k + \overline{\nu}_k = 0,\\
+%&\frac{\partial \mathcal{L}_k}{\partial \alpha_k} = - c_k^L \mu + 2 c_k^Q(\alpha_k(\mu^2 + \sigma^2) - p_k \mu) \textcolor{red}{+ \lambda \mu} - \chi + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k = 0,\\
+%\end{align*}
+%and derive expressions for $p_k$ and $\alpha_k$ in terms of $\underline{\nu}_k$ and $\overline{\nu}_k$. First, we get
+%\begin{equation*}
+%p_k = \frac{\lambda + \underline{\nu}_k - \overline{\nu}_k - c_k^L}{2 c_k^Q} + \alpha_k \mu,
+%\end{equation*}
+%and substituting in the second equation yields
+%\begin{align*}
+%&- c_k^L \mu + 2 c_k^Q\Big(\alpha_k(\mu^2 + \sigma^2) - \mu\big(\frac{\lambda + \underline{\nu}_k - \overline{\nu}_k - c_k^L}{2 c_k^Q} + \alpha_k \mu\big)\Big) \textcolor{red}{+ \lambda \mu} - \chi + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k = 0\\
+%\Leftrightarrow & 2 c_k^Q\alpha_k \sigma^2 - \mu \underline{\nu}_k + \mu \overline{\nu}_k - \chi + \underline{\nu}_k \phi_k + \overline{\nu}_k \phi_k = 0\\
+%\Leftrightarrow &\alpha_k = \frac{1}{2 c_k^Q \sigma^2}\big(\chi + \underline{\nu}_k(\mu - \phi_k) - \overline{\nu}_k (\mu + \phi_k)\big),
+%\end{align*}
+%from which an expression for $p_k$ can be obtained:
+%\begin{align*}
+%&p_k = \frac{\lambda + \underline{\nu}_k - \overline{\nu}_k - c_k^L}{2 c_k^Q} + \frac{\mu}{2 c_k^Q \sigma^2}\big(\chi + \underline{\nu}_k(\mu - \phi_k) - \overline{\nu}_k (\mu + \phi_k)\big)\\
+%\Leftrightarrow & p_k = \frac{1}{2 c_k^Q}\Big(\lambda - c_k^L + \frac{\mu \chi}{\sigma^2} + \frac{\sigma^2 + \mu(\mu - \phi_k)}{\sigma^2}\underline{\nu}_k - \frac{\sigma^2 + \mu(\mu + \phi_k)}{\sigma^2} \overline{\nu}_k\Big)
+%\end{align*}
+%We now compute
 
 \bibliographystyle{plain} % We choose the "plain" reference style
 \bibliography{references}
