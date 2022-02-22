@@ -165,7 +165,7 @@ We analyse four key properties of the proposed stochastic market design, namely 
 (Competitive Equilibrium) A competitive equilibrium for the stochastic market is a set of prices $\{\lambda^*, \chi^*\}$ and decisions $\{p_k^*, \alpha_k^*\}_{\forall k}$ that\vspace{-5pt}
 \begin{enumerate}
 \item clear the market: $\sum_k p_k^* + \tilde{W} = D$ and $\sum_k \alpha_k^* = 1$\vspace{-5pt}
-\item maximise the profit of flexible generators
+\item maximise the expected profit of flexible generators
 \end{enumerate}
 \end{definition}
 
@@ -184,9 +184,9 @@ The proof showing that decisions $\{p_k^*, \alpha_k^*\}$ and prices $\{\lambda^*
     &+ \alpha_k^*\big(\chi^* + c_k^L \mu - \underline{\nu}_k^* \phi_k - \overline{\nu}_k^* \phi_k\big) - c_k^Q (\alpha_k^*)^2 \sigma^2 \\
     =& p_k^*\big(2c_k^Q(p_k^* - \alpha_k^* \mu)\big) - c_k^Q(p_k^* - \alpha_k^* \mu)^2 + \overline{\nu}_k^* \overline{p}_k\\ 
     &+ \alpha_k^*\big(2c_k^Q(\alpha_k^*(\mu^2+\sigma^2) - p_k^* \mu)\big) - c_k^Q (\alpha_k^*)^2 \sigma^2\\
-    &= 2c_k^Q(p_k^* - \alpha_k^* \mu)^2 + 2c_k^Q (\alpha_k^*)^2 \sigma^2 + \overline{\nu}_k^* \overline{p}_k - c_k^Q(p_k^* - \alpha_k^* \mu)^2 - c_k^Q (\alpha_k^*)^2 \sigma^2\\
-    &= c_k^Q(p_k^* - \alpha_k^* \mu)^2 + c_k^Q (\alpha_k^*)^2 \sigma^2 + \overline{\nu}_k^* \overline{p}_k\\
-    &\ge 0
+    =& 2c_k^Q(p_k^* - \alpha_k^* \mu)^2 + 2c_k^Q (\alpha_k^*)^2 \sigma^2 + \overline{\nu}_k^* \overline{p}_k - c_k^Q(p_k^* - \alpha_k^* \mu)^2 - c_k^Q (\alpha_k^*)^2 \sigma^2\\
+    =& c_k^Q(p_k^* - \alpha_k^* \mu)^2 + c_k^Q (\alpha_k^*)^2 \sigma^2 + \overline{\nu}_k^* \overline{p}_k\\
+    \ge& 0
 \end{align*}
 The second line results from the fact that the two new terms added to the objective are equal to zero (complementary slackness). The third line is obtained by re-arranging terms. The fourth line follows from the stationarity of the Lagrangian with respect to $p_k$ and $\alpha_k$, respectively (see KKT conditions in Appendix A). The fifth and sixth lines follow from re-arranging and cancelling terms out. The last line follows from the fact that the first two terms are non-negative (quadratic terms with positive coefficient), and the third term is non-negative too, since $\overline{\nu}_k^* \ge 0$ (dual feasibility) and $\overline{p}_k > 0$ (by assumption). Note that this result also amounts to proving that the cost recovery property holds in expectation (since the expected revenue earned by producer $k$ is greater than or equal to the expected costs she incurs).
 
@@ -220,7 +220,7 @@ which directly follows from the derivations in the first step of this proof. We 
 \end{align*}
 from which it is clear that setting $(x, y) = (p_k^*, \alpha_k^*)$ cancels both derivatives. We then derive an expression for the Hessian,
 \begin{equation*}
-H(x,y) = \begin{pmatrix} \frac{\partial^2 f}{\partial x^2} & \frac{\partial^2 f}{\partial x \partial y} \\ \frac{\partial^2 f}{\partial y \partial x} & \frac{\partial^2 f}{\partial y^2} \end{pmatrix} = 2c_k^Q \begin{pmatrix} -1 & \mu \\ \mu & -\mu^2 - \sigma^2 \end{pmatrix}.
+H(x,y) = \begin{pmatrix} \frac{\partial^2 f}{\partial x^2} & \frac{\partial^2 f}{\partial y \partial x} \\ \frac{\partial^2 f}{\partial x \partial y} & \frac{\partial^2 f}{\partial y^2} \end{pmatrix} = 2c_k^Q \begin{pmatrix} -1 & \mu \\ \mu & -\mu^2 - \sigma^2 \end{pmatrix}.
 \end{equation*}
 We note that the first entry on the diagonal is negative. In addition, we have that $\mbox{det}|H(p_k^*, \alpha_k^*)| = 2 c_k^Q \sigma^2 > 0$ (unless $\sigma = 0$), which in turn implies that the Hessian is negative definite. This result has two further implications. First, by virtue of the second-derivative test, $(x, y) = (p_k^*, \alpha_k^*)$ is a local maximum of $f$. Second, since the Hessian is negative definite and independent of $(x, y)$, $f$ is concave and $(x, y) = (p_k^*, \alpha_k^*)$ is a global maximum. In other words, $f(x, y) \le f(p_k^*, \alpha_k^*), \forall (x, y),$ and in particular $ f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*)$. It then follows that
 \begin{equation*}
@@ -230,7 +230,7 @@ Since this applies to any arbitrary producer $k$, $V_k^\star \le V_k^*, \forall 
 \end{proof}
 
 \begin{proposition}
-(\textcolor{green}{Cost Recovery}) The stochastic market clearing problem produces prices and decisions that guarantee a non-negative pay-off for flexible generators.
+(\textcolor{green}{Cost Recovery}) The stochastic market clearing problem produces prices and decisions that guarantee a non-negative expected pay-off for flexible generators.
 \end{proposition}
 \begin{proof}
 We first re-write the problem faced by producer $k$ in the standard QP form introduced in Appendix B,
@@ -276,7 +276,7 @@ or, alternatively,
 \end{equation*}
 In other words, the expected revenue of producer $k$ is greater than or equal to its expected cost. The cost recovery property is therefore satisfied in expectation.
 
-This property can also be proved (more concisely) using the complementary slackness conditions of the problem faced by the producer (in a fashion similar to the proof of the competitive equilibrium property above). 
+This property can also be proved (more concisely) using the complementary slackness conditions of the problem faced by the producer (in a fashion similar to the first step of the proof of the competitive equilibrium property above). 
 \end{proof}
 
 \begin{proposition}
@@ -301,6 +301,39 @@ By contradiction. Assume that incentive compatibility holds and see counter-exam
 
 Market properties are also discussed in \cite{Ratha2019} in a similar set-up. The proofs of incentive compatibility and revenue adequacy seem weird, however. The proof of cost recovery looks weird too (specifically the fact that the dual problem is a linear program, in spite of the fact that the primal problem is a quadratic program). 
 
+\section{Sensitivity Analysis}
+
+In this section, we carry out a sensitivity analysis of the stochastic market clearing problem with respect to two essential statistical parameters, namely the mean $\mu$ and standard deviation $\sigma$ of the forecast error.
+
+The analyses relies on enveloppe theorems developed for constrained convex programming problems \cite{Milgrom2002}. In essence, these theorems state that the derivative of the value function can be simply obtained as the derivative of the Lagrangian function evaluated at an optimal solution.
+
+Let $V^*: \mathbb{R} \times \mathbb{R}_+ \rightarrow \mathbb{R}$ be the value function of the stochastic market clearing problem, with $V^*(\mu, \sigma)$ the value associated with a specific pair of parameters $(\mu, \sigma)$. In addition, let $(p_k^*, \alpha_k^*)_{\forall k}$ and $(\lambda^*, \chi^*)$ represent optimal primal and dual variables, one obtains
+\begin{align*} 
+\frac{\partial V^*}{\partial \mu} &= \frac{\partial \mathcal{L}}{\partial \mu}\\
+&= \sum_k\big(-c_k^L \alpha_k^* - 2c_k^Q \alpha_k^* p_k^* + 2 c_k^Q (\alpha_k^*)^2 \mu - \underline{\nu}_k^* \alpha_k^* - \overline{\nu}_k^* \alpha_k \big)\\
+&= \sum_k\alpha_k^*\big(-c_k^L-2c_k^Q(p_k^*-\alpha_k^* \mu)-\underline{\nu}_k^*-\overline{\nu}_k^*\big)\\
+&= \sum_k\alpha_k^*\Big(\frac{\chi^*}{\mu} - \Phi^{-1}(1-\epsilon_k) \frac{\sigma}{\mu}(\underline{\nu}_k^*+\overline{\nu}_k^*) - 2c_k^Q \alpha_k^* \frac{\sigma^2}{\mu}\Big)\\
+&= \sum_k\frac{\alpha_k^*}{\mu}\Big(\chi^* - \Phi^{-1}(1-\epsilon_k) \sigma(\underline{\nu}_k^*+\overline{\nu}_k^*) - 2c_k^Q \alpha_k^* \sigma^2\Big)\\
+\Leftrightarrow \mu \frac{\partial V^*}{\partial \mu} &= \sum_k\alpha_k^*\Big(\chi^* - \Phi^{-1}(1-\epsilon_k) \sigma(\underline{\nu}_k^*+\overline{\nu}_k^*) - 2c_k^Q \alpha_k^* \sigma^2\Big).
+\end{align*}
+Then, we have
+\begin{align*}
+\frac{\partial V^*}{\partial \sigma} &= \frac{\partial \mathcal{L}}{\partial \sigma}\\
+&= \sum_k\big(2c_k^Q(\alpha_k^*)^2\sigma + \Phi^{-1}(1-\epsilon_k) \alpha_k^* \underline{\nu}_k^* + \Phi^{-1}(1-\epsilon_k) \alpha_k^* \overline{\nu}_k^*\big)\\
+&= \sum_k\alpha_k^*\big(2c_k^Q\alpha_k^*\sigma + \Phi^{-1}(1-\epsilon_k) (\underline{\nu}_k^* + \overline{\nu}_k)^*\big)\\
+&=\sum_k\frac{\alpha_k^*}{\sigma}\Big(2c_k^Q\alpha_k^*\sigma^2 + \Phi^{-1}(1-\epsilon_k) \sigma (\underline{\nu}_k^* + \overline{\nu}_k^*)\Big)\\
+\Leftrightarrow \sigma \frac{\partial V^*}{\partial \sigma} &= \sum_k \alpha_k^*\Big(2c_k^Q\alpha_k^*\sigma^2 + \Phi^{-1}(1-\epsilon_k) \sigma (\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
+\end{align*}
+Combining these two results yields
+\begin{align*}
+\mu \frac{\partial V^*}{\partial \mu} &= \sum_k\alpha_k^*\Big(\chi^* - \Phi^{-1}(1-\epsilon_k) \sigma(\underline{\nu}_k^*+\overline{\nu}_k^*) - 2c_k^Q \alpha_k^* \sigma^2\Big)\\
+&= \sum_k\alpha_k^*\chi^* - \sigma \frac{\partial V^*}{\partial \sigma},
+\end{align*}
+thus,
+\begin{equation*}
+\mu \frac{\partial V^*}{\partial \mu} + \sigma \frac{\partial V^*}{\partial \sigma} = \chi^*.
+\end{equation*}
+In other words, the reserve price measures the sensitivity of the expected cost with the respect to the mean and standard deviation.
 \section{Comments}
 
 \begin{itemize} 
