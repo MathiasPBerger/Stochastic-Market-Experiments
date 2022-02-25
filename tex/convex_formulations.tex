@@ -309,7 +309,7 @@ In this section, we carry out a sensitivity analysis of the stochastic market cl
 Let $(\{p_k^*\}_{\forall k}, \{\alpha_k^*\}_{\forall k})$ and $(\lambda^*, \chi^*, \{\underline{\nu}_k\}_{\forall k}, \{\overline{\nu}_k\}_{\forall k})$ represent optimal primal and dual variables obtained by solving the stochastic market clearing problem. Then, let $V^*: \mathbb{R} \times \mathbb{R}_+ \rightarrow \mathbb{R}$ denote the value function of the stochastic market clearing problem, that is, 
 \begin{align*}
 V^*(\mu, \sigma) &= \mathbb{E}\Big[\sum_k \big(c_k^L \mathbf{p}_k^*(\boldsymbol{\omega}) + c_k^Q (\mathbf{p}_k^*(\boldsymbol{\omega}))^2\big)\Big]\\
- &= \sum_k \Big(c_k^L(p_k^* - \alpha_k^* \mu) + c_k^Q \big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2 \sigma^2\big)\Big)
+ &= \sum_k \Big(c_k^L(p_k^* - \alpha_k^* \mu) + c_k^Q \big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2 \sigma^2\big)\Big).
 \end{align*}
 We have the following proposition.
 \begin{proposition}
@@ -360,7 +360,7 @@ It follows from the proof of the previous proposition that
 \begin{equation*}
 \frac{\partial V^*}{\partial \sigma} = \sum_k\frac{\alpha_k^*}{\sigma}\Big(2c_k^Q\alpha_k^*\sigma^2 + \Phi^{-1}(1-\epsilon_k) \sigma (\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
 \end{equation*}
-Note that $\alpha_k^* \ge 0$, $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. By definition, $\sigma \ge 0$, $c_k^Q \ge 0$ and $\epsilon_k \le 0.5$, which implies that $\Phi^{-1}(1-\epsilon_k) \ge 0$. It follows that
+Note that $\alpha_k^* \ge 0$, $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. By definition, $\sigma \ge 0$, $c_k^Q \ge 0$ and $\epsilon_k \le 0.5$, which implies that $\Phi^{-1}(1-\epsilon_k) \ge 0$. Hence, we have
 \begin{equation*}
 \frac{\partial V^*}{\partial \sigma} \ge 0.
 \end{equation*}
