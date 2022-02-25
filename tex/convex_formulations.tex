@@ -306,20 +306,20 @@ Market properties are also discussed in \cite{Ratha2019} in a similar set-up. Th
 
 In this section, we carry out a sensitivity analysis of the stochastic market clearing problem with respect to two essential statistical parameters, namely the mean $\mu$ and standard deviation $\sigma$ of the forecast error.
 
-Let $(\{p_k^*\}_{\forall k}, \{\alpha_k^*\}_{\forall k})$ and $(\lambda^*, \chi^*, \{\underline{\nu}\}_{\forall k}, \{\overline{\nu}\}_{\forall k})$ represent optimal primal and dual variables obtained by solving the stochastic market clearing problem. Then, let $V^*: \mathbb{R} \times \mathbb{R}_+ \rightarrow \mathbb{R}$ denote the value function of the stochastic market clearing problem, with 
+Let $(\{p_k^*\}_{\forall k}, \{\alpha_k^*\}_{\forall k})$ and $(\lambda^*, \chi^*, \{\underline{\nu}_k\}_{\forall k}, \{\overline{\nu}_k\}_{\forall k})$ represent optimal primal and dual variables obtained by solving the stochastic market clearing problem. Then, let $V^*: \mathbb{R} \times \mathbb{R}_+ \rightarrow \mathbb{R}$ denote the value function of the stochastic market clearing problem, that is, 
 \begin{align*}
 V^*(\mu, \sigma) &= \mathbb{E}\Big[\sum_k \big(c_k^L \mathbf{p}_k^*(\boldsymbol{\omega}) + c_k^Q (\mathbf{p}_k^*(\boldsymbol{\omega}))^2\big)\Big]\\
  &= \sum_k \Big(c_k^L(p_k^* - \alpha_k^* \mu) + c_k^Q \big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2 \sigma^2\big)\Big)
 \end{align*}
 We have the following proposition.
 \begin{proposition}
-(Sensitivity of Expected Cost to Forecast Error) The reserve price measures the combined sensitivity of the expected cost with respect to the mean and standard deviation of the forecast error, such that
+(Sensitivity of Expected System Cost to Forecast Error) The reserve price measures the combined sensitivity of the expected system cost with respect to the mean and standard deviation of the forecast error, such that
 \begin{equation*}
 \chi^* = \mu \frac{\partial V^*}{\partial \mu} + \sigma \frac{\partial V^*}{\partial \sigma}.
 \end{equation*}
 \end{proposition}
 \begin{proof}
-The proof relies on an enveloppe theorem developed for saddle point and constrained convex programming problems \cite{Milgrom2002}. In essence, this theorem (Theorem 5 and Corollary 5 in \cite{Milgrom2002}) states that the derivative of the value function can be simply obtained as the derivative of the Lagrangian function evaluated at an optimal solution, provided that the problem is convex and some regularity conditions are satisfied (e.g., Slater's condition holds). These conditions are fulfilled by the stochastic market clearing problem. The expression of the Lagrangian function of the stochastic market clearing problem derived in Appendix A is used in what follows. We have
+The proof relies on an enveloppe theorem developed for saddle point and constrained convex programming problems \cite{Milgrom2002}. In essence, this theorem (Theorem 5 and Corollary 5 in \cite{Milgrom2002}) states that the derivative of the value function can be simply obtained as the derivative of the Lagrangian function evaluated at an optimal solution, provided that the problem is convex and some regularity conditions are satisfied (e.g., Slater's condition holds). These conditions are fulfilled by the stochastic market clearing problem. The expression of the Lagrangian function of the stochastic market clearing problem derived in Appendix A is used in the following. We have
 \begin{align*} 
 \frac{\partial V^*}{\partial \mu} &= \frac{\partial \mathcal{L}^*}{\partial \mu}\\
 &= \sum_k\big(-c_k^L \alpha_k^* - 2c_k^Q \alpha_k^* p_k^* + 2 c_k^Q (\alpha_k^*)^2 \mu - \underline{\nu}_k^* \alpha_k^* - \overline{\nu}_k^* \alpha_k \big)\\
@@ -352,11 +352,11 @@ Since all contributions $\{\alpha_k^*\}_{\forall k}$ to reserves sum to 1, we ge
 \end{equation*}
 \end{proof}
 We also have the following result.
-\begin{corollary}
+\begin{proposition}
 The expected system cost increases with the standard deviation of the forecast error.
-\end{corollary}
+\end{proposition}
 \begin{proof}
-We have that
+It follows from the proof of the previous proposition that
 \begin{equation*}
 \frac{\partial V^*}{\partial \sigma} = \sum_k\frac{\alpha_k^*}{\sigma}\Big(2c_k^Q\alpha_k^*\sigma^2 + \Phi^{-1}(1-\epsilon_k) \sigma (\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
 \end{equation*}
