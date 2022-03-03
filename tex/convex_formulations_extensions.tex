@@ -84,7 +84,7 @@ The first term represents the expected revenue accruing from the sale of electri
 \begin{align*}
 \Pi_k(p_k, \alpha_k) =& \lambda p_k + \alpha_k^\top \chi - c_k^L\big(p_k - \alpha_k^\top \mu\big) - c_k^Q \Big(\big(p_k - \alpha_{k}^\top \mu \big)^2 + \alpha_k^\top \Sigma \alpha_k\Big),
 \end{align*}
-which is a concave function of its variables. Note that the function is strictly concave if $c_k^Q > 0$ and $\sigma_i > 0, \forall i$.
+which is a concave function of its variables. Note that the function is strictly concave if $c_k^Q > 0$ and $\Sigma \succ 0$. In particular, this will be the case if all forecast errors are independent or no forecast error can be expressed as an exact linear function of other forecast errors.
 
 Then, the chance constraints imposed on generation bounds should also be re-formulated to obtain a tractable (hopefully convex) mathematical program. Depending on the underlying forecast error distribution, chance constraints may be recast as convex constraints involving moments of said distribution. In particular, one-sided chance constraints involving a scalar random variable following a Gaussian distribution or approximations of distributionally-robust chance constraints may lead to simple linear inequality constraints \cite{Dvorkin2020}. In the multi-dimensional Gaussian setting, one-sided chance constraints can be re-formulated as second-order cone constraints. In other settings, distributionally-robust chance constraints may be recast as second-order cone constraints \cite{Xie2018}. For simplicity, we assume that $\boldsymbol{\omega}_i \sim \mathcal{N}(\mu_i, \sigma_i^2), \forall i$. The derivation then goes as follows:
 \begin{align*}
@@ -319,71 +319,73 @@ V^*(\mu, \sigma) &= \mathbb{E}\Big[\sum_k \big(c_k^L \mathbf{p}_k^*(\boldsymbol{
 \end{align*}
 In the following, we assume that we work with parameter values $\mu$ and $\sigma$ such that the value function can always be defined (i.e., the optimal solution set is non-empty). Before presenting our main result, we prove the following lemma.
 \begin{lemma}\label{lemma1}
-Let $V^*$ be the value function of the market clearing problem. Then, if $\sigma > 0$ and $c_k^Q > 0, \forall k$, we have that
+Let $V^*$ be the value function of the market clearing problem. Then, if $\Sigma \succ 0$ and $c_k^Q > 0, \forall k$, we have that
 \begin{align*}
-\frac{\partial V^*}{\partial \mu} &= \frac{\partial \mathcal{L}^*}{\partial \mu},\\
-\frac{\partial V^*}{\partial \sigma} &= \frac{\partial \mathcal{L}^*}{\partial \sigma},
+\frac{\partial V^*}{\partial \mu_i} &= \frac{\partial \mathcal{L}^*}{\partial \mu_i},\\
+\frac{\partial V^*}{\partial \sigma_i} &= \frac{\partial \mathcal{L}^*}{\partial \sigma_i},
 \end{align*}
-where right-hand side expressions should be interpreted as the partial derivatives of the Lagrangian function $\mathcal{L}$ (whose expression is given in Appendix A) evaluated at an optimal solution.
+where right-hand side expressions should be interpreted as the partial derivatives of the Lagrangian function $\mathcal{L}$ (whose expression is given in Appendix A) with respect to $\mu_i$ and $\sigma_i$ evaluated at an optimal solution.
 \end{lemma}
 \begin{proof}
 The proof relies on an enveloppe theorem developed for saddle point and constrained convex programming problems \cite{Milgrom2002}. In essence, this theorem (Theorem 5 and Corollary 5 in \cite{Milgrom2002}) states that if i) the set over which optimisation takes place is convex and compact, ii) the functions defining the objective and constraints are continuous, iii) the derivatives of the functions forming the constraints taken with respect to the parameters are continuous (both in the variables and parameters), iv) some constraint qualification holds (e.g., Slater's condition is satisfied), then the value function is directionally differentiable and can be expressed in terms of the derivative of the Lagrangian function (with respect to parameters). In addition, if the set of optimal solutions corresponding to given parameters is a singleton, the value function is differentiable at these parameters and it is equal to the derivative of the Lagrangian function evaluated at the optimal solution.
 
-First, note that unlike the stochastic market clearing problem, the problem for which the result in \cite{Milgrom2002} was derived does not include any equality constraints. It is nonetheless possible to define an equivalent market clearing formulation featuring only inequality constraints by eliminating equality constraints (e.g., via the QR decomposition of the equality constraint matrix) and optimising directly over the resulting affine space. Note that an affine space is also convex, and a compact subset of the affine space containing the optimal solution associated with given parameters can be considered for our purpose. Hence, the market clearing problem satisfies conditions i), ii), iii) and iv). In particular, it is possible to find feasible solutions strictly satisfying inequality constraints, such that Slater's condition is satisfied. Now, since $c_k^Q > 0, \forall k,$ and $\sigma > 0$, the Hessian of the objective function is positive definite, which in turn implies that the objective of the market clearing problem is strictly convex and the problem therefore has a unique optimal solution. Thus, by virtue of Corollary 5 in \cite{Milgrom2002}, the partial derivatives of the value function with respect to $\mu$ and $\sigma$ can be expressed as the partial derivatives of the Lagrangian function evaluated at the corresponding optimal solution.
+First, note that unlike the stochastic market clearing problem, the problem for which the result in \cite{Milgrom2002} was derived does not include any equality constraints. It is nonetheless possible to define an equivalent market clearing formulation featuring only inequality constraints by eliminating equality constraints (e.g., via the QR decomposition of the equality constraint matrix) and optimising directly over the resulting affine space. Note that an affine space is also convex, and a compact subset of the affine space containing the optimal solution associated with given parameters can be considered for our purpose. Hence, the market clearing problem satisfies conditions i), ii), iii) and iv). In particular, it is possible to find feasible solutions strictly satisfying inequality constraints, such that Slater's condition is satisfied. Now, since $c_k^Q > 0, \forall k,$ and $\Sigma \succ 0$, the Hessian of the objective function is positive definite, which in turn implies that the objective of the market clearing problem is strictly convex and the problem therefore has a unique optimal solution. Thus, by virtue of Corollary 5 in \cite{Milgrom2002}, the partial derivatives of the value function with respect to $\mu_i$ and $\sigma_i$ can be expressed as the partial derivatives of the Lagrangian function evaluated at the corresponding optimal solution.
 \end{proof}
 Next, we have the following result.
 \begin{proposition}
 (Sensitivity of Expected System Cost to Forecast Error) The reserve price measures the combined sensitivity of the expected system cost with respect to the mean and standard deviation of the forecast error, such that
 \begin{equation*}
-\chi^* = \mu \frac{\partial V^*}{\partial \mu} + \sigma \frac{\partial V^*}{\partial \sigma}.
+\chi_i^* = \mu_i \frac{\partial V^*}{\partial \mu_i} + \sigma_i \frac{\partial V^*}{\partial \sigma_i}.
 \end{equation*}
 \end{proposition}
 \begin{proof}
 Building upon Lemma \ref{lemma1}, we successively have
 \begin{align*} 
-\frac{\partial V^*}{\partial \mu} &= \frac{\partial \mathcal{L}^*}{\partial \mu}\\
-&= \sum_k\big(-c_k^L \alpha_k^* - 2c_k^Q \alpha_k^* p_k^* + 2 c_k^Q (\alpha_k^*)^2 \mu - \underline{\nu}_k^* \alpha_k^* - \overline{\nu}_k^* \alpha_k \big)\\
-&= \sum_k\alpha_k^*\big(-c_k^L-2c_k^Q(p_k^*-\alpha_k^* \mu)-\underline{\nu}_k^*-\overline{\nu}_k^*\big)\\
-&= \sum_k\alpha_k^*\Big(\frac{\chi^*}{\mu} - \Phi^{-1}(1-\epsilon_k) \frac{\sigma}{\mu}(\underline{\nu}_k^*+\overline{\nu}_k^*) - 2c_k^Q \alpha_k^* \frac{\sigma^2}{\mu}\Big)\\
-&= \sum_k\frac{\alpha_k^*}{\mu}\Big(\chi^* - \Phi^{-1}(1-\epsilon_k) \sigma(\underline{\nu}_k^*+\overline{\nu}_k^*) - 2c_k^Q \alpha_k^* \sigma^2\Big),
+\frac{\partial V^*}{\partial \mu_i} =& \frac{\partial \mathcal{L}^*}{\partial \mu_i}\\
+=& \sum_k \Big(-c_k^L \alpha_{ki}^* + 2 c_k \big((\alpha_{ki}^*)^2 \mu_i - p_k^* \alpha_{ki}^*\big) + \underline{\nu}_k^* \alpha_{ki}^* - \overline{\nu}_k^* \alpha_{ki}^*\Big)\\
+=& \sum_k \alpha_{ki}^* \Big(-c_k^L + 2 c_k (\alpha_{ki}^* \mu_i - p_k^*) + \underline{\nu}_k^* - \overline{\nu}_k^*\big)\\
+=& \sum_k \alpha_{ki}^* \Big(\frac{\chi_i^*}{\mu_i} - 2 \frac{c_k^Q}{\mu_i}\big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{kj}^*\big)\\
+ &- \frac{\Phi_k^{-1}}{\mu_i} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j  \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big),
 \end{align*}
-where the first line follows from Lemma \ref{lemma1}, the second line is obtained by taking the partial derivative of the Lagrangian function with respect to $\mu$ and evaluating it at the optimal solution, re-arranging terms yields the third line, the fourth line is obtained by substituting the stationarity condition of the Lagrangian function with respect to $\alpha_k$ (satisfied at optimality), while re-arranging terms gives the fifth lines. It immediately follows that
-\begin{equation*}
-\mu \frac{\partial V^*}{\partial \mu} = \sum_k\alpha_k^*\Big(\chi^* - \Phi^{-1}(1-\epsilon_k) \sigma(\underline{\nu}_k^*+\overline{\nu}_k^*) - 2c_k^Q \alpha_k^* \sigma^2\Big).
-\end{equation*}
-Then, we successively have
+where the first line follows from Lemma \ref{lemma1}, the second line is obtained by taking the partial derivative of the Lagrangian function with respect to $\mu_i$ and evaluating it at the optimal solution, re-arranging terms yields the third line, the fourth line is obtained by substituting the stationarity condition of the Lagrangian function with respect to $\alpha_{ki}$ (satisfied at optimality), while re-arranging terms gives the fifth lines. It immediately follows that
 \begin{align*}
-\frac{\partial V^*}{\partial \sigma} &= \frac{\partial \mathcal{L}^*}{\partial \sigma}\\
-&= \sum_k\big(2c_k^Q(\alpha_k^*)^2\sigma + \Phi^{-1}(1-\epsilon_k) \alpha_k^* \underline{\nu}_k^* + \Phi^{-1}(1-\epsilon_k) \alpha_k^* \overline{\nu}_k^*\big)\\
-&=\sum_k\frac{\alpha_k^*}{\sigma}\Big(2c_k^Q\alpha_k^*\sigma^2 + \Phi^{-1}(1-\epsilon_k) \sigma (\underline{\nu}_k^* + \overline{\nu}_k^*)\Big),
+\mu_i \frac{\partial V^*}{\partial \mu_i} =& \sum_k\alpha_{ki}^*\Big(\chi_i^* - 2 c_k^Q \big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{kj}^*\big)\\
+ &- \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j  \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
 \end{align*}
-where the first line follows from Lemma \ref{lemma1}, the second line is obtained by taking the partial derivative of the Lagrangian function with respect to $\sigma$ and evaluating it at the optimal solution, while re-arranging terms yields the third line. In other words, we get
-\begin{equation*}
-\sigma \frac{\partial V^*}{\partial \sigma} = \sum_k \alpha_k^*\Big(2c_k^Q\alpha_k^*\sigma^2 + \Phi^{-1}(1-\epsilon_k) \sigma (\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
-\end{equation*}
+Then, we have
+\begin{align*}
+\frac{\partial V^*}{\partial \sigma_i} =& \frac{\partial \mathcal{L}^*}{\partial \sigma_i}\\
+=& \sum_k \Big(2c_k^Q\big(\sigma_i (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_j \alpha_{ki}^*\alpha_{kj}^*\big)\\
+&+ \Phi_k^{-1} \frac{\sigma_i (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_j \alpha_{ki}^*\alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\big)\Big)\\
+=&\sum_k\frac{\alpha_{ki}^*}{\sigma_i}\Big(2c_k^Q\big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j\alpha_{kj}^*\big)\\
+&+ \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\big)\Big),
+\end{align*}
+where the first line follows from Lemma \ref{lemma1}, the second line is obtained by taking the partial derivative of the Lagrangian function with respect to $\sigma_i$ and evaluating it at the optimal solution, while re-arranging terms yields the third line. In other words, we get
+\begin{align*}
+\sigma_i \frac{\partial V^*}{\partial \sigma_i} =& \sum_k \alpha_{ki}^*\Big(2c_k^Q\big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j\alpha_{kj}^*\big)\\
+&+ \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\big)\Big).
+\end{align*}
 Combining these two results then yields
-\begin{align*}
-\mu \frac{\partial V^*}{\partial \mu} &= \sum_k\alpha_k^*\Big(\chi^* - \Phi^{-1}(1-\epsilon_k) \sigma(\underline{\nu}_k^*+\overline{\nu}_k^*) - 2c_k^Q \alpha_k^* \sigma^2\Big)\\
-&= \sum_k\alpha_k^*\chi^* - \sigma \frac{\partial V^*}{\partial \sigma}.
-\end{align*}
-Since all contributions $\{\alpha_k^*\}_{\forall k}$ to reserves sum to 1, we get the desired result
 \begin{equation*}
-\mu \frac{\partial V^*}{\partial \mu} + \sigma \frac{\partial V^*}{\partial \sigma} = \chi^*.
+\mu_i \frac{\partial V^*}{\partial \mu_i} = \sum_k\alpha_{ki}^* \chi_i^* - \sigma_i \frac{\partial V^*}{\partial \sigma_i}.
+\end{equation*}
+Since all contributions $\{\alpha_{ki}^*\}_{\forall k}$ to reserves sum to 1, we get the desired result
+\begin{equation*}
+\mu_i \frac{\partial V^*}{\partial \mu_i} + \sigma_i \frac{\partial V^*}{\partial \sigma_i} = \chi_i^*.
 \end{equation*}
 \end{proof}
-We also have the following result.
+We also have the following result - \textcolor{red}{not sure that it always holds in the general set-up - this will probably depend on the correlation between forecast errors}.
 \begin{proposition}
-The expected system cost increases with the standard deviation of the forecast error.
+\textcolor{red}{The expected system cost increases with the standard deviation of the forecast error.}
 \end{proposition}
 \begin{proof}
 It follows from the proof of the previous proposition that
-\begin{equation*}
-\frac{\partial V^*}{\partial \sigma} = \sum_k\frac{\alpha_k^*}{\sigma}\Big(2c_k^Q\alpha_k^*\sigma^2 + \Phi^{-1}(1-\epsilon_k) \sigma (\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
-\end{equation*}
-Note that $\alpha_k^* \ge 0$, $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. By definition, $\sigma \ge 0$, $c_k^Q \ge 0$ and $\epsilon_k \le 0.5$, which implies that $\Phi^{-1}(1-\epsilon_k) \ge 0$. Hence, we have
-\begin{equation*}
-\frac{\partial V^*}{\partial \sigma} \ge 0.
-\end{equation*}
+\begin{align*}
+\frac{\partial V^*}{\partial \sigma_i} =& \sum_k\frac{\alpha_{ki}^*}{\sigma_i}\Big(2c_k^Q\big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j\alpha_{kj}^*\big)\\
+&+ \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\big)\Big)\\
+=& \frac{1}{\sigma_i} \sum_k\big(\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j\alpha_{ki}^* \alpha_{kj}^*\big)\Big(2c_k^Q + \Phi_k^{-1} \frac{1}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\big)\Big).
+\end{align*}
+Note that $\alpha_{ki}^* \ge 0, \forall i$, $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. By definition, $\sigma_i > 0, \forall i$, $c_k^Q \ge 0$ and $\epsilon_k \le 0.5$, which implies that $\Phi^{-1}_k \ge 0$. However, $-1 \le \rho_{ij} \le 1$, such that the first term in parentheses may be negative. Hence, the key problem is then to identify conditions under which $\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* \ge 0 $.
 \end{proof}
 
 %\section{Comments}
@@ -414,9 +416,9 @@ Then, the Lagrangian function of producer $k$ can be expressed as
 The KKT conditions of the problem faced by producer $k$ now follow
 \begin{align*}
 \frac{\partial \mathcal{L}_k}{\partial p_k} =& c_k^L + 2 c_k^Q (p_k - \alpha_k^\top \mu) - \lambda - \underline{\nu}_k + \overline{\nu}_k = 0, \forall k,\\
-\frac{\partial \mathcal{L}_k}{\partial \alpha_{ki}} =& - c_k^L \mu_i + 2 c_k^Q\Big(\alpha_{ki}\mu_i^2 - p_k \mu_i + \sigma_i^2 \alpha_{ki} + \sum_{i, j>i} \kappa_{ij} \alpha_{kj}\Big) - \chi_i \\
-&+ \underline{\nu}_k \Big(\mu_i + \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki} + \sum_{i, j>i} \kappa_{ij} \alpha_{kj}}{||\alpha_k||_{\Sigma}}\Big)\\
-&+ \overline{\nu}_k \Big(\mu_i + \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki} + \sum_{i, j>i} \kappa_{ij} \alpha_{kj}}{||\alpha_k||_{\Sigma}}\Big) = 0, \forall k, \forall i,\\
+\frac{\partial \mathcal{L}_k}{\partial \alpha_{ki}} =& - c_k^L \mu_i + 2 c_k^Q\Big(\alpha_{ki}\mu_i^2 - p_k \mu_i + \sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}\Big) - \chi_i \\
+&+ \underline{\nu}_k \Big(\mu_i + \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}}{||\alpha_k||_{\Sigma}}\Big)\\
+&+ \overline{\nu}_k \Big(\mu_i + \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}}{||\alpha_k||_{\Sigma}}\Big) = 0, \forall k, \forall i,\\
 0 \le \overline{\nu}_k &\perp \overline{p}_k + \alpha_k^\top \mu - ||\alpha_k||_{\Sigma} \Phi_k^{-1} - p_k \ge 0,\\
 0 \le \underline{\nu}_k & \perp p_k - \alpha_k^\top \mu - ||\alpha_k||_{\Sigma}\Phi_k^{-1} \ge 0,
 \end{align*}
@@ -438,9 +440,9 @@ denote the set of primal and dual variables, respectively. Let us form the Lagra
 The KKT conditions associated with the stochastic market clearing problem therefore read
 \begin{align*}
 \frac{\partial \mathcal{L}}{\partial p_k} =& c_k^L + 2 c_k^Q (p_k - \alpha_k^\top \mu) - \underline{\nu}_k + \overline{\nu}_k - \lambda = 0, \forall k,\\
-\frac{\partial \mathcal{L}}{\partial \alpha_{ki}} =& - c_k^L \mu_i + 2 c_k^Q\Big(\alpha_{ki} \mu_i^2 - p_k \mu_i + \sigma_i^2 \alpha_{ki} + \sum_{i, j>i} \kappa_{ij} \alpha_{kj}\Big)\\
-&+ \underline{\nu}_k \Big(\mu_i + \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki} + \sum_{i, j>i} \kappa_{ij} \alpha_{kj}}{||\alpha_k||_{\Sigma}}\Big)\\
-&+ \overline{\nu}_k \Big(\mu_i + \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki} + \sum_{i, j>i} \kappa_{ij} \alpha_{kj}}{||\alpha_k||_{\Sigma}}\Big) - \chi_i = 0, \forall k, \forall i,\\
+\frac{\partial \mathcal{L}}{\partial \alpha_{ki}} =& - c_k^L \mu_i + 2 c_k^Q\Big(\alpha_{ki} \mu_i^2 - p_k \mu_i + \sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}\Big)\\
+&+ \underline{\nu}_k \Big(\mu_i + \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}}{||\alpha_k||_{\Sigma}}\Big)\\
+&+ \overline{\nu}_k \Big(\mu_i + \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}}{||\alpha_k||_{\Sigma}}\Big) - \chi_i = 0, \forall k, \forall i,\\
 \sum_k p_k +& \sum_i \tilde{W}_i = D,\\
 \sum_k \alpha_{ki} &= 1, \forall i,\\
 0 \le \overline{\nu}_k &\perp \overline{p}_k + \alpha_k^\top \mu - ||\alpha_k||_{\Sigma} \Phi_k^{-1} - p_k \ge 0, \forall k,\\
