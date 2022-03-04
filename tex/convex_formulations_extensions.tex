@@ -171,7 +171,7 @@ We analyse four key properties of the proposed stochastic market design, namely 
 \begin{definition}
 (Competitive Equilibrium) A competitive equilibrium for the stochastic market is a set of prices $\{\lambda^*, \{\chi_i^*\}_{\forall i}\}$ and decisions $\{p_k^*, \{\alpha_{ki}^*\}_{\forall i}\}_{\forall k}$ that\vspace{-5pt}
 \begin{enumerate}
-\item clear the market: $\sum_k p_k^* + \sum_i \tilde{W}_i = D$ and $\sum_k \alpha_{ki}^* = 1, \forall i$\vspace{-5pt}
+\item clear the markets: $\sum_k p_k^* + \sum_i \tilde{W}_i = D$ and $\sum_k \alpha_{ki}^* = 1, \forall i$\vspace{-5pt}
 \item maximise the expected profit of flexible generators
 \end{enumerate}
 \end{definition}
@@ -180,38 +180,49 @@ We analyse four key properties of the proposed stochastic market design, namely 
 (\textcolor{orange}{Competitive Equilibrium}) The stochastic market clearing problem produces prices and decisions maximising the profit of each flexible generator and supporting a competitive equilibrium from which they have no incentive to deviate.
 \end{proposition}
 \begin{proof}
-The proof showing that decisions $\{p_k^*, \alpha_k^*\}$ and prices $\{\lambda^*, \chi^*\}$ support a competitive equilibrium proceeds in two steps. The first step consists in finding an expression for the profit earned by each producer for prices and decisions computed by the market operator. The second step consists in showing that this profit is optimal for the problem faced by each producer.
+\textcolor{orange}{The proof must be completed}
+The proof showing that decisions $\{p_k^*, \alpha_k^*\}$ and prices $\{\lambda^*, \chi^*\}$ support a competitive equilibrium proceeds in two steps. The first step consists in finding an expression for the expected pay-off of producer $k$ under prices and decisions computed by the market operator. The second step consists in showing that this profit is optimal for the problem faced by producer $k$.
 
 \textit{First Step:} Let $V_k^*$ denote the value of the objective of producer $k$ under said market prices and decisions
 \begin{align*}
-    V_k^* =& \lambda^*p_k^* + \alpha_k^*\chi^* - c_k^L(p_k^* - \alpha_k^* \mu) - c_k^Q\big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2\sigma^2\big) \\
-    =& \lambda^*p_k^* + \alpha_k^*\chi^* - c_k^L(p_k^* - \alpha_k^* \mu) - c_k^Q\big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2\sigma^2\big)\\
-    & + \underline{\nu}_k^* (p_k^* - \alpha_k^* \phi_k) + \overline{\nu}_k^*(-p_k^* - \alpha_k^* \phi_k + \bar{p}_k)\\
-    =& p_k^*\big(\lambda^* - c_k^L + \underline{\nu}_k^* - \overline{\nu}_k^*\big) - c_k^Q(p_k^* - \alpha_k^* \mu)^2 + \overline{\nu}_k^* \overline{p}_k\\
-    &+ \alpha_k^*\big(\chi^* + c_k^L \mu - \underline{\nu}_k^* \phi_k - \overline{\nu}_k^* \phi_k\big) - c_k^Q (\alpha_k^*)^2 \sigma^2 \\
-    =& p_k^*\big(2c_k^Q(p_k^* - \alpha_k^* \mu)\big) - c_k^Q(p_k^* - \alpha_k^* \mu)^2 + \overline{\nu}_k^* \overline{p}_k\\ 
-    &+ \alpha_k^*\big(2c_k^Q(\alpha_k^*(\mu^2+\sigma^2) - p_k^* \mu)\big) - c_k^Q (\alpha_k^*)^2 \sigma^2\\
-    =& 2c_k^Q(p_k^* - \alpha_k^* \mu)^2 + 2c_k^Q (\alpha_k^*)^2 \sigma^2 + \overline{\nu}_k^* \overline{p}_k - c_k^Q(p_k^* - \alpha_k^* \mu)^2 - c_k^Q (\alpha_k^*)^2 \sigma^2\\
-    =& c_k^Q(p_k^* - \alpha_k^* \mu)^2 + c_k^Q (\alpha_k^*)^2 \sigma^2 + \overline{\nu}_k^* \overline{p}_k\\
-    \ge& 0
+    V_k^* =& \lambda^*p_k^* + (\alpha_k^*)^\top\chi^* - c_k^L(p_k^* - (\alpha_k^*)^\top \mu) - c_k^Q\big((p_k^* - (\alpha_k^*)^\top \mu)^2 + (\alpha_k^*)^\top\Sigma \alpha_k^*\big) \\
+    =& \lambda^*p_k^* + (\alpha_k^*)^\top\chi^* - c_k^L(p_k^* - (\alpha_k^*)^\top \mu) - c_k^Q\big((p_k^* - (\alpha_k^*)^\top \mu)^2 + (\alpha_k^*)^\top\Sigma \alpha_k^*\big)\\
+   &+ \underline{\nu}_k^*(p_k^* - (\alpha_k^*)^\top \mu - ||\alpha_k^*||_{\Sigma} \Phi_k^{-1}) + \overline{\nu}_k^* (-p_k^* + \overline{p}_k + (\alpha_k^*)^\top \mu - ||\alpha_k^*||_{\Sigma} \Phi_k^{-1})\\
+=& p_k^*\big(\lambda^* - c_k^L + \underline{\nu}_k^* - \overline{\nu}_k^*\big) - c_k^Q\big(p_k^* - (\alpha_k^*)^\top \mu\big)^2 + \overline{\nu}_k^* \overline{p}_k - \Phi_k^{-1}||\alpha_k^*||_{\Sigma} (\underline{\nu}_k^* + \overline{\nu}_k^*)\\
+    &+ \sum_i \alpha_{ki}^*\big(\chi_i^* + c_k^L \mu_i - \underline{\nu}_k^* \mu_i + \overline{\nu}_k^* \mu_i\big) - c_k^Q (\alpha_k^*)^\top\Sigma \alpha_k^* \\
+    =& p_k^*\big(2c_k^Q(p_k^* - (\alpha_k^*)^\top \mu)\big) - c_k^Q(p_k^* - (\alpha_k^*)^\top \mu)^2 + \overline{\nu}_k^* \overline{p}_k - \Phi_k^{-1}||\alpha_k^*||_{\Sigma} (\underline{\nu}_k^* + \overline{\nu}_k^*)\\ 
+    &+ \sum_i \alpha_{ki}^*\Big(2c_k^Q\big(\alpha_{ki}^*\mu_i^2 - p_k^* \mu_i - \sum_{j \ne i} \alpha_{kj}^* \mu_i \mu_j + \sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}^*\big) \\
+    &+ \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}^*}{||\alpha_k^*||_\Sigma}(\underline{\nu}_k^* +\overline{\nu}_k^*)\Big) - c_k^Q (\alpha_k^*)^\top\Sigma \alpha_k^*\\
+    =& 2c_k^Q\big((p_k^*)^2 - p_k^*(\alpha_k^*)^\top \mu\big) - c_k^Q(p_k^* - (\alpha_k^*)^\top \mu)^2 + \overline{\nu}_k^* \overline{p}_k - \Phi_k^{-1}||\alpha_k^*||_{\Sigma} (\underline{\nu}_k^* + \overline{\nu}_k^*)\\ 
+    &+ 2c_k^Q \sum_i \alpha_{ki}^*\big(\alpha_{ki}^*\mu_i^2 - p_k^* \mu_i - \sum_{j \ne i} \alpha_{kj}^* \mu_i \mu_j)  + 2c_k^Q \sum_i \alpha_{ki}^* \big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}^*\big)\\
+    &+ \Phi_k^{-1}\frac{\underline{\nu}_k^* +\overline{\nu}_k^*}{||\alpha_k^*||_\Sigma} \sum_i \alpha_{ki}^*\big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}^*\big) - c_k^Q (\alpha_k^*)^\top\Sigma \alpha_k^*\\
+    =& 2c_k^Q\big(p_k^* - (\alpha_k^*)^\top \mu\big)^2 - c_k^Q(p_k^* - (\alpha_k^*)^\top \mu)^2 + \overline{\nu}_k^* \overline{p}_k - \Phi_k^{-1}||\alpha_k^*||_{\Sigma} (\underline{\nu}_k^* + \overline{\nu}_k^*)\\ 
+    &+ 2c_k^Q (\alpha_{k}^*)^\top \Sigma \alpha_k^* + \Phi_k^{-1}\frac{\underline{\nu}_k^* +\overline{\nu}_k^*}{||\alpha_k^*||_\Sigma} ||\alpha_k^*||_\Sigma^2 - c_k^Q (\alpha_k^*)^\top\Sigma \alpha_k^*\\
+    =& c_k^Q(p_k^* - (\alpha_k^*)^\top \mu)^2 + c_k^Q (\alpha_k^*)^\top \Sigma \alpha_k^* + \overline{\nu}_k^* \overline{p}_k.
 \end{align*}
-The second line results from the fact that the two new terms added to the objective are equal to zero (complementary slackness). The third line is obtained by re-arranging terms. The fourth line follows from the stationarity of the Lagrangian with respect to $p_k$ and $\alpha_k$, respectively (see KKT conditions in Appendix A). The fifth and sixth lines follow from re-arranging and cancelling terms out. The last line follows from the fact that the first two terms are non-negative (quadratic terms with positive coefficient), and the third term is non-negative too, since $\overline{\nu}_k^* \ge 0$ (dual feasibility) and $\overline{p}_k > 0$ (by assumption). Note that this result also amounts to proving that the cost recovery property holds in expectation (since the expected revenue earned by producer $k$ is greater than or equal to the expected costs she incurs).
+The second line results from the fact that the two new terms are equal to zero (complementary slackness). The third line is obtained by re-arranging terms. The fourth line follows from the stationarity of the Lagrangian with respect to $p_k$ and $\alpha_k$, respectively (see KKT conditions in Appendix A). The fifth line follows from re-arranging terms. The sixth line is obtained by noting that
+\begin{equation*}
+||\alpha_k^*||_\Sigma^2 = (\alpha_k^*)^\top \Sigma \alpha_k^* = \sum_i \alpha_{ki}^*\big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}^*\big).
+\end{equation*}
+The last line is obtained by re-arranging and cancelling terms out.
 
 \textit{Second Step:} Now, let $\{p_k^\star, \alpha_k^\star\}$ denote the solution of the problem faced by producer $k$ under prices $\{\lambda^*, \chi^*\}$, and let $V_k^\star$ denote the corresponding objective. We essentially seek to show that $V_k^\star \le V_k^*$. One successively finds
 \begin{align*}
-    V_k^\star =& \lambda^*p_k^\star + \chi^* \alpha_k^\star - c_k^L(p_k^\star - \alpha_k^\star \mu) - c_k^Q\big((p_k^\star - \alpha_k^\star \mu)^2 + (\alpha_k^\star)^2\sigma^2\big)\\
-    \le& \lambda^*p_k^\star + \chi^* \alpha_k^\star - c_k^L(p_k^\star - \alpha_k^\star \mu) - c_k^Q\big((p_k^\star - \alpha_k^\star \mu)^2 + (\alpha_k^\star)^2\sigma^2\big)\\
-    &+ \underline{\nu}_k^* (p_k^\star - \alpha_k^\star \phi_k) + \overline{\nu}_k^*(-p_k^\star - \alpha_k^\star \phi_k + \bar{p}_k)\\
-    =& p_k^\star\big(\lambda^* - c_k^L + \underline{\nu}_k^* - \overline{\nu}_k^*\big) - c_k^Q(p_k^\star - \alpha_k^\star \mu)^2 + \overline{\nu}_k^* \overline{p}_k\\
-    &+ \alpha_k^\star\big(\chi^* + c_k^L \mu - \underline{\nu}_k^* \phi_k - \overline{\nu}_k^* \phi_k\big) - c_k^Q (\alpha_k^\star)^2 \sigma^2 \\
-   =& p_k^\star\big(2c_k^Q(p_k^* - \alpha_k^* \mu)\big) - c_k^Q(p_k^\star - \alpha_k^\star \mu)^2 + \overline{\nu}_k^* \overline{p}_k\\ 
-    &+ \alpha_k^\star\big(2c_k^Q(\alpha_k^*(\mu^2+\sigma^2) - p_k^* \mu)\big) - c_k^Q (\alpha_k^\star)^2 \sigma^2,
+    V_k^\star =& \lambda^*p_k^\star + (\alpha_k^\star)^\top \chi^* - c_k^L(p_k^\star - (\alpha_k^\star)^\top \mu) - c_k^Q\big((p_k^\star - (\alpha_k^\star)^\top \mu)^2 + (\alpha_k^\star)^\top \Sigma \alpha_k^\star\big)\\
+    \le& \lambda^*p_k^\star + (\alpha_k^\star)^\top \chi^* - c_k^L(p_k^\star - (\alpha_k^\star)^\top \mu) - c_k^Q\big((p_k^\star - (\alpha_k^\star)^\top \mu)^2 + (\alpha_k^\star)^\top \Sigma \alpha_k^\star\big)\\
+    &+ \underline{\nu}_k^*(p_k^\star - (\alpha_k^\star)^\top \mu - ||\alpha_k^\star||_{\Sigma} \Phi_k^{-1}) + \overline{\nu}_k^* (-p_k^\star + \overline{p}_k + (\alpha_k^\star)^\top \mu - ||\alpha_k^\star||_{\Sigma} \Phi_k^{-1})\\
+    =& p_k^\star\big(\lambda^* - c_k^L + \underline{\nu}_k^* - \overline{\nu}_k^*\big) - c_k^Q(p_k^\star - (\alpha_k^\star)^\top \mu)^2 + \overline{\nu}_k^* \overline{p}_k - \Phi_k^{-1} ||\alpha_k^\star||_\Sigma (\underline{\nu}_k^* + \overline{\nu}_k^*)\\
+    &+ \sum_i \alpha_{ki}^\star\big(\chi_i^* + c_k^L \mu_i - \underline{\nu}_k^* \mu_i + \overline{\nu}_k^* \mu_i\big) - c_k^Q (\alpha_k^\star)^\top \Sigma \alpha_k^\star \\
+   =& p_k^\star\big(2c_k^Q(p_k^* - (\alpha_k^*)^\top \mu)\big) - c_k^Q(p_k^\star - (\alpha_k^\star)^\top \mu)^2 + \overline{\nu}_k^* \overline{p}_k - \Phi_k^{-1} ||\alpha_k^\star||_\Sigma (\underline{\nu}_k^* + \overline{\nu}_k^*)\\    
+   &+ \sum_i \alpha_{ki}^\star \Big(2c_k^Q\big(- p_k^* \mu_i + \alpha_{ki}^*\mu_i^2 + \sum_{j \ne i} \alpha_{kj}^* \mu_i \mu_j + \sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}^*\big) \\
+    &+ \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}^*}{||\alpha_k^*||_\Sigma}(\underline{\nu}_k^* +\overline{\nu}_k^*)\Big) - c_k^Q (\alpha_k^\star)^\top\Sigma \alpha_k^\star,
 \end{align*}
-where the second line follows from the fact that $\underline{\nu}_k^* \ge 0$ and $\overline{\nu}_k^* \ge 0$ (dual feasibility for market operator), while the terms in parentheses multiplying them are non-negative (primal feasibility of ($p_k^\star, \alpha_k^\star$) for producer $k$). The third line is obtained by re-arranging terms and the fourth line follows from the stationarity of the Lagrangian of the market clearing problem with respect to $p_k$ and $\alpha_k$ (see KKT conditions in Appendix A). Let $f:\mathbb{R}^2 \rightarrow \mathbb{R}$ be such that
+where the second line follows from the fact that $\underline{\nu}_k^* \ge 0$ and $\overline{\nu}_k^* \ge 0$ (dual feasibility for market operator), while the terms in parentheses multiplying them are non-negative (primal feasibility of ($p_k^\star, \alpha_k^\star$) for producer $k$). The third line is obtained by re-arranging terms and the fourth line follows from the stationarity of the Lagrangian of the market clearing problem with respect to $p_k$ and $\alpha_k$ (see KKT conditions in Appendix A). Let $f:\mathbb{R}^{N+1} \rightarrow \mathbb{R}$ be such that
 \begin{align*}
-f(x, y) =& x \big(2c_k^Q(p_k^* - \alpha_k^* \mu)\big) - c_k^Q(x - y \mu)^2 + \overline{\nu}_k^* \overline{p}_k\\ 
-    &+ y \big(2c_k^Q(\alpha_k^*(\mu^2+\sigma^2) - p_k^* \mu)\big) - c_k^Q y^2 \sigma^2.
+f(x, y) =& x \big(2c_k^Q(p_k^* - (\alpha_k^*)^\top \mu)\big) - c_k^Q(x - y^\top \mu)^2 + \overline{\nu}_k^* \overline{p}_k - \Phi_k^{-1} ||y||_\Sigma (\underline{\nu}_k^* + \overline{\nu}_k^*)\\ 
+    &+ y^T \Big(2c_k^Q\big(M \alpha_k^* - p_k^* \mu + \Sigma \alpha_k^*\big) + \frac{\Phi_k^{-1}}{||\alpha_k^*||_\Sigma}(\underline{\nu}_k^* +\overline{\nu}_k^*) \Sigma \alpha_k^*\Big) - c_k^Q y^T \Sigma y,
 \end{align*}
+where $M \in \mathbb{R}^{N \times N}$ is the rank-one matrix $M = \mu \mu^\top$.
 We first note that
 \begin{align*}
 V_k^\star \le f(p_k^\star, \alpha_k^\star),
@@ -222,14 +233,24 @@ f(p_k^*, \alpha_k^*) = V_k^*,
 \end{equation*}
 which directly follows from the derivations in the first step of this proof. We now seek to show that $f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*)$. To achieve this, we proceed in two steps. First, we check that $(x, y) = (p_k^*, \alpha_k^*)$ is a stationary point of $f$. Then, we check that it also corresponds to a maximum of $f$ by studying the properties of its Hessian matrix. We first compute
 \begin{align*}
-\frac{\partial f}{\partial x} &= 2c_k^Q(p_k^* - \alpha_k^*\mu) - 2 c_k^Q x + 2c_k^Q y \mu,\\
-\frac{\partial f}{\partial y} &= - 2c_k^Q y \mu^2 + 2 c_k^Q x \mu + 2c_k^Q\big(\alpha_k^*(\mu^2 + \sigma^2) - p_k^* \mu\big) - 2c_k^Q y \sigma^2,
+\frac{\partial f}{\partial x} =& 2c_k^Q(p_k^* - (\alpha_k^*)^\top\mu) - 2 c_k^Q x + 2c_k^Q y^\top \mu,\\
+\frac{\partial f}{\partial y} =& - 2c_k^Q (y^\top \mu) \mu + 2 c_k^Q x \mu - \frac{\Phi_k^{-1}}{||y||_\Sigma} (\underline{\nu}_k^* + \overline{\nu}_k^*) \Sigma y - 2c_k^Q \Sigma y\\
+&+ \Big(2c_k^Q\big(M \alpha_k^* - p_k^* \mu + \Sigma \alpha_k^*\big) + \frac{\Phi_k^{-1}}{||\alpha_k^*||_\Sigma}(\underline{\nu}_k^* +\overline{\nu}_k^*) \Sigma \alpha_k^*\Big).
 \end{align*}
-from which it is clear that setting $(x, y) = (p_k^*, \alpha_k^*)$ cancels both derivatives. We then derive an expression for the Hessian,
+It is clear that setting $(x, y) = (p_k^*, \alpha_k^*)$ cancels the partial derivative of $f$ with respect to $x$. To see that it also cancels the partial derivatives with respect to each entry of $y$, it suffices to note that $\big((\alpha_k^*)^\top \mu\big)\mu = M\alpha_k^*$. It is straightforward to see that all other terms cancel each other out. We then derive an expression for the Hessian,
 \begin{equation*}
-H(x,y) = \begin{pmatrix} \frac{\partial^2 f}{\partial x^2} & \frac{\partial^2 f}{\partial y \partial x} \\ \frac{\partial^2 f}{\partial x \partial y} & \frac{\partial^2 f}{\partial y^2} \end{pmatrix} = 2c_k^Q \begin{pmatrix} -1 & \mu \\ \mu & -\mu^2 - \sigma^2 \end{pmatrix}.
+H(x, y) = \begin{pmatrix} \frac{\partial^2 f}{\partial x^2} & \frac{\partial^2 f}{\partial x \partial y} \\ \frac{\partial^2 f}{\partial y \partial x} & \frac{\partial^2 f}{\partial y^2}\end{pmatrix},
 \end{equation*}
-We note that the first entry on the diagonal is negative. In addition, we have that $\mbox{det}|H(p_k^*, \alpha_k^*)| = 2 c_k^Q \sigma^2 > 0$ (unless $\sigma = 0$), which in turn implies that the Hessian is negative definite. This result has two further implications. First, by virtue of the second-derivative test, $(x, y) = (p_k^*, \alpha_k^*)$ is a local maximum of $f$. Second, since the Hessian is negative definite and independent of $(x, y)$, $f$ is concave and $(x, y) = (p_k^*, \alpha_k^*)$ is a global maximum. In other words, $f(x, y) \le f(p_k^*, \alpha_k^*), \forall (x, y),$ and in particular $ f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*)$. It then follows that
+where
+\begin{align*}
+\frac{\partial^2 f}{\partial x^2} &= - 2c_k^Q,\\
+\frac{\partial^2 f}{\partial x \partial y} &= 2 c_k^Q \mu,\\
+\frac{\partial^2 f}{\partial y \partial x} &= 2 c_k^Q \mu^\top,\\
+\frac{\partial^2 f}{\partial y^2} &= -2 c_k^Q M - \Phi_k^{-1}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big(||y||_\Sigma^{-1} \Sigma - ||y||_\Sigma^{-3} \Sigma y(\Sigma y)^\top\Big) - 2c_k^Q \Sigma.
+\end{align*}
+We note that $-\partial^2 f/\partial y^2$ is positive definite. Indeed, $M$ is a positive semi-definite rank-one matrix, the matrix in parentheses is positive semi-definite (\textcolor{orange}{since it is the Hessian of a weighted 2-norm, which is convex}) and its coefficients are non-negative, $c_k^Q > 0$ and $\Sigma$ is positive definite. Then, \textcolor{orange}{it can be shown that $-H$ is positive definite}, such that $H$ is negative definite and $(x, y) = (p_k^*, \alpha_k^*)$ is a maximum of $f$. 
+
+In other words, $f(x, y) \le f(p_k^*, \alpha_k^*), \forall (x, y),$ and in particular $ f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*)$. It then follows that
 \begin{equation*}
 V_k^\star \le f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*) = V_k^*.
 \end{equation*}
@@ -237,53 +258,18 @@ Since this applies to any arbitrary producer $k$, $V_k^\star \le V_k^*, \forall 
 \end{proof}
 
 \begin{proposition}
-(\textcolor{orange}{Cost Recovery}) The stochastic market clearing problem produces prices and decisions that guarantee a non-negative expected pay-off for flexible generators.
+(\textcolor{green}{Cost Recovery}) The stochastic market clearing problem produces prices and decisions that guarantee a non-negative expected pay-off for flexible generators.
 \end{proposition}
 \begin{proof}
-We first re-write the problem faced by producer $k$ in the standard QP form introduced in Appendix B,
-\begin{align*}
-\underset{x}{\min} \hspace{10pt} & \frac{1}{2}x^\top Q x + c^\top x\\
-\mbox{s.t. } & Ax \le b \hspace{15pt} (\pi)\\
-&x \in \mathbb{R}^n,
-\end{align*}
-where
+It follows from the proof of the competitive equilibrium property that 
 \begin{equation*}
-x = \begin{pmatrix} p_k \\ \alpha_k \end{pmatrix}, c = \begin{pmatrix} c_k^L - \lambda \\ -c_k^L \mu - \chi \end{pmatrix}, A = \begin{pmatrix} 1 & \phi_k \\ -1 & \phi_k \end{pmatrix}, b = \begin{pmatrix} \overline{p}_k\\0\end{pmatrix}, \pi = \begin{pmatrix} -\overline{\nu}_k \\ -\underline{\nu}_k \end{pmatrix}.
+V_k^*=  c_k^Q(p_k^* - (\alpha_k^*)^\top \mu)^2 + c_k^Q (\alpha_k^*)^\top \Sigma \alpha_k^* + \overline{\nu}_k^* \overline{p}_k, \forall k.
 \end{equation*}
-Note that the entries of $\pi$ must be non-positive (following the convention used in Appendix B), and a minus sign must therefore be added in front of $\overline{\nu}_k$ and $\underline{\nu}_k$. In addition, the bounds on $\alpha_k$ do not impact developments below and were neglected for conciseness. The Hessian of the objective and its inverse read
+Note that the first two terms are non-negative since $c_k^Q \ge 0$ and $\Sigma \succeq 0$. In addition, the third term is non-negative, since $\overline{\nu}_k^* \ge 0$ (dual feasibility) and $\overline{p}_k > 0$ (by assumption). Hence, we have
 \begin{equation*}
-Q = 2 c_k^Q  \begin{pmatrix} 1 & -\mu \\ -\mu & \mu^2 + \sigma^2 \end{pmatrix} \mbox{ and } Q^{-1} = \frac{1}{2 c_k^Q \sigma^2} \begin{pmatrix} \mu^2 + \sigma^2 & \mu \\ \mu & 1 \end{pmatrix},
+V_k^* \ge 0, \forall k.
 \end{equation*}
-where $Q^{-1}$ can be obtained by Cramer's rule. By Sylvester's criterion, $Q$ is positive definite. Indeed its leading principal minors, which are equal to 
-\begin{equation*}
-2c_k^Q \mbox{ and } 2c_k^Q\sigma^2,
-\end{equation*}
-are both positive (unless $\sigma = 0$). It also follows that $Q^{-1}$ is positive definite. As shown in Appendix B, the dual problem of producer $k$ reads 
-\begin{align*}
-\underset{\pi}{\max} \hspace{10pt} & -\frac{1}{2}(A^\top \pi -c)^\top Q^{-1} (A^\top \pi -c) + \pi^\top b\\
-\mbox{s.t. } & \pi \le 0.
-\end{align*}
-Note that the first term in the dual objective is non-positive, since $Q^{-1}$ is positive definite. In addition,
-\begin{equation*}
-\pi^\top b = \begin{pmatrix}-\overline{\nu}_k & -\underline{\nu}_k \end{pmatrix}\begin{pmatrix} \overline{p}_k\\0\end{pmatrix} = -\overline{\nu}_k \overline{p}_k \le 0,
-\end{equation*}
-as $\overline{\nu}_k \ge 0$ for any dual feasible solution and it is assumed that $\overline{p}_k > 0$. The optimal dual objective is therefore non-positive. Then, strong duality for convex quadratic programs \cite{Dorn1960} implies that the primal and dual objectives are equal at optimality. Let $(p_k^*, \alpha_k^*)$ be an optimal primal solution. It follows that
-\begin{equation*}
-c_k^L(p_k^* - \alpha_k^* \mu) + c_k^Q \big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2 \sigma^2\big) - \lambda p_k^* - \chi \alpha_k^* \le 0,
-\end{equation*}
-which in turn implies that
-\begin{align*}
-\mathbb{E}[\lambda p_k^* + \chi \alpha_k^*] &= \lambda p_k^* + \chi \alpha_k^*\\
-&\ge c_k^L(p_k^* - \alpha_k^* \mu) + c_k^Q \big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2 \sigma^2\big)\\ 
-&= \mathbb{E}[c_k^L(p_k^* - \alpha_k^* \boldsymbol{\omega}) + c_k^Q (p_k^* - \alpha_k^* \boldsymbol{\omega})^2],
-\end{align*}
-or, alternatively,
-\begin{equation*}
-\mathbb{E}[\lambda p_k^* + \chi \alpha_k^* - c_k^L(p_k^* - \alpha_k^* \boldsymbol{\omega}) - c_k^Q (p_k^* - \alpha_k^* \boldsymbol{\omega})^2] \ge 0.
-\end{equation*}
-In other words, the expected revenue of producer $k$ is greater than or equal to its expected cost. The cost recovery property is therefore satisfied in expectation.
-
-This property can also be proved (more concisely) using the complementary slackness conditions of the problem faced by the producer (in a fashion similar to the first step of the proof of the competitive equilibrium property above). 
+In other words, the expected pay-off of flexible generators is non-negative and the cost recovery property is therefore satisfied.
 \end{proof}
 
 \begin{proposition}
@@ -310,14 +296,14 @@ Market properties are also discussed in \cite{Ratha2019} in a similar set-up. Th
 
 \section{Sensitivity Analysis}
 
-In this section, we carry out a sensitivity analysis of the stochastic market clearing problem with respect to two essential statistical parameters, namely the mean $\mu$ and standard deviation $\sigma$ of the forecast error.
+In this section, we carry out a sensitivity analysis of the stochastic market clearing problem with respect to two essential statistical parameters, namely the mean $\mu_i$ and standard deviation $\sigma_i$ of the forecast error of wind producer $i$.
 
 Let $(\{p_k^*\}_{\forall k}, \{\alpha_k^*\}_{\forall k})$ and $(\lambda^*, \chi^*, \{\underline{\nu}_k^*\}_{\forall k}, \{\overline{\nu}_k^*\}_{\forall k})$ denote optimal primal and dual solutions obtained by solving the stochastic market clearing problem. Then, let $V^*: \mathbb{R} \times \mathbb{R}_+ \rightarrow \mathbb{R}$ denote the value function of the stochastic market clearing problem, that is, 
 \begin{align*}
-V^*(\mu, \sigma) &= \mathbb{E}\Big[\sum_k \big(c_k^L \mathbf{p}_k^*(\boldsymbol{\omega}) + c_k^Q (\mathbf{p}_k^*(\boldsymbol{\omega}))^2\big)\Big]\\
- &= \sum_k \Big(c_k^L(p_k^* - \alpha_k^* \mu) + c_k^Q \big((p_k^* - \alpha_k^* \mu)^2 + (\alpha_k^*)^2 \sigma^2\big)\Big).
+V^*(\mu, \sigma) &= \mathbb{E}\Big[\sum_k \big(c_k^L \mathbf{p}_k^{g*}(\{\boldsymbol{\omega}_i\}_{\forall i}) + c_k^Q (\mathbf{p}_k^{g*}(\{\boldsymbol{\omega}_i\}_{\forall i}))^2\big)\Big]\\
+ &= \sum_k \Big(c_k^L(p_k^* - (\alpha_k^*)^\top \mu) + c_k^Q \big((p_k^* - (\alpha_k^*)^\top \mu)^2 + (\alpha_k^*)^\top \Sigma \alpha_k^* \big)\Big).
 \end{align*}
-In the following, we assume that we work with parameter values $\mu$ and $\sigma$ such that the value function can always be defined (i.e., the optimal solution set is non-empty). Before presenting our main result, we prove the following lemma.
+In the following, we assume that we work with parameters $\mu$ and $\Sigma$ such that the value function can always be defined (i.e., the optimal solution set is non-empty). Before presenting our main result, we prove the following lemma.
 \begin{lemma}\label{lemma1}
 Let $V^*$ be the value function of the market clearing problem. Then, if $\Sigma \succ 0$ and $c_k^Q > 0, \forall k$, we have that
 \begin{align*}
@@ -333,7 +319,7 @@ First, note that unlike the stochastic market clearing problem, the problem for 
 \end{proof}
 Next, we have the following result.
 \begin{proposition}
-(Sensitivity of Expected System Cost to Forecast Error) The reserve price measures the combined sensitivity of the expected system cost with respect to the mean and standard deviation of the forecast error, such that
+(Reserve Price as Sensitivity of Expected System Cost to Forecast Error) The reserve price measures the combined sensitivity of the expected system cost with respect to the mean and standard deviation of the forecast error, such that
 \begin{equation*}
 \chi_i^* = \mu_i \frac{\partial V^*}{\partial \mu_i} + \sigma_i \frac{\partial V^*}{\partial \sigma_i}.
 \end{equation*}
@@ -342,8 +328,8 @@ Next, we have the following result.
 Building upon Lemma \ref{lemma1}, we successively have
 \begin{align*} 
 \frac{\partial V^*}{\partial \mu_i} =& \frac{\partial \mathcal{L}^*}{\partial \mu_i}\\
-=& \sum_k \Big(-c_k^L \alpha_{ki}^* + 2 c_k \big((\alpha_{ki}^*)^2 \mu_i - p_k^* \alpha_{ki}^*\big) + \underline{\nu}_k^* \alpha_{ki}^* - \overline{\nu}_k^* \alpha_{ki}^*\Big)\\
-=& \sum_k \alpha_{ki}^* \Big(-c_k^L + 2 c_k (\alpha_{ki}^* \mu_i - p_k^*) + \underline{\nu}_k^* - \overline{\nu}_k^*\big)\\
+=& \sum_k \Big(-c_k^L \alpha_{ki}^* + 2 c_k^Q \big(- p_k^* \alpha_{ki}^* + (\alpha_{ki}^*)^2 \mu_i + \sum_{j \ne i} \alpha_{ki}^* \alpha_{kj}^* \mu_j\big) + \underline{\nu}_k^* \alpha_{ki}^* - \overline{\nu}_k^* \alpha_{ki}^*\Big)\\
+=& \sum_k \alpha_{ki}^* \Big(-c_k^L + 2 c_k^Q \big(- p_k^* + \alpha_{ki}^* \mu_i + \sum_{j \ne i} \alpha_{kj}^* \mu_j\big) + \underline{\nu}_k^* - \overline{\nu}_k^*\Big)\\
 =& \sum_k \alpha_{ki}^* \Big(\frac{\chi_i^*}{\mu_i} - 2 \frac{c_k^Q}{\mu_i}\big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{kj}^*\big)\\
  &- \frac{\Phi_k^{-1}}{\mu_i} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j  \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big),
 \end{align*}
@@ -356,14 +342,14 @@ Then, we have
 \begin{align*}
 \frac{\partial V^*}{\partial \sigma_i} =& \frac{\partial \mathcal{L}^*}{\partial \sigma_i}\\
 =& \sum_k \Big(2c_k^Q\big(\sigma_i (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_j \alpha_{ki}^*\alpha_{kj}^*\big)\\
-&+ \Phi_k^{-1} \frac{\sigma_i (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_j \alpha_{ki}^*\alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\big)\Big)\\
+&+ \Phi_k^{-1} \frac{\sigma_i (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_j \alpha_{ki}^*\alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big)\\
 =&\sum_k\frac{\alpha_{ki}^*}{\sigma_i}\Big(2c_k^Q\big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j\alpha_{kj}^*\big)\\
-&+ \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\big)\Big),
+&+ \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big),
 \end{align*}
 where the first line follows from Lemma \ref{lemma1}, the second line is obtained by taking the partial derivative of the Lagrangian function with respect to $\sigma_i$ and evaluating it at the optimal solution, while re-arranging terms yields the third line. In other words, we get
 \begin{align*}
 \sigma_i \frac{\partial V^*}{\partial \sigma_i} =& \sum_k \alpha_{ki}^*\Big(2c_k^Q\big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j\alpha_{kj}^*\big)\\
-&+ \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\big)\Big).
+&+ \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
 \end{align*}
 Combining these two results then yields
 \begin{equation*}
@@ -374,26 +360,31 @@ Since all contributions $\{\alpha_{ki}^*\}_{\forall k}$ to reserves sum to 1, we
 \mu_i \frac{\partial V^*}{\partial \mu_i} + \sigma_i \frac{\partial V^*}{\partial \sigma_i} = \chi_i^*.
 \end{equation*}
 \end{proof}
-We also have the following result - \textcolor{red}{not sure that it always holds in the general set-up - this will probably depend on the correlation between forecast errors}.
+We also have the following result.
 \begin{proposition}
-\textcolor{red}{The expected system cost increases with the standard deviation of the forecast error.}
+(Sensitivity of Expected System Cost to Standard Deviation of Forecast Error) The expected system cost increases with the standard deviation of the forecast error, that is, 
+\begin{equation*}
+\sum_i \sigma_i \frac{\partial V^*}{\partial \sigma_i} \ge 0.
+\end{equation*}
 \end{proposition}
 \begin{proof}
 It follows from the proof of the previous proposition that
 \begin{align*}
-\frac{\partial V^*}{\partial \sigma_i} =& \sum_k\frac{\alpha_{ki}^*}{\sigma_i}\Big(2c_k^Q\big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j\alpha_{kj}^*\big)\\
-&+ \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\big)\Big)\\
-=& \frac{1}{\sigma_i} \sum_k\big(\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j\alpha_{ki}^* \alpha_{kj}^*\big)\Big(2c_k^Q + \Phi_k^{-1} \frac{1}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\big)\Big).
+\sigma_i \frac{\partial V^*}{\partial \sigma_i} =& \sum_k\alpha_{ki}^*\Big(2c_k^Q\big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j\alpha_{kj}^*\big)\\
+&+ \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big)\\
+=&  \sum_k\Big(\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j\alpha_{ki}^* \alpha_{kj}^*\Big)\Big(2c_k^Q + \frac{\Phi_k^{-1}}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
 \end{align*}
-Note that $\alpha_{ki}^* \ge 0, \forall i$, $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. By definition, $\sigma_i > 0, \forall i$, $c_k^Q \ge 0$ and $\epsilon_k \le 0.5$, which implies that $\Phi^{-1}_k \ge 0$. However, $-1 \le \rho_{ij} \le 1$, such that the first term in parentheses may be negative. Hence, the key problem is then to identify conditions under which $\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* \ge 0 $.
+Thus, we can write
+\begin{align*}
+\sum_i \sigma_i \frac{\partial V^*}{\partial \sigma_i} =& \sum_i \sum_k \Big(\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j\alpha_{ki}^* \alpha_{kj}^*\Big) \Big(2c_k^Q + \frac{\Phi_k^{-1}}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big)\\
+=& \sum_k \Big(2c_k^Q + \frac{\Phi_k^{-1}}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big) \sum_i \Big(\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j\alpha_{ki}^* \alpha_{kj}^*\Big)\\
+=& \sum_k \Big(2c_k^Q + \frac{\Phi_k^{-1}}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big) \times(\alpha_k^*)^\top \Sigma \alpha_k^*\\
+=& \sum_k ||\alpha_k^*||_{\Sigma} \Big(2c_k^Q ||\alpha_k^*||_{\Sigma} + \Phi_k^{-1} (\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
+\end{align*}
+Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. Clearly, $||\alpha_k^*||_{\Sigma} \ge 0$. By definition, $c_k^Q \ge 0$ and $\epsilon_k \le 0.5$, which implies that $\Phi^{-1}_k \ge 0$. Hence, each term in the sum is non-negative and the result follows.
 \end{proof}
 
-%\section{Comments}
-%
-%\begin{itemize} 
-%\item It is assumed that flexible generators get paid for the scheduled production $p_k$ in this document. Interestingly, if they get paid for the (expected) real-time production $\mathbb{E}[\mathbf{p}_k(\boldsymbol{\omega})] = p_k - \alpha_k \mu$ instead, the complementarity problems associated with the equilibrium problem and the market clearing problem are different (an additional term  appears in the $\alpha_k$ stationarity condition of producer $k$)
-%\item Likewise, it was assumed that wind producers get paid for the forecast production $\tilde{W}$, but assuming that they get paid for the expected production $\mathbb{E}[\mathbf{p}_w(\boldsymbol{\omega})] = \tilde{W} + \mu$ could have an impact on strategic behaviour.
-%\end{itemize}
+\textcolor{red}{I am not sure that such a result holds for each individual wind producer $i$ in general. To prove it, we would basically need to show that $\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* \ge 0, \forall i$. For particular cases, it is pretty simple. For instance, the result obviously holds for individual producers if forecast errors are independent (the sum over $j$ is then equal to 0). In the general case, however, this will probably depend on the correlation between forecast errors. It seems possible to construct a counter-example but I would need to investigate this a little further.}
 
 \section*{Appendix A}
 This section derives complementary problems based on the KKT conditions of the deterministic equivalent of the equilibrium and market problems and shows that they are identical (hence the equivalence between solutions of the two problems.
@@ -416,9 +407,9 @@ Then, the Lagrangian function of producer $k$ can be expressed as
 The KKT conditions of the problem faced by producer $k$ now follow
 \begin{align*}
 \frac{\partial \mathcal{L}_k}{\partial p_k} =& c_k^L + 2 c_k^Q (p_k - \alpha_k^\top \mu) - \lambda - \underline{\nu}_k + \overline{\nu}_k = 0, \forall k,\\
-\frac{\partial \mathcal{L}_k}{\partial \alpha_{ki}} =& - c_k^L \mu_i + 2 c_k^Q\Big(\alpha_{ki}\mu_i^2 - p_k \mu_i + \sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}\Big) - \chi_i \\
-&+ \underline{\nu}_k \Big(\mu_i + \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}}{||\alpha_k||_{\Sigma}}\Big)\\
-&+ \overline{\nu}_k \Big(\mu_i + \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}}{||\alpha_k||_{\Sigma}}\Big) = 0, \forall k, \forall i,\\
+\frac{\partial \mathcal{L}_k}{\partial \alpha_{ki}} =& - c_k^L \mu_i + 2 c_k^Q\Big(- p_k \mu_i + \alpha_{ki}\mu_i^2 + \sum_{j \ne i} \alpha_{kj} \mu_i \mu_j + \sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}\Big) \\
+&- \chi_i + \underline{\nu}_k \Big(\mu_i + \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}}{||\alpha_k||_{\Sigma}}\Big)\\
+&+ \overline{\nu}_k \Big(-\mu_i + \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}}{||\alpha_k||_{\Sigma}}\Big) = 0, \forall k, \forall i,\\
 0 \le \overline{\nu}_k &\perp \overline{p}_k + \alpha_k^\top \mu - ||\alpha_k||_{\Sigma} \Phi_k^{-1} - p_k \ge 0,\\
 0 \le \underline{\nu}_k & \perp p_k - \alpha_k^\top \mu - ||\alpha_k||_{\Sigma}\Phi_k^{-1} \ge 0,
 \end{align*}
@@ -440,61 +431,15 @@ denote the set of primal and dual variables, respectively. Let us form the Lagra
 The KKT conditions associated with the stochastic market clearing problem therefore read
 \begin{align*}
 \frac{\partial \mathcal{L}}{\partial p_k} =& c_k^L + 2 c_k^Q (p_k - \alpha_k^\top \mu) - \underline{\nu}_k + \overline{\nu}_k - \lambda = 0, \forall k,\\
-\frac{\partial \mathcal{L}}{\partial \alpha_{ki}} =& - c_k^L \mu_i + 2 c_k^Q\Big(\alpha_{ki} \mu_i^2 - p_k \mu_i + \sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}\Big)\\
+\frac{\partial \mathcal{L}}{\partial \alpha_{ki}} =& - c_k^L \mu_i + 2 c_k^Q\Big(- p_k \mu_i + \alpha_{ki} \mu_i^2 + \sum_{j \ne i} \alpha_{kj} \mu_i \mu_j + \sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}\Big)\\
 &+ \underline{\nu}_k \Big(\mu_i + \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}}{||\alpha_k||_{\Sigma}}\Big)\\
-&+ \overline{\nu}_k \Big(\mu_i + \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}}{||\alpha_k||_{\Sigma}}\Big) - \chi_i = 0, \forall k, \forall i,\\
+&+ \overline{\nu}_k \Big(-\mu_i + \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki} + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}}{||\alpha_k||_{\Sigma}}\Big) - \chi_i = 0, \forall k, \forall i,\\
 \sum_k p_k +& \sum_i \tilde{W}_i = D,\\
 \sum_k \alpha_{ki} &= 1, \forall i,\\
 0 \le \overline{\nu}_k &\perp \overline{p}_k + \alpha_k^\top \mu - ||\alpha_k||_{\Sigma} \Phi_k^{-1} - p_k \ge 0, \forall k,\\
 0 \le \underline{\nu}_k & \perp p_k - \alpha_k^\top \mu - ||\alpha_k||_{\Sigma}\Phi_k^{-1} \ge 0, \forall k,
 \end{align*}
 from which the range constraints of $\alpha_{ki}$ variables were omitted for conciseness. Since the objective function is convex, the functions forming the constraints are continuously differentiable and the problem satisfies Slater's condition, the KKT conditions are necessary and sufficient. Thus, a solution to the complementarity problem gives a (globally) optimal solution of the market clearing problem. In addition, since the objective is strongly convex and the feasible set is convex (and non-empty), there is also a unique optimal solution to the problem.
-
-\section*{Appendix B}
-We derive the Lagrange dual of the following quadratic program:
-\begin{align*}
-\underset{x}{\min} \hspace{10pt} & \frac{1}{2}x^\top Q x + c^\top x\\
-\mbox{s.t. } & Ax \le b \hspace{15pt} (\pi)\\
-&x \in \mathbb{R}^n,
-\end{align*}
-where $Q \succeq 0$ (i.e., it is positive semi-definite) and $A \in \mathbb{R}^{m \times n}$. We start by writing the Lagrange function
-\begin{equation*}
-\mathcal{L}(x, \pi) = \frac{1}{2}x^\top Q x + c^\top x + \pi^\top(b - Ax)
-\end{equation*}
-and form the dual function
-\begin{equation*}
-d(\pi) = \underset{x \in \mathbb{R}^n}{\inf} \mathcal{L}(x, \pi).
-\end{equation*}
-Stationary points $\hat{x}$ of the Lagrangian must satisfy
-\begin{equation*}
-Q\hat{x} = A^\top \pi -c,
-\end{equation*}
-which can simply be obtained by setting the partial derivatives of $\mathcal{L}$ with respect to the entries of $x$ to $0$. These conditions are necessary for optimality and allow us to write the dual problem
-\begin{equation*}
-\underset{\pi \le 0}{\max} \mbox{ }d(\pi)
-\end{equation*}
-as
-\begin{align*}
-\underset{x, \pi}{\max} \hspace{10pt} & -\frac{1}{2}x^T Q x + \pi^\top b\\
-\mbox{s.t. } & Qx = A^\top \pi -c\\
-&x \in \mathbb{R}^n, \pi \le 0.
-\end{align*}
-Note that the objective follows from the identities
-\begin{equation*}
-c^\top x + \pi^\top(b - Ax) = \pi^\top b - (A^\top \pi - c)^\top x =  \pi^\top b - x^\top Q x,
-\end{equation*}
-for any pair $(x, \pi)$ jointly satisfying the first-order stationarity conditions given above. Note that $Q^\top = Q$ by definition. 
-
-If $Q \succ 0$ (i.e., it is positive definite), the first-order stationarity conditions can be re-written as
-\begin{equation*}
-\hat{x} = Q^{-1}(A^\top \pi - c),
-\end{equation*}
-and the dual problem becomes
-\begin{align*}
-\underset{\pi}{\max} \hspace{10pt} & -\frac{1}{2}(A^\top \pi -c)^\top Q^{-1} (A^\top \pi -c) + \pi^\top b\\
-\mbox{s.t. } & \pi \le 0.
-\end{align*}
-Note that duality results for (convex) quadratic programs can also be obtained via linear programming duality \cite{Dorn1960}.
 
 \bibliographystyle{plain} % We choose the "plain" reference style
 \bibliography{references}
