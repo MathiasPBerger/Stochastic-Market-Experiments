@@ -255,7 +255,7 @@ where
 \begin{equation*}
 g(y) = \frac{\Phi_k^{-1}}{2 c_k^Q}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big(||y||_\Sigma^{-1} \Sigma - ||y||_\Sigma^{-3} \Sigma y(\Sigma y)^\top\Big).
 \end{equation*}
-Since $M + g(y) + \Sigma$ is positive definite, applying Sylvester's criterion suffices to show that $\Lambda$ is positive definite. On the other hand, $\Lambda$ is indefinite, as can be seen from its characteristic polynomial
+Since $M + g(y) + \Sigma$ is positive definite, applying Sylvester's criterion suffices to show that $\Lambda$ is positive definite. On the other hand, $\Gamma$ is indefinite, as can be seen from its characteristic polynomial
 \begin{equation*}
 \mbox{det}(\Gamma - \nu I) = \nu^{N-1}\Big(\nu^2 - \sum_{i} \mu_i^2 \Big) = 0.
 \end{equation*}
@@ -263,15 +263,15 @@ Let $\nu^- = -\sqrt{\sum_{i} \mu_i^2}$ denote the (only) negative eigenvalue of 
 \begin{equation*}
 z^\top \hat{H}(y) z > 0, \forall z, \forall y.
 \end{equation*}
-In particular, this inequality should hold for the eigenvector of $\Gamma$ corresponding to its negative eigenvalue, which is the only situation in which this inequality may be violated. Let $z^- \in \mathbb{R}^{N+1}$ denote this (normed) eigenvector. It is relatively easy to check that
+In particular, this inequality should hold for the eigenvector of $\Gamma$ corresponding to its negative eigenvalue, which is the only situation in which this inequality may be violated (since $\Lambda$ is positive definite and all other eigenvalues of $\Gamma$ are either positive or equal to $0$). Let $z^- \in \mathbb{R}^{N+1}$ denote this (normed) eigenvector. It is easy to check that
 \begin{equation*}
 z^- = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & \frac{\mu_1}{\sqrt{\sum_i \mu_i^2}} & \ldots & \frac{\mu_N}{\sqrt{\sum_i \mu_i^2}}\end{pmatrix}^\top.
 \end{equation*}
-In addition, let $z_N^- \in \mathbb{R}^N$ denote the vector obtained by keeping the last $N$ entries of $z^-$. Then, the problem boils down to showing that
+In addition, let $z_N^- \in \mathbb{R}^N$ denote the vector obtained by keeping the last $N$ entries of $z^-$. Then, positive definiteness of $\hat{H}$ is guaranteed if
 \begin{equation*}
 (z^-)^\top \hat{H} z^- = (z^-)^\top\big(\Lambda + \Gamma\big) z^- = \Big(\frac{1}{2} + (z_N^-)^\top\big(M + g(y) + \Sigma\big)z_N^-\Big) + \nu^- > 0, \forall y.
 \end{equation*}
-In particular, this inequality should hold for all $y$ in $\arg \min_y (z_N^-)^\top g(y) z_N^-$. Since $g$ is positive semi-definite, it is easy to check that $(z_N^-)^\top g(z_N^-) z_N^- = 0$ and $y = z_N^-$ minimises the quadratic form. Thus, the condition to fulfil for $\hat{H}$ to be positive definite becomes
+In particular, this inequality should hold for all $y$ in $\arg \min_y (z_N^-)^\top g(y) z_N^-$. Since $g(y)$ is a positive semi-definite matrix for any $y$, it is easy to see from its definition that $(z_N^-)^\top g(z_N^-) z_N^- = 0$ and $y = z_N^-$ thus minimises the quadratic form. Thus, the condition to fulfil for $\hat{H}$ to be positive definite becomes
 \begin{equation*}
 \frac{1}{2} + (z_N^-)^\top\big(M + \Sigma\big)z_N^- + \nu^- > 0.
 \end{equation*}
@@ -281,11 +281,11 @@ To check that this condition is indeed satisfied, we note that
 &= \frac{1}{2} \begin{pmatrix} \frac{\mu_1}{\sqrt{\sum_i \mu_i^2}} & \ldots & \frac{\mu_N}{\sqrt{\sum_i \mu_i^2}}\end{pmatrix} \begin{pmatrix} \mu_1 \sqrt{\sum_i \mu_i^2} \\ \ldots \\ \mu_N \sqrt{\sum_i \mu_i^2} \end{pmatrix}\\
 &= \frac{1}{2} \sum_i \mu_i^2.
 \end{align*}
-Now, let $\bar{\nu} = \sqrt{\sum_i \mu_i^2}$ and $(z_N^-)^\top \Sigma z_N^- = \epsilon > 0$. Then, the condition for positive definiteness becomes
+Now, let $\bar{\nu} = \sqrt{\sum_i \mu_i^2}$ and $(z_N^-)^\top \Sigma z_N^- = \epsilon > 0$ (since $\Sigma$ is positive definite). Then, the condition for positive definiteness of $\hat{H}$ becomes
 \begin{equation*}
 \frac{1}{2} \bar{\nu}^2 - \bar{\nu} + \frac{1}{2} + \epsilon > 0.
 \end{equation*}
-It is straightforward to check that $\bar{\nu} = 1$ minimises the function on the left-hand side and its minimum is equal to $\epsilon > 0$, such that this condition for positive definiteness of $\hat{H}$ is always satisfied. In other words, $-H$ is positive definite and the. Hessian matrix $H$ is negative definite. In turn, this implies that $(x, y) = (p_k^*, \alpha_k^*)$ is indeed a maximum of $f$. Thus, $f(x, y) \le f(p_k^*, \alpha_k^*), \forall (x, y),$ and in particular $ f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*)$. It then follows that
+It is straightforward to check that $\bar{\nu} = 1$ minimises the function on the left-hand side and its minimum is equal to $\epsilon > 0$, such that the condition for positive definiteness of $\hat{H}$ is always satisfied. In other words, $-H$ is positive definite and the Hessian matrix $H$ is negative definite. In turn, this implies that $(x, y) = (p_k^*, \alpha_k^*)$ is a maximum of $f$. Thus, $f(x, y) \le f(p_k^*, \alpha_k^*), \forall (x, y),$ and in particular $ f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*)$. It then follows that
 \begin{equation*}
 V_k^\star \le f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*) = V_k^*.
 \end{equation*}
