@@ -177,10 +177,9 @@ We analyse four key properties of the proposed stochastic market design, namely 
 \end{definition}
 
 \begin{proposition}
-(\textcolor{orange}{Competitive Equilibrium}) The stochastic market clearing problem produces prices and decisions maximising the profit of each flexible generator and supporting a competitive equilibrium from which they have no incentive to deviate.
+(\textcolor{green}{Competitive Equilibrium}) The stochastic market clearing problem produces prices and decisions maximising the profit of each flexible generator and supporting a competitive equilibrium from which they have no incentive to deviate.
 \end{proposition}
 \begin{proof}
-\textcolor{orange}{The proof must be completed}
 The proof showing that decisions $\{p_k^*, \alpha_k^*\}$ and prices $\{\lambda^*, \chi^*\}$ support a competitive equilibrium proceeds in two steps. The first step consists in finding an expression for the expected pay-off of producer $k$ under prices and decisions computed by the market operator. The second step consists in showing that this profit is optimal for the problem faced by producer $k$.
 
 \textit{First Step:} Let $V_k^*$ denote the value of the objective of producer $k$ under said market prices and decisions
@@ -206,7 +205,7 @@ The second line results from the fact that the two new terms are equal to zero (
 \end{equation*}
 The last line is obtained by re-arranging and cancelling terms out.
 
-\textit{Second Step:} Now, let $\{p_k^\star, \alpha_k^\star\}$ denote the solution of the problem faced by producer $k$ under prices $\{\lambda^*, \chi^*\}$, and let $V_k^\star$ denote the corresponding objective. We essentially seek to show that $V_k^\star \le V_k^*$. One successively finds
+\textit{Second Step:} Now, let $\{p_k^\star, \alpha_k^\star\}$ denote an optimal solution of the problem faced by producer $k$ under prices $\{\lambda^*, \chi^*\}$, and let $V_k^\star$ denote the corresponding objective. We essentially seek to show that $V_k^\star \le V_k^*$. One successively finds
 \begin{align*}
     V_k^\star =& \lambda^*p_k^\star + (\alpha_k^\star)^\top \chi^* - c_k^L(p_k^\star - (\alpha_k^\star)^\top \mu) - c_k^Q\big((p_k^\star - (\alpha_k^\star)^\top \mu)^2 + (\alpha_k^\star)^\top \Sigma \alpha_k^\star\big)\\
     \le& \lambda^*p_k^\star + (\alpha_k^\star)^\top \chi^* - c_k^L(p_k^\star - (\alpha_k^\star)^\top \mu) - c_k^Q\big((p_k^\star - (\alpha_k^\star)^\top \mu)^2 + (\alpha_k^\star)^\top \Sigma \alpha_k^\star\big)\\
@@ -220,7 +219,7 @@ The last line is obtained by re-arranging and cancelling terms out.
 where the second line follows from the fact that $\underline{\nu}_k^* \ge 0$ and $\overline{\nu}_k^* \ge 0$ (dual feasibility for market operator), while the terms in parentheses multiplying them are non-negative (primal feasibility of ($p_k^\star, \alpha_k^\star$) for producer $k$). The third line is obtained by re-arranging terms and the fourth line follows from the stationarity of the Lagrangian of the market clearing problem with respect to $p_k$ and $\alpha_k$ (see KKT conditions in Appendix A). Let $f:\mathbb{R}^{N+1} \rightarrow \mathbb{R}$ be such that
 \begin{align*}
 f(x, y) =& x \big(2c_k^Q(p_k^* - (\alpha_k^*)^\top \mu)\big) - c_k^Q(x - y^\top \mu)^2 + \overline{\nu}_k^* \overline{p}_k - \Phi_k^{-1} ||y||_\Sigma (\underline{\nu}_k^* + \overline{\nu}_k^*)\\ 
-    &+ y^T \Big(2c_k^Q\big(M \alpha_k^* - p_k^* \mu + \Sigma \alpha_k^*\big) + \frac{\Phi_k^{-1}}{||\alpha_k^*||_\Sigma}(\underline{\nu}_k^* +\overline{\nu}_k^*) \Sigma \alpha_k^*\Big) - c_k^Q y^T \Sigma y,
+    &+ y^T \Big(2c_k^Q\big(- p_k^* \mu + M \alpha_k^* + \Sigma \alpha_k^*\big) + \frac{\Phi_k^{-1}}{||\alpha_k^*||_\Sigma}(\underline{\nu}_k^* +\overline{\nu}_k^*) \Sigma \alpha_k^*\Big) - c_k^Q y^T \Sigma y,
 \end{align*}
 where $M \in \mathbb{R}^{N \times N}$ is the rank-one matrix $M = \mu \mu^\top$.
 We first note that
@@ -237,24 +236,60 @@ which directly follows from the derivations in the first step of this proof. We 
 \frac{\partial f}{\partial y} =& - 2c_k^Q (y^\top \mu) \mu + 2 c_k^Q x \mu - \frac{\Phi_k^{-1}}{||y||_\Sigma} (\underline{\nu}_k^* + \overline{\nu}_k^*) \Sigma y - 2c_k^Q \Sigma y\\
 &+ \Big(2c_k^Q\big(M \alpha_k^* - p_k^* \mu + \Sigma \alpha_k^*\big) + \frac{\Phi_k^{-1}}{||\alpha_k^*||_\Sigma}(\underline{\nu}_k^* +\overline{\nu}_k^*) \Sigma \alpha_k^*\Big).
 \end{align*}
-It is clear that setting $(x, y) = (p_k^*, \alpha_k^*)$ cancels the partial derivative of $f$ with respect to $x$. To see that it also cancels the partial derivatives with respect to each entry of $y$, it suffices to note that $\big((\alpha_k^*)^\top \mu\big)\mu = M\alpha_k^*$. It is straightforward to see that all other terms cancel each other out. We then derive an expression for the Hessian,
+It is clear that setting $(x, y) = (p_k^*, \alpha_k^*)$ cancels the partial derivative of $f$ with respect to $x$. To see that it also cancels the partial derivatives with respect to each entry of $y$, it suffices to note that $\big((\alpha_k^*)^\top \mu\big)\mu = M\alpha_k^*$. It is straightforward to see that all other terms cancel each other out. We then derive an expression for the Hessian
 \begin{equation*}
 H(x, y) = \begin{pmatrix} \frac{\partial^2 f}{\partial x^2} & \frac{\partial^2 f}{\partial x \partial y} \\ \frac{\partial^2 f}{\partial y \partial x} & \frac{\partial^2 f}{\partial y^2}\end{pmatrix},
 \end{equation*}
 where
 \begin{align*}
 \frac{\partial^2 f}{\partial x^2} &= - 2c_k^Q,\\
-\frac{\partial^2 f}{\partial x \partial y} &= 2 c_k^Q \mu,\\
-\frac{\partial^2 f}{\partial y \partial x} &= 2 c_k^Q \mu^\top,\\
+\frac{\partial^2 f}{\partial x \partial y} &= 2 c_k^Q \mu^\top,\\
+\frac{\partial^2 f}{\partial y \partial x} &= 2 c_k^Q \mu,\\
 \frac{\partial^2 f}{\partial y^2} &= -2 c_k^Q M - \Phi_k^{-1}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big(||y||_\Sigma^{-1} \Sigma - ||y||_\Sigma^{-3} \Sigma y(\Sigma y)^\top\Big) - 2c_k^Q \Sigma.
 \end{align*}
-We note that $-\partial^2 f/\partial y^2$ is positive definite. Indeed, $M$ is a positive semi-definite rank-one matrix, the matrix in parentheses is positive semi-definite (\textcolor{orange}{since it is the Hessian of a weighted 2-norm, which is convex}) and its coefficients are non-negative, $c_k^Q > 0$ and $\Sigma$ is positive definite. Then, \textcolor{orange}{it can be shown that $-H$ is positive definite}, such that $H$ is negative definite and $(x, y) = (p_k^*, \alpha_k^*)$ is a maximum of $f$. 
-
-In other words, $f(x, y) \le f(p_k^*, \alpha_k^*), \forall (x, y),$ and in particular $ f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*)$. It then follows that
+We note that $-\partial^2 f/\partial y^2$ is positive definite. Indeed, i) $c_k^Q > 0$ and $M$ is a rank-one positive semi-definite matrix, ii) the matrix expression in parentheses is positive semi-definite since it is the Hessian of a weighted 2-norm (which is a convex function), $\Phi_k^{-1} \ge 0$ for $\epsilon_k \le 0.5$ and $\underline{\nu}_k \ge 0$, $\overline{\nu}_k \ge 0$ (dual feasibility), iii) $\Sigma$ is positive definite. To guarantee that $(x, y) = (p_k^*, \alpha_k^*)$ is indeed a maximum of $f$, we must show that $-H(x, y)/2c_k^Q$ is positive definite. We first start by re-writing it as
+\begin{align*}
+\hat{H}(y) = -\frac{H(x, y)}{2c_k^Q} &= \begin{pmatrix} 1 & 0^\top \\ 0 & M + g(y) + \Sigma\end{pmatrix} + \begin{pmatrix} 0 & -\mu^\top \\ -\mu & 0\end{pmatrix} = \Lambda + \Gamma,
+\end{align*} 
+where
+\begin{equation*}
+g(y) = \frac{\Phi_k^{-1}}{2 c_k^Q}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big(||y||_\Sigma^{-1} \Sigma - ||y||_\Sigma^{-3} \Sigma y(\Sigma y)^\top\Big).
+\end{equation*}
+Since $M + g(y) + \Sigma$ is positive definite, applying Sylvester's criterion suffices to show that $\Lambda$ is positive definite. On the other hand, $\Lambda$ is indefinite, as can be seen from its characteristic polynomial
+\begin{equation*}
+\mbox{det}(\Gamma - \nu I) = \nu^{N-1}\Big(\nu^2 - \sum_{i} \mu_i^2 \Big) = 0.
+\end{equation*}
+Let $\nu^- = -\sqrt{\sum_{i} \mu_i^2}$ denote the (only) negative eigenvalue of $\Gamma$. Then, for $\hat{H}$ to be positive definite, we need to guarantee that
+\begin{equation*}
+z^\top \hat{H}(y) z > 0, \forall z, \forall y.
+\end{equation*}
+In particular, this inequality should hold for the eigenvector of $\Gamma$ corresponding to its negative eigenvalue, which is the only situation in which this inequality may be violated. Let $z^- \in \mathbb{R}^{N+1}$ denote this (normed) eigenvector. It is relatively easy to check that
+\begin{equation*}
+z^- = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & \frac{\mu_1}{\sqrt{\sum_i \mu_i^2}} & \ldots & \frac{\mu_N}{\sqrt{\sum_i \mu_i^2}}\end{pmatrix}^\top.
+\end{equation*}
+In addition, let $z_N^- \in \mathbb{R}^N$ denote the vector obtained by keeping the last $N$ entries of $z^-$. Then, the problem boils down to showing that
+\begin{equation*}
+(z^-)^\top \hat{H} z^- = (z^-)^\top\big(\Lambda + \Gamma\big) z^- = \Big(\frac{1}{2} + (z_N^-)^\top\big(M + g(y) + \Sigma\big)z_N^-\Big) + \nu^- > 0, \forall y.
+\end{equation*}
+In particular, this inequality should hold for all $y$ in $\arg \min_y (z_N^-)^\top g(y) z_N^-$. Since $g$ is positive semi-definite, it is easy to check that $(z_N^-)^\top g(z_N^-) z_N^- = 0$ and $y = z_N^-$ minimises the quadratic form. Thus, the condition to fulfil for $\hat{H}$ to be positive definite becomes
+\begin{equation*}
+\frac{1}{2} + (z_N^-)^\top\big(M + \Sigma\big)z_N^- + \nu^- > 0.
+\end{equation*}
+To check that this condition is indeed satisfied, we note that
+\begin{align*}
+(z_N^-)^\top M z_N^- &= \frac{1}{2}\begin{pmatrix} \frac{\mu_1}{\sqrt{\sum_i \mu_i^2}} & \ldots & \frac{\mu_N}{\sqrt{\sum_i \mu_i^2}}\end{pmatrix} \begin{pmatrix} \mu_1^2 & \ldots & \mu_1 \mu_N \\ \vdots & \ddots & \vdots \\ \mu_N \mu_1 & \ldots & \mu_N^2 \end{pmatrix} \begin{pmatrix} \frac{\mu_1}{\sqrt{\sum_i \mu_i^2}} \\ \ldots \\ \frac{\mu_N}{\sqrt{\sum_i \mu_i^2}}\end{pmatrix}\\
+&= \frac{1}{2} \begin{pmatrix} \frac{\mu_1}{\sqrt{\sum_i \mu_i^2}} & \ldots & \frac{\mu_N}{\sqrt{\sum_i \mu_i^2}}\end{pmatrix} \begin{pmatrix} \mu_1 \sqrt{\sum_i \mu_i^2} \\ \ldots \\ \mu_N \sqrt{\sum_i \mu_i^2} \end{pmatrix}\\
+&= \frac{1}{2} \sum_i \mu_i^2.
+\end{align*}
+Now, let $\bar{\nu} = \sqrt{\sum_i \mu_i^2}$ and $(z_N^-)^\top \Sigma z_N^- = \epsilon > 0$. Then, the condition for positive definiteness becomes
+\begin{equation*}
+\frac{1}{2} \bar{\nu}^2 - \bar{\nu} + \frac{1}{2} + \epsilon > 0.
+\end{equation*}
+It is straightforward to check that $\bar{\nu} = 1$ minimises the function on the left-hand side and its minimum is equal to $\epsilon > 0$, such that this condition for positive definiteness of $\hat{H}$ is always satisfied. In other words, $-H$ is positive definite and the. Hessian matrix $H$ is negative definite. In turn, this implies that $(x, y) = (p_k^*, \alpha_k^*)$ is indeed a maximum of $f$. Thus, $f(x, y) \le f(p_k^*, \alpha_k^*), \forall (x, y),$ and in particular $ f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*)$. It then follows that
 \begin{equation*}
 V_k^\star \le f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*) = V_k^*.
 \end{equation*}
-Since this applies to any arbitrary producer $k$, $V_k^\star \le V_k^*, \forall k$. Prices and decisions identified by the market operator therefore maximise the profit of each producer, resulting in a competitive equilibrium.
+Since this applies to any arbitrary producer $k$, $V_k^\star \le V_k^*, \forall k$. Prices and decisions identified by the market operator therefore maximise the expected pay-off of each producer, resulting in a competitive equilibrium.
 \end{proof}
 
 \begin{proposition}
@@ -333,7 +368,7 @@ Building upon Lemma \ref{lemma1}, we successively have
 =& \sum_k \alpha_{ki}^* \Big(\frac{\chi_i^*}{\mu_i} - 2 \frac{c_k^Q}{\mu_i}\big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{kj}^*\big)\\
  &- \frac{\Phi_k^{-1}}{\mu_i} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j  \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big),
 \end{align*}
-where the first line follows from Lemma \ref{lemma1}, the second line is obtained by taking the partial derivative of the Lagrangian function with respect to $\mu_i$ and evaluating it at the optimal solution, re-arranging terms yields the third line, the fourth line is obtained by substituting the stationarity condition of the Lagrangian function with respect to $\alpha_{ki}$ (satisfied at optimality), while re-arranging terms gives the fifth lines. It immediately follows that
+where the first line follows from Lemma \ref{lemma1}, the second line is obtained by taking the partial derivative of the Lagrangian function with respect to $\mu_i$ and evaluating it at the optimal solution, re-arranging terms yields the third line, the fourth line is obtained by substituting the stationarity condition of the Lagrangian function with respect to $\alpha_{ki}$ (satisfied at optimality), while re-arranging terms gives the fifth line. It immediately follows that
 \begin{align*}
 \mu_i \frac{\partial V^*}{\partial \mu_i} =& \sum_k\alpha_{ki}^*\Big(\chi_i^* - 2 c_k^Q \big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{kj}^*\big)\\
  &- \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j  \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
