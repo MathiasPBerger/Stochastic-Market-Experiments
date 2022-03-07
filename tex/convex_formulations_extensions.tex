@@ -9,6 +9,7 @@
 \newtheorem{definition}{Definition}
 \newtheorem{corollary}{Corollary}
 \newtheorem{lemma}{Lemma}
+\newtheorem{assumption}{Assumption}
 
 \title{Properties of Chance-Constrained Stochastic Electricity Markets}
 \author{Mathias Berger}
@@ -168,21 +169,26 @@ where the dual variables of the energy balance and reserve allocation constraint
 
 We analyse four key properties of the proposed stochastic market design, namely whether it supports a \textit{competitive equilibrium}, guarantees \textit{cost recovery} for flexible generators, \textit{revenue adequacy} for the market operator, and is \textit{incentive compatible}.
 
+\begin{assumption}
+We assume throughout this section that $c_k > 0, \forall k$, $\Sigma \succ 0$ and $\bar{p}_k > 0, \forall k$.
+\end{assumption}
+
 \begin{definition}
 (Competitive Equilibrium) A competitive equilibrium for the stochastic market is a set of prices $\{\lambda^*, \{\chi_i^*\}_{\forall i}\}$ and decisions $\{p_k^*, \{\alpha_{ki}^*\}_{\forall i}\}_{\forall k}$ that\vspace{-5pt}
 \begin{enumerate}
 \item clear the markets: $\sum_k p_k^* + \sum_i \tilde{W}_i = D$ and $\sum_k \alpha_{ki}^* = 1, \forall i$\vspace{-5pt}
-\item maximise the expected profit of flexible generators
+\item maximise the expected pay-off of flexible generators
 \end{enumerate}
 \end{definition}
 
-\begin{proposition}
-(\textcolor{green}{Competitive Equilibrium}) The stochastic market clearing problem produces prices and decisions maximising the profit of each flexible generator and supporting a competitive equilibrium from which they have no incentive to deviate.
-\end{proposition}
+\begin{lemma}\label{ExpectedPayOff}
+Let $V_k^*$ denote the expected pay-off of flexible generator $k$ under prices and decisions computed by the market operator. Then,
+\begin{equation*}
+V_k^* = c_k^Q(p_k^* - (\alpha_k^*)^\top \mu)^2 + c_k^Q (\alpha_k^*)^\top \Sigma \alpha_k^* + \overline{\nu}_k^* \overline{p}_k.
+\end{equation*}
+\end{lemma}
 \begin{proof}
-The proof showing that decisions $\{p_k^*, \alpha_k^*\}$ and prices $\{\lambda^*, \chi^*\}$ support a competitive equilibrium proceeds in two steps. The first step consists in finding an expression for the expected pay-off of producer $k$ under prices and decisions computed by the market operator. The second step consists in showing that this profit is optimal for the problem faced by producer $k$.
-
-\textit{First Step:} Let $V_k^*$ denote the value of the objective of producer $k$ under said market prices and decisions
+We successively have
 \begin{align*}
     V_k^* =& \lambda^*p_k^* + (\alpha_k^*)^\top\chi^* - c_k^L(p_k^* - (\alpha_k^*)^\top \mu) - c_k^Q\big((p_k^* - (\alpha_k^*)^\top \mu)^2 + (\alpha_k^*)^\top\Sigma \alpha_k^*\big) \\
     =& \lambda^*p_k^* + (\alpha_k^*)^\top\chi^* - c_k^L(p_k^* - (\alpha_k^*)^\top \mu) - c_k^Q\big((p_k^* - (\alpha_k^*)^\top \mu)^2 + (\alpha_k^*)^\top\Sigma \alpha_k^*\big)\\
@@ -199,13 +205,20 @@ The proof showing that decisions $\{p_k^*, \alpha_k^*\}$ and prices $\{\lambda^*
     &+ 2c_k^Q (\alpha_{k}^*)^\top \Sigma \alpha_k^* + \Phi_k^{-1}\frac{\underline{\nu}_k^* +\overline{\nu}_k^*}{||\alpha_k^*||_\Sigma} ||\alpha_k^*||_\Sigma^2 - c_k^Q (\alpha_k^*)^\top\Sigma \alpha_k^*\\
     =& c_k^Q(p_k^* - (\alpha_k^*)^\top \mu)^2 + c_k^Q (\alpha_k^*)^\top \Sigma \alpha_k^* + \overline{\nu}_k^* \overline{p}_k.
 \end{align*}
-The second line results from the fact that the two new terms are equal to zero (complementary slackness). The third line is obtained by re-arranging terms. The fourth line follows from the stationarity of the Lagrangian with respect to $p_k$ and $\alpha_k$, respectively (see KKT conditions in Appendix A). The fifth line follows from re-arranging terms. The sixth line is obtained by noting that
+The first line uses the definition of the objective function of flexible generator $k$ and the second line results from the fact that the two new terms are equal to zero (complementary slackness). The third line is obtained by re-arranging terms. The fourth line follows from the stationarity of the Lagrangian with respect to $p_k$ and $\alpha_k$, respectively (see KKT conditions in Appendix A). The fifth line follows from re-arranging terms. The sixth line is obtained by noting that
 \begin{equation*}
 ||\alpha_k^*||_\Sigma^2 = (\alpha_k^*)^\top \Sigma \alpha_k^* = \sum_i \alpha_{ki}^*\big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}^*\big).
 \end{equation*}
 The last line is obtained by re-arranging and cancelling terms out.
+\end{proof}
 
-\textit{Second Step:} Now, let $\{p_k^\star, \alpha_k^\star\}$ denote an optimal solution of the problem faced by producer $k$ under prices $\{\lambda^*, \chi^*\}$, and let $V_k^\star$ denote the corresponding objective. We essentially seek to show that $V_k^\star \le V_k^*$. One successively finds
+\begin{proposition}
+(\textcolor{green}{Competitive Equilibrium}) The stochastic market clearing problem produces prices and decisions maximising the profit of each flexible generator and supporting a competitive equilibrium from which they have no incentive to deviate.
+\end{proposition}
+\begin{proof}
+The proof showing that decisions $\{p_k^*, \alpha_k^*\}$ and prices $\{\lambda^*, \chi^*\}$ support a competitive equilibrium consists in showing that the expected pay-off of flexible generator $k$ (given in Lemma \ref{ExpectedPayOff}) is optimal for flexible generator $k$ (i.e., these decisions and prices maximise its objective).
+
+Let $\{p_k^\star, \alpha_k^\star\}$ denote an optimal solution of the problem faced by producer $k$ under prices $\{\lambda^*, \chi^*\}$, and let $V_k^\star$ denote the corresponding objective. We essentially seek to show that $V_k^\star \le V_k^*$. We successively find
 \begin{align*}
     V_k^\star =& \lambda^*p_k^\star + (\alpha_k^\star)^\top \chi^* - c_k^L(p_k^\star - (\alpha_k^\star)^\top \mu) - c_k^Q\big((p_k^\star - (\alpha_k^\star)^\top \mu)^2 + (\alpha_k^\star)^\top \Sigma \alpha_k^\star\big)\\
     \le& \lambda^*p_k^\star + (\alpha_k^\star)^\top \chi^* - c_k^L(p_k^\star - (\alpha_k^\star)^\top \mu) - c_k^Q\big((p_k^\star - (\alpha_k^\star)^\top \mu)^2 + (\alpha_k^\star)^\top \Sigma \alpha_k^\star\big)\\
@@ -216,7 +229,7 @@ The last line is obtained by re-arranging and cancelling terms out.
    &+ \sum_i \alpha_{ki}^\star \Big(2c_k^Q\big(- p_k^* \mu_i + \alpha_{ki}^*\mu_i^2 + \sum_{j \ne i} \alpha_{kj}^* \mu_i \mu_j + \sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}^*\big) \\
     &+ \Phi_k^{-1} \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \kappa_{ij} \alpha_{kj}^*}{||\alpha_k^*||_\Sigma}(\underline{\nu}_k^* +\overline{\nu}_k^*)\Big) - c_k^Q (\alpha_k^\star)^\top\Sigma \alpha_k^\star,
 \end{align*}
-where the second line follows from the fact that $\underline{\nu}_k^* \ge 0$ and $\overline{\nu}_k^* \ge 0$ (dual feasibility for market operator), while the terms in parentheses multiplying them are non-negative (primal feasibility of ($p_k^\star, \alpha_k^\star$) for producer $k$). The third line is obtained by re-arranging terms and the fourth line follows from the stationarity of the Lagrangian of the market clearing problem with respect to $p_k$ and $\alpha_k$ (see KKT conditions in Appendix A). Let $f:\mathbb{R}^{N+1} \rightarrow \mathbb{R}$ be such that
+where the second line follows from the fact that $\underline{\nu}_k^* \ge 0$ and $\overline{\nu}_k^* \ge 0$ (dual feasibility for market clearing solution), while the terms in parentheses multiplying them are non-negative (primal feasibility of ($p_k^\star, \alpha_k^\star$) for producer $k$). The third line is obtained by re-arranging terms and the fourth line follows from the stationarity of the Lagrangian of the market clearing problem with respect to $p_k$ and $\alpha_k$ (see KKT conditions in Appendix A). Now, let $f:\mathbb{R}^{N+1} \rightarrow \mathbb{R}$ be such that
 \begin{align*}
 f(x, y) =& x \big(2c_k^Q(p_k^* - (\alpha_k^*)^\top \mu)\big) - c_k^Q(x - y^\top \mu)^2 + \overline{\nu}_k^* \overline{p}_k - \Phi_k^{-1} ||y||_\Sigma (\underline{\nu}_k^* + \overline{\nu}_k^*)\\ 
     &+ y^T \Big(2c_k^Q\big(- p_k^* \mu + M \alpha_k^* + \Sigma \alpha_k^*\big) + \frac{\Phi_k^{-1}}{||\alpha_k^*||_\Sigma}(\underline{\nu}_k^* +\overline{\nu}_k^*) \Sigma \alpha_k^*\Big) - c_k^Q y^T \Sigma y,
@@ -230,7 +243,7 @@ and
 \begin{equation*}
 f(p_k^*, \alpha_k^*) = V_k^*,
 \end{equation*}
-which directly follows from the derivations in the first step of this proof. We now seek to show that $f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*)$. To achieve this, we proceed in two steps. First, we check that $(x, y) = (p_k^*, \alpha_k^*)$ is a stationary point of $f$. Then, we check that it also corresponds to a maximum of $f$ by studying the properties of its Hessian matrix. We first compute
+which directly follows from Lemma \ref{ExpectedPayOff}. We now seek to show that $f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*)$. To achieve this, we proceed in two steps. First, we check that $(x, y) = (p_k^*, \alpha_k^*)$ is a stationary point of $f$. Then, we check that it also corresponds to a maximum of $f$ by studying the properties of its Hessian matrix. We first compute
 \begin{align*}
 \frac{\partial f}{\partial x} =& 2c_k^Q(p_k^* - (\alpha_k^*)^\top\mu) - 2 c_k^Q x + 2c_k^Q y^\top \mu,\\
 \frac{\partial f}{\partial y} =& - 2c_k^Q (y^\top \mu) \mu + 2 c_k^Q x \mu - \frac{\Phi_k^{-1}}{||y||_\Sigma} (\underline{\nu}_k^* + \overline{\nu}_k^*) \Sigma y - 2c_k^Q \Sigma y\\
@@ -247,7 +260,7 @@ where
 \frac{\partial^2 f}{\partial y \partial x} &= 2 c_k^Q \mu,\\
 \frac{\partial^2 f}{\partial y^2} &= -2 c_k^Q M - \Phi_k^{-1}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big(||y||_\Sigma^{-1} \Sigma - ||y||_\Sigma^{-3} \Sigma y(\Sigma y)^\top\Big) - 2c_k^Q \Sigma.
 \end{align*}
-We note that $-\partial^2 f/\partial y^2$ is positive definite. Indeed, i) $c_k^Q > 0$ and $M$ is a rank-one positive semi-definite matrix, ii) the matrix expression in parentheses is positive semi-definite since it is the Hessian of a weighted 2-norm (which is a convex function), $\Phi_k^{-1} \ge 0$ for $\epsilon_k \le 0.5$ and $\underline{\nu}_k \ge 0$, $\overline{\nu}_k \ge 0$ (dual feasibility), iii) $\Sigma$ is positive definite. To guarantee that $(x, y) = (p_k^*, \alpha_k^*)$ is indeed a maximum of $f$, we must show that $-H(x, y)/2c_k^Q$ is positive definite. We first start by re-writing it as
+We note that $-\partial^2 f/\partial y^2$ is positive definite. Indeed, i) $c_k^Q > 0$ and $M$ is a rank-one positive semi-definite matrix, ii) the matrix expression in parentheses is positive semi-definite since it is the Hessian of a weighted 2-norm (which is a convex function), $\Phi_k^{-1} \ge 0$ for $\epsilon_k \le 0.5$ and $\underline{\nu}_k \ge 0$, $\overline{\nu}_k \ge 0$ (dual feasibility), iii) $\Sigma$ is positive definite. To guarantee that $(x, y) = (p_k^*, \alpha_k^*)$ is indeed a maximum of $f$, we must show that $-H(x, y)/2c_k^Q$ is positive definite. We start by re-writing it as
 \begin{align*}
 \hat{H}(y) = -\frac{H(x, y)}{2c_k^Q} &= \begin{pmatrix} 1 & 0^\top \\ 0 & M + g(y) + \Sigma\end{pmatrix} + \begin{pmatrix} 0 & -\mu^\top \\ -\mu & 0\end{pmatrix} = \Lambda + \Gamma,
 \end{align*} 
@@ -259,7 +272,7 @@ Since $M + g(y) + \Sigma$ is positive definite, applying Sylvester's criterion s
 \begin{equation*}
 \mbox{det}(\Gamma - \nu I) = \nu^{N-1}\Big(\nu^2 - \sum_{i} \mu_i^2 \Big) = 0.
 \end{equation*}
-Let $\nu^- = -\sqrt{\sum_{i} \mu_i^2}$ denote the (only) negative eigenvalue of $\Gamma$. Then, for $\hat{H}$ to be positive definite, we need to guarantee that
+Let $\nu^- = -\sqrt{\sum_{i} \mu_i^2}$ denote the (only) negative eigenvalue of $\Gamma$. Then, for $\hat{H}$ to be positive definite, we need to check that
 \begin{equation*}
 z^\top \hat{H}(y) z > 0, \forall z, \forall y.
 \end{equation*}
@@ -271,7 +284,7 @@ In addition, let $z_N^- \in \mathbb{R}^N$ denote the vector obtained by keeping 
 \begin{equation*}
 (z^-)^\top \hat{H} z^- = (z^-)^\top\big(\Lambda + \Gamma\big) z^- = \Big(\frac{1}{2} + (z_N^-)^\top\big(M + g(y) + \Sigma\big)z_N^-\Big) + \nu^- > 0, \forall y.
 \end{equation*}
-In particular, this inequality should hold for all $y$ in $\arg \min_y (z_N^-)^\top g(y) z_N^-$. Since $g(y)$ is a positive semi-definite matrix for any $y$, it is easy to see from its definition that $(z_N^-)^\top g(z_N^-) z_N^- = 0$ and $y = z_N^-$ thus minimises the quadratic form. Thus, the condition to fulfil for $\hat{H}$ to be positive definite becomes
+In particular, this inequality should hold for all $y$ in $\arg \min_y (z_N^-)^\top g(y) z_N^-$. Since $g(y)$ is a positive semi-definite matrix for any $y$, it is easy to see from its definition that $(z_N^-)^\top g(z_N^-) z_N^- = 0$ and $y = z_N^-$ thus minimises the quadratic form. Hence, the condition to fulfil for $\hat{H}$ to be positive definite becomes
 \begin{equation*}
 \frac{1}{2} + (z_N^-)^\top\big(M + \Sigma\big)z_N^- + \nu^- > 0.
 \end{equation*}
@@ -291,16 +304,15 @@ V_k^\star \le f(p_k^\star, \alpha_k^\star) \le f(p_k^*, \alpha_k^*) = V_k^*.
 \end{equation*}
 Since this applies to any arbitrary producer $k$, $V_k^\star \le V_k^*, \forall k$. Prices and decisions identified by the market operator therefore maximise the expected pay-off of each producer, resulting in a competitive equilibrium.
 \end{proof}
-
 \begin{proposition}
 (\textcolor{green}{Cost Recovery}) The stochastic market clearing problem produces prices and decisions that guarantee a non-negative expected pay-off for flexible generators.
 \end{proposition}
 \begin{proof}
-It follows from the proof of the competitive equilibrium property that 
+It follows from Lemma \ref{ExpectedPayOff} that
 \begin{equation*}
 V_k^*=  c_k^Q(p_k^* - (\alpha_k^*)^\top \mu)^2 + c_k^Q (\alpha_k^*)^\top \Sigma \alpha_k^* + \overline{\nu}_k^* \overline{p}_k, \forall k.
 \end{equation*}
-Note that the first two terms are non-negative since $c_k^Q \ge 0$ and $\Sigma \succeq 0$. In addition, the third term is non-negative, since $\overline{\nu}_k^* \ge 0$ (dual feasibility) and $\overline{p}_k > 0$ (by assumption). Hence, we have
+Note that the first two terms are non-negative and positive, respectively, since $c_k^Q > 0$ and $\Sigma \succ 0$ (by assumption). In addition, the third term is non-negative, since $\overline{\nu}_k^* \ge 0$ (dual feasibility) and $\overline{p}_k > 0$ (by assumption). Hence, we have
 \begin{equation*}
 V_k^* \ge 0, \forall k.
 \end{equation*}
@@ -333,6 +345,10 @@ Market properties are also discussed in \cite{Ratha2019} in a similar set-up. Th
 
 In this section, we carry out a sensitivity analysis of the stochastic market clearing problem with respect to two essential statistical parameters, namely the mean $\mu_i$ and standard deviation $\sigma_i$ of the forecast error of wind producer $i$.
 
+\begin{assumption}
+We assume throughout this section that $c_k > 0, \forall k$, $\Sigma \succ 0$ and $\bar{p}_k > 0, \forall k$.
+\end{assumption}
+
 Let $(\{p_k^*\}_{\forall k}, \{\alpha_k^*\}_{\forall k})$ and $(\lambda^*, \chi^*, \{\underline{\nu}_k^*\}_{\forall k}, \{\overline{\nu}_k^*\}_{\forall k})$ denote optimal primal and dual solutions obtained by solving the stochastic market clearing problem. Then, let $V^*: \mathbb{R} \times \mathbb{R}_+ \rightarrow \mathbb{R}$ denote the value function of the stochastic market clearing problem, that is, 
 \begin{align*}
 V^*(\mu, \sigma) &= \mathbb{E}\Big[\sum_k \big(c_k^L \mathbf{p}_k^{g*}(\{\boldsymbol{\omega}_i\}_{\forall i}) + c_k^Q (\mathbf{p}_k^{g*}(\{\boldsymbol{\omega}_i\}_{\forall i}))^2\big)\Big]\\
@@ -340,7 +356,7 @@ V^*(\mu, \sigma) &= \mathbb{E}\Big[\sum_k \big(c_k^L \mathbf{p}_k^{g*}(\{\boldsy
 \end{align*}
 In the following, we assume that we work with parameters $\mu$ and $\Sigma$ such that the value function can always be defined (i.e., the optimal solution set is non-empty). Before presenting our main result, we prove the following lemma.
 \begin{lemma}\label{lemma1}
-Let $V^*$ be the value function of the market clearing problem. Then, if $\Sigma \succ 0$ and $c_k^Q > 0, \forall k$, we have that
+Let $V^*$ be the value function of the market clearing problem. Then, we have that
 \begin{align*}
 \frac{\partial V^*}{\partial \mu_i} &= \frac{\partial \mathcal{L}^*}{\partial \mu_i},\\
 \frac{\partial V^*}{\partial \sigma_i} &= \frac{\partial \mathcal{L}^*}{\partial \sigma_i},
