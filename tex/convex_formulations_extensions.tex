@@ -47,7 +47,7 @@ We start by describing the stochastic optimisation problems faced by flexible ge
 
 \subsubsection{Stochastic Formulation}
 
-We consider risk-neutral flexible generators (i.e., generators only care about the expected pay-off and not its variance). Thus, flexible generator $k$ seeks to maximise its expected profit subject to chance constraints on its power output:
+We consider risk-neutral flexible generators (i.e., generators only care about the expected pay-off and not its variance). Thus, flexible generator $k$ seeks to maximise its expected pay-off subject to chance constraints on its power output:
 \begin{align}
 \underset{p_k, \{\alpha_{ki}\}_{\forall i}}{\max} \hspace{10pt} & \mathbb{E}[\lambda p_k + \sum_i \chi_i \alpha_{ki} - c_k^L \mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i}) - c_k^Q (\mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i}))^2]\\
 \mbox{s.t. } & \mathbb{P}[\mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i}) \le \overline{p}_k] \ge 1 - \epsilon_k,\\
@@ -57,7 +57,7 @@ We consider risk-neutral flexible generators (i.e., generators only care about t
 Note that electricity and reserve prices, which are denoted by $\lambda$ and $\{\chi_i\}_{\forall i}$, respectively, are treated as parameters by each producer $k$.
 \subsubsection{Deterministic Equivalent Formulation}
 
-The stochastic expected profit maximisation problem faced by producer $k$ can be recast as an equivalent deterministic program as follows. First, by linearity of the expectation operator, the expected profit can be re-written as
+The stochastic expected profit maximisation problem faced by producer $k$ can be recast as an equivalent deterministic program as follows. First, by linearity of the expectation operator, the expected pay-off can be re-written as
 \begin{align*}
 \Pi_k(p_k, \{\alpha_{ki}\}_{\forall i}) &= \mathbb{E}\Big[\lambda p_k + \sum_i \chi_i \alpha_{ki} - c_k^L \mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i}) - c_k^Q (\mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i}))^2\Big]\\
 &= \mathbb{E}\big[\lambda p_k\big] + \mathbb{E}\Big[\sum_i \chi_i \alpha_{ki}\Big] - \mathbb{E}\big[c_k^L \mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i})\big] - \mathbb{E}\big[c_k^Q (\mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i}))^2\big].
@@ -76,12 +76,12 @@ We focus on each term separately and obtain
 =& c_k^Q \Big(p_k^2 - \sum_i 2\mu_i \alpha_{ki} p_k + \sum_i \sum_{j \ne i} \alpha_{ki} \alpha_{kj}  (\kappa_{ij} + \mu_i \mu_j) + \sum_i \alpha_{ki}^2 (\sigma_i^2 + \mu_i^2)\Big)\\
 =& c_k^Q \Big((p_k - \sum_i \alpha_{ki} \mu_i)^2 + \sum_i \sum_{j \ne i} \alpha_{ki} \alpha_{kj}  \kappa_{ij} + \sum_i \alpha_{ki}^2 \sigma_i^2 \Big).
 \end{align*}
-Thus, the expected profit of producer $k$ becomes
+Thus, the expected pay-off of producer $k$ becomes
 \begin{align*}
 \Pi_k(p_k, \{\alpha_{ki}\}_{\forall i}) =& \lambda p_k + \sum_i \chi_i \alpha_{ki} - c_k^L\Big(p_k - \sum_i \alpha_{ki} \mu_i\Big)\\
 &- c_k^Q \Big(\big(p_k - \sum_i \alpha_{ki} \mu_i\big)^2 + \sum_i \sum_{j \ne i} \alpha_{ki} \alpha_{kj}  \kappa_{ij} + \sum_i \alpha_{ki}^2 \sigma_i^2\Big).
 \end{align*}
-The first term represents the expected revenue accruing from the sale of electricity. The second term is the expected revenue from the provision of reserves. The third term represents the expected linear cost component. The last term represents the expected quadratic cost component. Note that the quadratic cost component depends on the expected production level, the variance of the forecast errors as well as their covariances. For notational convenience, let $\mu = \begin{pmatrix} \mu_1, \ldots, \mu_N \end{pmatrix}^\top$, $\alpha_k = \begin{pmatrix} \alpha_{k1}, \ldots, \alpha_{kN} \end{pmatrix}^\top$, $\chi = \begin{pmatrix} \chi_1, \ldots, \chi_N \end{pmatrix}^\top$ and let $\Sigma \in \mathbb{R}_+^{N \times N}$ be the covariance matrix of wind forecast errors. Then, the expected profit of producer $k$ can be compactly expressed as
+The first term represents the expected revenue accruing from the sale of electricity. The second term is the expected revenue from the provision of reserves. The third term represents the expected linear cost component. The last term represents the expected quadratic cost component. Note that the quadratic cost component depends on the expected production level, the variance of the forecast errors as well as their covariances. For notational convenience, let $\mu = \begin{pmatrix} \mu_1, \ldots, \mu_N \end{pmatrix}^\top$, $\alpha_k = \begin{pmatrix} \alpha_{k1}, \ldots, \alpha_{kN} \end{pmatrix}^\top$, $\chi = \begin{pmatrix} \chi_1, \ldots, \chi_N \end{pmatrix}^\top$ and let $\Sigma \in \mathbb{R}_+^{N \times N}$ be the covariance matrix of wind forecast errors. Then, the expected pay-off of producer $k$ can be compactly expressed as
 \begin{align*}
 \Pi_k(p_k, \alpha_k) =& \lambda p_k + \alpha_k^\top \chi - c_k^L\big(p_k - \alpha_k^\top \mu\big) - c_k^Q \Big(\big(p_k - \alpha_{k}^\top \mu \big)^2 + \alpha_k^\top \Sigma \alpha_k\Big),
 \end{align*}
@@ -133,7 +133,7 @@ Wind producers are price takers and do not control their output (i.e., no spilla
 
 \subsection{Electricity Consumers}
 
-The demand is assumed to be inelastic and electricity consumers do not solve any optimisation problem either. Their expected pay-off can be calculated as $P = \mathbb{E}[\lambda D] = \lambda D$.
+The demand is assumed to be inelastic and electricity consumers do not solve any optimisation problem either. Their expected cost can be calculated as $P = \mathbb{E}[\lambda D] = \lambda D$.
 
 \section{Market Clearing Problem Formulation}
 
@@ -163,14 +163,14 @@ Using techniques introduced earlier yields the following equivalent deterministi
 & 0 \le \alpha_{ki} \le 1, \forall k, \forall i,\\
 & p_k \in \mathbb{R}, \forall k,
 \end{align}
-where the dual variables of the energy balance and reserve allocation constraints are used to set energy and reserve prices, respectively. Note that computing expectations and treating chance constraints in the problem solved by the market operator in the same way as in the problem of a market participant is only possible under the assumption that they all share the same information about $\boldsymbol{\omega}$. It will become apparent later that this is also a pre-requisite for the pricing scheme of the market operator to support a competitive equilibrium (since the complementarity problems stemming from the equilibrium and market clearing approaches would otherwise be different). This topic is also discussed in the context of a stochastic programming-based market design by Dvorkin et al. \cite{DvorkinV2019}.
+where the dual variables of the energy balance and reserve allocation constraints are used to set energy and reserve prices, respectively. Note that computing expectations and treating chance constraints in the problem solved by the market operator in the same way as in the problem of a market participant is only possible under the assumption that they all share the same information about $\{\boldsymbol{\omega}_i\}_{\forall i}$. This assumption is implicit in the next sections. In particular, it is a pre-requisite for the pricing scheme of the market operator to support a competitive equilibrium (since the complementarity problems stemming from the equilibrium and market clearing approaches would otherwise be different). This topic is also discussed in the context of a stochastic programming-based market design by Dvorkin et al. \cite{DvorkinV2019}.
 
 \section{Market Properties}
 
 We analyse four key properties of the proposed stochastic market design, namely whether it supports a \textit{competitive equilibrium}, guarantees \textit{cost recovery} for flexible generators, \textit{revenue adequacy} for the market operator, and is \textit{incentive compatible}.
 
 \begin{assumption}
-We assume throughout this section that $c_k > 0, \forall k$, $\Sigma \succ 0$ and $\bar{p}_k > 0, \forall k$.
+We assume throughout this section that $c_k > 0, \bar{p}_k > 0, 0.5 \ge \epsilon_k > 0, \forall k,$ and $\Sigma \succ 0$.
 \end{assumption}
 
 \begin{definition}
@@ -213,10 +213,10 @@ The last line is obtained by re-arranging and cancelling terms out.
 \end{proof}
 
 \begin{proposition}
-(\textcolor{green}{Competitive Equilibrium}) The stochastic market clearing problem produces prices and decisions maximising the profit of each flexible generator and supporting a competitive equilibrium from which they have no incentive to deviate.
+(\textcolor{green}{Competitive Equilibrium}) The stochastic market clearing problem produces prices and decisions maximising the expected pay-off of each flexible generator and supporting a competitive equilibrium from which they have no incentive to deviate.
 \end{proposition}
 \begin{proof}
-The proof showing that decisions $\{p_k^*, \alpha_k^*\}$ and prices $\{\lambda^*, \chi^*\}$ support a competitive equilibrium consists in showing that the expected pay-off of flexible generator $k$ (given in Lemma \ref{ExpectedPayOff}) is optimal for flexible generator $k$ (i.e., these decisions and prices maximise its objective).
+The proof showing that decisions $\{p_k^*, \alpha_k^*\}$ and prices $\{\lambda^*, \chi^*\}$ support a competitive equilibrium consists in showing that the expected pay-off of flexible generator $k$ (given in Lemma \ref{ExpectedPayOff}) is optimal for flexible generator $k$ (i.e., decisions and prices computed by the market operator maximise the expected pay-off of flexible generator $k$).
 
 Let $\{p_k^\star, \alpha_k^\star\}$ denote an optimal solution of the problem faced by producer $k$ under prices $\{\lambda^*, \chi^*\}$, and let $V_k^\star$ denote the corresponding objective. We essentially seek to show that $V_k^\star \le V_k^*$. We successively find
 \begin{align*}
@@ -260,7 +260,7 @@ where
 \frac{\partial^2 f}{\partial y \partial x} &= 2 c_k^Q \mu,\\
 \frac{\partial^2 f}{\partial y^2} &= -2 c_k^Q M - \Phi_k^{-1}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big(||y||_\Sigma^{-1} \Sigma - ||y||_\Sigma^{-3} \Sigma y(\Sigma y)^\top\Big) - 2c_k^Q \Sigma.
 \end{align*}
-We note that $-\partial^2 f/\partial y^2$ is positive definite. Indeed, i) $c_k^Q > 0$ and $M$ is a rank-one positive semi-definite matrix, ii) the matrix expression in parentheses is positive semi-definite since it is the Hessian of a weighted 2-norm (which is a convex function), $\Phi_k^{-1} \ge 0$ for $\epsilon_k \le 0.5$ and $\underline{\nu}_k \ge 0$, $\overline{\nu}_k \ge 0$ (dual feasibility), iii) $\Sigma$ is positive definite. To guarantee that $(x, y) = (p_k^*, \alpha_k^*)$ is indeed a maximum of $f$, we must show that $-H(x, y)/2c_k^Q$ is positive definite. We start by re-writing it as
+We note that $-\partial^2 f/\partial y^2$ is positive definite. Indeed, i) $c_k^Q > 0$, ii) $M$ is a rank-one positive semi-definite matrix, iii) the matrix expression in parentheses is positive semi-definite since it is the Hessian of a weighted 2-norm (which is a convex function), $\Phi_k^{-1} \ge 0$ for $0 < \epsilon_k \le 0.5$ and $\underline{\nu}_k \ge 0$, $\overline{\nu}_k \ge 0$ (dual feasibility), iv) $\Sigma$ is positive definite. To guarantee that $(x, y) = (p_k^*, \alpha_k^*)$ is indeed a maximum of $f$, we must show that $-H(x, y)/2c_k^Q$ is positive definite. We start by re-writing it as
 \begin{align*}
 \hat{H}(y) = -\frac{H(x, y)}{2c_k^Q} &= \begin{pmatrix} 1 & 0^\top \\ 0 & M + g(y) + \Sigma\end{pmatrix} + \begin{pmatrix} 0 & -\mu^\top \\ -\mu & 0\end{pmatrix} = \Lambda + \Gamma,
 \end{align*} 
@@ -312,7 +312,7 @@ It follows from Lemma \ref{ExpectedPayOff} that
 \begin{equation*}
 V_k^*=  c_k^Q(p_k^* - (\alpha_k^*)^\top \mu)^2 + c_k^Q (\alpha_k^*)^\top \Sigma \alpha_k^* + \overline{\nu}_k^* \overline{p}_k, \forall k.
 \end{equation*}
-Note that the first two terms are non-negative and positive, respectively, since $c_k^Q > 0$ and $\Sigma \succ 0$ (by assumption). In addition, the third term is non-negative, since $\overline{\nu}_k^* \ge 0$ (dual feasibility) and $\overline{p}_k > 0$ (by assumption). Hence, we have
+Note that the first two terms are non-negative since $c_k^Q > 0, \forall k$, and $\Sigma \succ 0$ (by assumption). In addition, the third term is non-negative, since $\overline{\nu}_k^* \ge 0$ (dual feasibility) and $\overline{p}_k > 0$ (by assumption). Hence, we have
 \begin{equation*}
 V_k^* \ge 0, \forall k.
 \end{equation*}
@@ -333,10 +333,10 @@ where the third line follows the fact that the markets for energy and reserves c
 \end{proof}
 
 \begin{proposition}
-(\textcolor{red}{Incentive Compatibility}) The stochastic market clearing problem does not produce prices and decisions guaranteeing that each flexible generator maximises its profit by bidding truthfully.
+(\textcolor{red}{Incentive Compatibility}) The stochastic market clearing problem does not produce prices and decisions guaranteeing that each flexible generator maximises its pay-off by bidding truthfully.
 \end{proposition}
 \begin{proof}
-By contradiction. Assume that incentive compatibility holds and see counter-example implemented in Julia \cite{SMER2022}, where a producer operating in an electricity market with a finite number of producers can increase its profit by bidding untruthfully.
+By contradiction. Assume that incentive compatibility holds and see counter-example implemented in Julia \cite{SMER2022}, where a producer operating in an electricity market with a finite number of producers can increase its pay-off by bidding untruthfully.
 \end{proof}
 
 Market properties are also discussed in \cite{Ratha2019} in a similar set-up. The proofs of incentive compatibility and revenue adequacy seem weird, however. The proof of cost recovery looks weird too (specifically the fact that the dual problem is a linear program, in spite of the fact that the primal problem is a quadratic program). 
@@ -346,7 +346,7 @@ Market properties are also discussed in \cite{Ratha2019} in a similar set-up. Th
 In this section, we carry out a sensitivity analysis of the stochastic market clearing problem with respect to two essential statistical parameters, namely the mean $\mu_i$ and standard deviation $\sigma_i$ of the forecast error of wind producer $i$.
 
 \begin{assumption}
-We assume throughout this section that $c_k > 0, \forall k$, $\Sigma \succ 0$ and $\bar{p}_k > 0, \forall k$.
+We assume throughout this section that $c_k > 0, 0.5 \ge \epsilon_k > 0, \forall k$, and $\Sigma \succ 0$.
 \end{assumption}
 
 Let $(\{p_k^*\}_{\forall k}, \{\alpha_k^*\}_{\forall k})$ and $(\lambda^*, \chi^*, \{\underline{\nu}_k^*\}_{\forall k}, \{\overline{\nu}_k^*\}_{\forall k})$ denote optimal primal and dual solutions obtained by solving the stochastic market clearing problem. Then, let $V^*: \mathbb{R} \times \mathbb{R}_+ \rightarrow \mathbb{R}$ denote the value function of the stochastic market clearing problem, that is, 
@@ -356,7 +356,7 @@ V^*(\mu, \sigma) &= \mathbb{E}\Big[\sum_k \big(c_k^L \mathbf{p}_k^{g*}(\{\boldsy
 \end{align*}
 In the following, we assume that we work with parameters $\mu$ and $\Sigma$ such that the value function can always be defined (i.e., the optimal solution set is non-empty). Before presenting our main result, we prove the following lemma.
 \begin{lemma}\label{lemma1}
-Let $V^*$ be the value function of the market clearing problem. Then, we have that
+Let $V^*$ be the value function of the market clearing problem. Then, we have
 \begin{align*}
 \frac{\partial V^*}{\partial \mu_i} &= \frac{\partial \mathcal{L}^*}{\partial \mu_i},\\
 \frac{\partial V^*}{\partial \sigma_i} &= \frac{\partial \mathcal{L}^*}{\partial \sigma_i},
@@ -432,7 +432,7 @@ Thus, we can write
 =& \sum_k \Big(2c_k^Q + \frac{\Phi_k^{-1}}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big) \times(\alpha_k^*)^\top \Sigma \alpha_k^*\\
 =& \sum_k ||\alpha_k^*||_{\Sigma} \Big(2c_k^Q ||\alpha_k^*||_{\Sigma} + \Phi_k^{-1} (\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
 \end{align*}
-Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. Clearly, $||\alpha_k^*||_{\Sigma} \ge 0$. By definition, $c_k^Q \ge 0$ and $\epsilon_k \le 0.5$, which implies that $\Phi^{-1}_k \ge 0$. Hence, each term in the sum is non-negative and the result follows.
+Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. Clearly, $||\alpha_k^*||_{\Sigma} \ge 0$. By assumption, $c_k^Q > 0, \forall k$, and $0 < \epsilon_k \le 0.5, \forall k$, which implies that $\Phi^{-1}_k \ge 0, \forall k$. Hence, each term in the sum is non-negative and the result follows.
 \end{proof}
 
 \textcolor{red}{I am not sure that such a result holds for each individual wind producer $i$ in general. To prove it, we would basically need to show that $\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* \ge 0, \forall i$. For particular cases, it is pretty simple. For instance, the result obviously holds for individual producers if forecast errors are independent (the sum over $j$ is then equal to 0). In the general case, however, this will probably depend on the correlation between forecast errors. It seems possible to construct a counter-example but I would need to investigate this a little further.}
