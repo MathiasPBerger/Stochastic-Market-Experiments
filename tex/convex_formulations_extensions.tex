@@ -435,10 +435,21 @@ Thus, we can write
 Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. Clearly, $||\alpha_k^*||_{\Sigma} \ge 0$. By assumption, $c_k^Q > 0, \forall k$, and $0 < \epsilon_k \le 0.5, \forall k$, which implies that $\Phi^{-1}_k \ge 0, \forall k$. Hence, each term in the sum is non-negative and the result follows.
 \end{proof}
 
-\textcolor{red}{I am not sure that such a result holds for each individual wind producer $i$ in general. To prove it, we would basically need to show that $\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* \ge 0, \forall i$. For particular cases, it is pretty simple. For instance, the result obviously holds for individual producers if forecast errors are independent (the sum over $j$ is then equal to 0). In the general case, however, this will probably depend on the correlation between forecast errors. It seems possible to construct a counter-example but I would need to investigate this a little further.}
+\paragraph{Comments} I am not sure that such a result holds for each individual wind producer $i$ in general. To prove it, we would basically need to show that $\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* \ge 0, \forall i$. For particular cases, it is pretty simple. For instance, the result obviously holds for individual producers if forecast errors are independent (the sum over $j$ is then equal to 0). Likewise, the result trivially holds if all forecast errors are positively correlated. In the general case, however, this will probably depend on the sign of the correlation between forecast errors. It seems possible to construct a counter-example but I would need to investigate this a little further.
+
+\paragraph{Notes on Correlation Matrices} We briefly review some properties of correlation matrices since the sensitivity of the expected system cost with respect to the standard deviation of individual producers essentially depends on it. By definition, a correlation matrix is a (symmetric) positive semi-definite matrix with ones on the main diagonal and such that all its entries are between $-1$ and $1$. It naturally follows that $N \times N$ correlation matrices have non-negative eigenvalues that 1) all sum to $N$ (since the sum of all eigenvalues is equal to the trace of the matrix), ii) are comprised between zero and $N$ (since they are non-negative and sum to $N$). Our correlation matrix $\kappa$ can be expressed in terms of the covariance matrix as follows, $\kappa = D^{-1} \Sigma D^{-1}$, where $D$ is a diagonal matrix with $D_{ii} = \sigma_i$. It directly follows that $\kappa \succ 0$ if $\Sigma \succ 0$ (as assumed throughout this section). This imposes constraints on the cases to which our results apply. In particular, the correlation matrix
+\begin{equation*}
+\kappa = \begin{pmatrix} 1 & -1 \\ -1 & 1 \end{pmatrix},
+\end{equation*}
+which corresponds to a situation where forecast errors are perfectly negatively correlated, cannot be treated since it is singular. For similar reasons, $|\kappa_{ij}| < 1, i \ne j$ for positive definite $\kappa$. The positive definiteness assumption of the covariance matrix therefore imposes constraints on the structure of the correlation matrix. We also note that correlation matrices are not diagonally-dominant in general, e.g.,
+\begin{equation*}
+A = \begin{pmatrix} 1 & -0.8 & -0.3 \\ -0.8 & 1 & -0.3 \\ -0.3 & -0.3 & 1 \end{pmatrix},
+\end{equation*}
+which has eigenvalues $\nu_1 \approx 0.0169$, $\nu_2 \approx 1.18$ and $\lambda_3 \approx 1.799$, although $1 < 0.8 + 0.3 = 1.1$ for the first row.
+
 
 \section*{Appendix A}
-This section derives complementary problems based on the KKT conditions of the deterministic equivalent of the equilibrium and market problems and shows that they are identical (hence the equivalence between solutions of the two problems.
+This section derives complementarity problems based on the KKT conditions of the deterministic equivalent of the equilibrium and market problems and shows that they are identical.
 
 \subsection*{Equilibrium Problem}
 To ease the writing of KKT conditions, the problem faced by producer $k$ is first re-written as a minimisation problem,
