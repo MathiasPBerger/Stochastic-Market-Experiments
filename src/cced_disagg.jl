@@ -1,8 +1,8 @@
 using JuMP
-using Gurobi
-#using MosekTools
+#using Gurobi
 using LinearAlgebra
 using Distributions
+using MosekTools
 
 ## Data
 
@@ -23,9 +23,10 @@ p_w_max = [250.0 for i = 1:n_w];
 #mu = [p_w_max[i]*mu_pc[i] for i = 1:n_w];
 #std = [p_w_max[i]*std_pc[i] for i = 1:n_w];
 #var = std^2;
-mu = [0.05*p_w_max[i] for i = 1:n_w];
-std = [0.01*p_w_max[i] for i = 1:n_w];
-rho = 0.0;
+mu = [0.0*p_w_max[i] for i = 1:n_w];
+std = [0.1*p_w_max[i] for i = 1:n_w];
+std[2]+= 0.25*p_w_max[2];
+rho = -0.75;
 corr_mat = [[1. rho]; [rho 1.]];
 cov_mat = Diagonal(std) * corr_mat * Diagonal(std);
 cov_sqrt = sqrt(cov_mat); # computes the matrix square root of covariance matrix to define SOC constraint
@@ -60,7 +61,8 @@ end
 
 ## Model
 
-model = Model(Gurobi.Optimizer)
+model = Model(Mosek.Optimizer)
+#model = Model(Mosek.Optimizer)
 #set_optimizer_attribute(model, "QCPDual", 1)
 
 @variable(model, 0.0 <= p[g = 1:n_g])
@@ -70,12 +72,16 @@ model = Model(Gurobi.Optimizer)
 @constraint(model, reserve_allocation[i = 1:n_w], sum(alpha[g, i] for g = 1:n_g) == 1.0)
 @constraint(model, max_prod[g = 1:n_g], [phi_inv * (p_max[g] - p[g] + sum(alpha[g, i]*mu[i] for i = 1:n_w)); cov_sqrt*alpha[g, :]] in SecondOrderCone())
 @constraint(model, min_prod[g = 1:n_g], [phi_inv * (p[g] - p_min[g] - sum(alpha[g, i]*mu[i] for i = 1:n_w)); cov_sqrt*alpha[g, :]] in SecondOrderCone())
+#@constraint(model, test_constr[g = 1:n_g], (p_max[g] - p[g] + sum(alpha[g, i]*mu[i] for i = 1:n_w)) >= 0.001)
 
 @objective(model, Min, sum(C_Q[g]*((p[g] - alpha[g,:]'*mu)^2 + alpha[g,:]'*cov_mat*alpha[g,:]) + C_L[g]*(p[g] - alpha[g,:]'*mu) for g = 1:n_g))
 
 ## Solve
 
 optimize!(model)
+
+println(termination_status(model))
+println(dual_status(model))
 
 ## Post-processing
 

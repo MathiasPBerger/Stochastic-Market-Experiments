@@ -447,6 +447,25 @@ A = \begin{pmatrix} 1 & -0.8 & -0.3 \\ -0.8 & 1 & -0.3 \\ -0.3 & -0.3 & 1 \end{p
 \end{equation*}
 has eigenvalues $\nu_1 \approx 0.0169$, $\nu_2 \approx 1.18$ and $\lambda_3 \approx 1.799$, but $1 < 0.8 + 0.3 = 1.1$ for the first row.
 
+\section{Numerical Experiments}
+
+\subsection{Three Generators \& Two Wind Farms}
+
+We analyse a system with three flexible generators ($K = 3$) and two wind farms ($N = 2$), which is implemented in \cite{SMER2022}. 
+
+\paragraph{Symmetric Forecast Errors} We consider a configuration where $\mu_1 = \mu_2 = 0$, $\sigma_1 = \sigma_2 = \sigma > 0$ and $\rho_{12} = \rho < 0$ (i.e., the forecast errors of wind farms are negatively correlated). It was consistently observed in experiments that $\alpha_{k1}^* = \alpha_{k2}^*, k = 1, \ldots, 3,$ in the optimal solution. \textcolor{orange}{Under the assumption that this hold true in the case of symmetric forecast errors}, it follows that
+\begin{align*}
+\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* &= \sigma^2 (\alpha_{ki}^*)^2 + \rho \sigma^2 (\alpha_{ki}^*)^2\\
+&= \sigma^2 (\alpha_{ki}^*)^2 \big(1 + \rho\big)\\
+&\ge 0,
+\end{align*}
+since $\sigma > 0$, $\alpha_{ki}^* > 0$ and $|\rho| \le 1$. Note that these developments are valid for $k = 1, \ldots, 3$, which implies that 
+\begin{equation*}
+\sigma_i \frac{\partial V^*}{\partial \sigma_i} \ge 0, i = 1, \ldots, 2.
+\end{equation*}
+In other words, the expected system cost increases with the standard deviation of any wind farm. Note that reserve prices corresponding to different wind farms are symmetric (and both positive) in this set-up.
+
+\paragraph{Asymmetric Forecast Errors} We consider a configuration where $\mu_1 = \mu_2 = 0$, $\sigma_1 \ne \sigma_2$, $\sigma_1 > 0, \sigma_2 > 0$ and $\rho_{12} = \rho < 0$ (i.e., the forecast errors of wind farms are negatively correlated). \textcolor{orange}{Somewhat counter-intuitively,} it can also be observed in experiments that $\alpha_{k1}^* = \alpha_{k2}^*, k = 1, \ldots, 3,$ in the optimal solution. In this set-up, reserve prices are no longer symmetric. Furthermore, for strongly negatively-correlated wind farms (e.g., $\rho = -0.75$), the reserve price associated with the wind farm whose standard deviation is the smallest becomes negative. This implies that this wind farm is in fact rewarded for its uncertainty in the proposed market design. \textcolor{orange}{Not sure that this is a good thing.}
 
 \section*{Appendix A}
 This section derives complementarity problems based on the KKT conditions of the deterministic equivalent of the equilibrium and market problems and shows that they are identical.
