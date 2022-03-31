@@ -480,12 +480,13 @@ Thus,
 \end{equation*}
 Since standard deviations are positive in this example, these observations are also consistent with the fact that the reserve prices associated with wind farm 1 and 2 are negative and positive, respectively. Note that such an outcome will always occur unless $\rho$ is such that the following conditions are satisfied simultaneously, 
 \begin{equation*}
-\rho \ge \frac{\sigma_1}{\sigma_2} \mbox{ and } \rho \ge \frac{\sigma_1}{\sigma_2}.
+\rho \ge -\frac{\sigma_1}{\sigma_2} \mbox{ and } \rho \ge -\frac{\sigma_1}{\sigma_2}.
 \end{equation*}
-If $\sigma_1 = \sigma_2$ (the symmetric case), this condition is always satisfied, which is consistent with our previous analysis. In the asymmetric case, one of these ratios will always be between 0 and 1, while the other will always be strictly greater than 1. The former then defines the range of $\rho$ for which sensitivities remain non-negative. In the case at hand, $\sigma_1/\sigma_2 = 0.4$ and $\rho = -0.75 < -0.4$. The condition above is therefore violated. It is straightforward to check that setting $\rho = -0.4$ yields
+If $\sigma_1 = \sigma_2$ (the symmetric case), this condition is always satisfied, which is consistent with our previous analysis. In the asymmetric case with finite standard deviations, one of these ratios will always be strictly between 0 and 1, while the other will always be strictly greater than 1. The former then defines the range of $\rho$ for which sensitivities remain non-negative. In the case at hand, $\sigma_1/\sigma_2 = 0.4$ and $\rho = -0.75 < -0.4$. The condition above is therefore violated. It is straightforward to check that setting $\rho = -0.4$ yields
 \begin{equation*}
 \frac{\partial V^*}{\partial \sigma_1} \approx 0 \mbox{ and } \frac{\partial V^*}{\partial \sigma_2} > 0.
 \end{equation*}
+In summary, the sign of sensitivities depends upon the ratio between standard deviations. In cases with a pronounced asymmetry in standard deviations, negative sensitivities may therefore occur.
 
 \section*{Appendix A}
 This section derives complementarity problems based on the KKT conditions of the deterministic equivalent of the equilibrium and market problems and shows that they are identical.
