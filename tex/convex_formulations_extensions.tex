@@ -465,7 +465,27 @@ since $\sigma > 0$, $\alpha_{ki}^* > 0$ and $|\rho| \le 1$. Note that these deve
 \end{equation*}
 In other words, the expected system cost increases with the standard deviation of any wind farm. Note that reserve prices corresponding to different wind farms are symmetric (and both positive) in this set-up.
 
-\paragraph{Asymmetric Forecast Errors} We consider a configuration where $\mu_1 = \mu_2 = 0$, $\sigma_1 \ne \sigma_2$, $\sigma_1 > 0, \sigma_2 > 0$ and $\rho_{12} = \rho < 0$ (i.e., the forecast errors of wind farms are negatively correlated). \textcolor{orange}{Somewhat counter-intuitively,} it can also be observed in experiments that $\alpha_{k1}^* = \alpha_{k2}^*, k = 1, \ldots, 3,$ in the optimal solution. In this set-up, reserve prices are no longer symmetric. Furthermore, for strongly negatively-correlated wind farms (e.g., $\rho = -0.75$), the reserve price associated with the wind farm whose standard deviation is the smallest becomes negative. This implies that this wind farm is in fact rewarded for its uncertainty in the proposed market design. \textcolor{orange}{Not sure that this is a good thing.} It also appears that the sensitivity can become negative for some wind farms.
+\paragraph{Asymmetric Forecast Errors} We consider a configuration where $\mu_1 = \mu_2 = 0$, $\sigma_1 \ne \sigma_2$, $\sigma_1 > 0, \sigma_2 > 0$ and $\rho_{12} = \rho < 0$ (i.e., the forecast errors of wind farms are negatively correlated). More precisely, we assume that $\rho = -0.75$, $\sigma_1 = 0.01 \bar{p}^w$ and $\sigma_2 = 0.025 \bar{p}^w$, where $\bar{p}^w$ denotes the maximum wind generation from each wind farm. In other words, the standard deviations of both farms are equal to 1\% and 2.5\% of their rated capacity, respectively. \textcolor{orange}{Somewhat counter-intuitively,} it can be observed in experiments that $\alpha_{k1}^* = \alpha_{k2}^*, k = 1, \ldots, 3,$ in the optimal solution. It follows that one of the sensitivities is negative, while the other is positive. Indeed, we have
+\begin{equation*}
+\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* = \sigma_i (\alpha_{ki}^*)^2 \big( \sigma_i + \rho \sigma_j \big),
+\end{equation*}
+and it follows that
+\begin{align*}
+\sigma_1 + \rho \sigma_2 &= -2.1875 < 0,\\
+\sigma_2 + \rho \sigma_1 &= 4.375 > 0.
+\end{align*}
+Thus, 
+\begin{equation*}
+\frac{\partial V^*}{\partial \sigma_1} < 0 \mbox{ and } \frac{\partial V^*}{\partial \sigma_2} > 0.
+\end{equation*}
+Since standard deviations are positive in this example, these observations are also consistent with the fact that the reserve prices associated with wind farm 1 and 2 are negative and positive, respectively. Note that such an outcome will always occur unless $\rho$ is such that the following conditions are satisfied simultaneously, 
+\begin{equation*}
+\rho \ge \frac{\sigma_1}{\sigma_2} \mbox{ and } \rho \ge \frac{\sigma_1}{\sigma_2}.
+\end{equation*}
+If $\sigma_1 = \sigma_2$ (the symmetric case), this condition is always satisfied, which is consistent with our previous analysis. In the asymmetric case, one of these ratios will always be between 0 and 1, while the other will always be strictly greater than 1. The former then defines the range of $\rho$ for which sensitivities remain non-negative. In the case at hand, $\sigma_1/\sigma_2 = 0.4$ and $\rho = -0.75 < -0.4$. The condition above is therefore violated. It is straightforward to check that setting $\rho = -0.4$ yields
+\begin{equation*}
+\frac{\partial V^*}{\partial \sigma_1} \approx 0 \mbox{ and } \frac{\partial V^*}{\partial \sigma_2} > 0.
+\end{equation*}
 
 \section*{Appendix A}
 This section derives complementarity problems based on the KKT conditions of the deterministic equivalent of the equilibrium and market problems and shows that they are identical.

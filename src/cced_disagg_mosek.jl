@@ -13,7 +13,7 @@ using MosekTools
 # duality), which means that the dual variables associated with second-order
 # cone constraints are vector variables (belonging to the dual SOCP cone) and
 # not scalar variables (as would be the case in Lagrangian duality for nonlinear
-# programs). Theorical results in the tex documents were derived based on
+# programs). Theoretical results in the tex documents were derived based on
 # Lagrangian duality and it is not entirely clear how conic dual variables
 # relate to Lagrangian dual variables. For affine constraints, the
 # interpretation of dual variables remains unchanged.

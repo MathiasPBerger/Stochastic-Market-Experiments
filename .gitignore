@@ -6,3 +6,4 @@
 *.out
 *.bbl
 *.blg
+src/gurobi_error_config.txt
