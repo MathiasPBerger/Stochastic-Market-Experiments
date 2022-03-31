@@ -99,6 +99,13 @@ reported_generator_cost = [(C_Q[g]*((p_scheduled[g] - alpha_scheduled[g,:]'*mu)^
 true_generator_profit = [(generator_energy_revenue[g] + generator_reserve_revenue[g] - true_generator_cost[g]) for g = 1:n_g];
 reported_generator_profit = [(generator_energy_revenue[g] + generator_reserve_revenue[g] - reported_generator_cost[g]) for g = 1:n_g];
 
+sensitivity_coeffs = zeros(n_w, n_g);
+for i = 1:n_w
+    for k = 1:n_g
+        sensitivity_coeffs[i, k] = std[i] * alpha_scheduled[k, i] + sum(rho * alpha_scheduled[k, j] * std[j] for j = 1:n_w if j != i)
+    end
+end
+
 println("\n")
 println("Power generation: ", p_scheduled)
 println("Reserve procurement: ", alpha_scheduled)
@@ -110,6 +117,7 @@ println("Wind profit: ", wind_profit)
 println("Generators energy revenue: ", generator_energy_revenue)
 println("Generators reserve revenue: ", generator_reserve_revenue)
 println("True generator cost: ", true_generator_cost)
+println("Sensitivity Coefficients: ", sensitivity_coeffs)
 if !truthful_bidding
     println("Reported generator cost: ", reported_generator_cost)
 end

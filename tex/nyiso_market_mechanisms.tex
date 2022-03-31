@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{assumption}{Assumption}
+
+\title{Note on NY ISO Market Rules}
+\author{Mathias Berger}
+\date{Spring 2022}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\begin{itemize}
+\item what kind of bids do intermittent producers submit? How are they processed by the NY ISO? -> I think that they submit so-called flex bids, which seems to imply that they fall in the same category as flexible generators. The weird thing, however, is that they do not seem to be penalised for under-generation and are actually paid for over-generation, which essentially means that they do not incur fees for the imbalance that they bring to the system. 
+\item How are forecasts used (if at all) and managed? The New York ISO makes use of a so-called centralised forecast service. More precisely, it collects data from individual wind and solar power plants operating in the NY ISO control area, including both static and real-time data, in order to produce detailed power generation forecasts. Static data are typically communicated as part of the registration process (although any changes must also be communicated) and include plant location, lay-out, manufacturer's power curves. Real-time data must be communicated at least every 30 seconds and include at least the maximum available capacity of the plant, wind speed and direction (for wind power plants) or irradiance (for solar plants). These data are then transferred over to a forecast vendor that constructs a detailed model for each plant in order to produce forecasts. The exact requirements are discussed in the Wind and Solar Plant Operator Data User's Guide \cite{WSDataUserGuide}.
+\item what information is shared between market players?
+\end{itemize}
+We analyse the properties of a chance-constrained stochastic market for energy and reserves involving stochastic wind power producers, flexible generators and inflexible electricity consumers. 
+
+\bibliographystyle{plain} % We choose the "plain" reference style
+\bibliography{references_nyiso}
+
+\end{document}
