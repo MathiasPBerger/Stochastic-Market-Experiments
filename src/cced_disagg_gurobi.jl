@@ -9,11 +9,10 @@ using Distributions
 # objective to be minimised subject to affine and quadratic constraints.
 # It then solves the problem with Gurobi. This has non-trivial implications
 # for post-processing because of the primal and dual forms used by the solver.
-# More precisely, Gurobi uses Lagragian duality, which means that the dual
-# variables associated with quadratic (second-order cone) constraints are scalar
-# variables. Theorical results in the tex documents were derived based on
-# Lagrangian duality and solver output can thus be directly used
-# to check them empirically.
+# More precisely, Gurobi seems to use Lagragian duality, as the dual variables
+# associated with quadratic (second-order cone) constraints are scalar.
+# Theorical results in the tex documents were derived based on Lagrangian
+# duality and solver output can thus be directly used to check them empirically.
 
 ## Data
 
@@ -29,13 +28,8 @@ R_down_max = [p_max[g] for g = 1:n_g];
 
 # Wind production parameters
 p_w_max = [250.0 for i = 1:n_w];
-#mu_pc = [0.05 for i = 1:n_w];
-#std_pc = [0.075 for i = 1:n_w];
-#mu = [p_w_max[i]*mu_pc[i] for i = 1:n_w];
-#std = [p_w_max[i]*std_pc[i] for i = 1:n_w];
-#var = std^2;
-mu = [0.0*p_w_max[i] for i = 1:n_w];
-std = [0.025*p_w_max[i] for i = 1:n_w];
+mu = [0.05*p_w_max[i] for i = 1:n_w];
+std = [0.01*p_w_max[i] for i = 1:n_w];
 std[2]+= 0.025*p_w_max[2];
 rho = -0.75;
 corr_mat = [[1. rho]; [rho 1.]];

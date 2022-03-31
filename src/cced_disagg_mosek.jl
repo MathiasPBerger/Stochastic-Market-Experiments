@@ -32,11 +32,6 @@ R_down_max = [p_max[g] for g = 1:n_g];
 
 # Wind production parameters
 p_w_max = [250.0 for i = 1:n_w];
-#mu_pc = [0.05 for i = 1:n_w];
-#std_pc = [0.075 for i = 1:n_w];
-#mu = [p_w_max[i]*mu_pc[i] for i = 1:n_w];
-#std = [p_w_max[i]*std_pc[i] for i = 1:n_w];
-#var = std^2;
 mu = [0.0*p_w_max[i] for i = 1:n_w];
 std = [0.1*p_w_max[i] for i = 1:n_w];
 std[2]+= 0.25*p_w_max[2];
