@@ -1,8 +1,22 @@
 using JuMP
-#using Gurobi
 using LinearAlgebra
 using Distributions
 using MosekTools
+
+## Comments
+#
+# This script formulates the problem as a convex program with a convex quadratic
+# objective to be minimised subject to affine and second-order cone constraints.
+# It then solves the problem with Mosek. This has non-trivial implications
+# for post-processing because of the primal and dual forms used by the solver.
+# More precisely, Mosek uses conic programming duality (rather than Lagrangian
+# duality), which means that the dual variables associated with second-order
+# cone constraints are vector variables (belonging to the dual SOCP cone) and
+# not scalar variables (as would be the case in Lagrangian duality for nonlinear
+# programs). Theorical results in the tex documents were derived based on
+# Lagrangian duality and it is not entirely clear how conic dual variables
+# relate to Lagrangian dual variables. For affine constraints, the
+# interpretation of dual variables remains unchanged.
 
 ## Data
 
@@ -62,8 +76,6 @@ end
 ## Model
 
 model = Model(Mosek.Optimizer)
-#model = Model(Mosek.Optimizer)
-#set_optimizer_attribute(model, "QCPDual", 1)
 
 @variable(model, 0.0 <= p[g = 1:n_g])
 @variable(model, 0.0 <= alpha[g = 1:n_g, i = 1:n_w] <= 1.0)
@@ -72,7 +84,6 @@ model = Model(Mosek.Optimizer)
 @constraint(model, reserve_allocation[i = 1:n_w], sum(alpha[g, i] for g = 1:n_g) == 1.0)
 @constraint(model, max_prod[g = 1:n_g], [phi_inv * (p_max[g] - p[g] + sum(alpha[g, i]*mu[i] for i = 1:n_w)); cov_sqrt*alpha[g, :]] in SecondOrderCone())
 @constraint(model, min_prod[g = 1:n_g], [phi_inv * (p[g] - p_min[g] - sum(alpha[g, i]*mu[i] for i = 1:n_w)); cov_sqrt*alpha[g, :]] in SecondOrderCone())
-#@constraint(model, test_constr[g = 1:n_g], (p_max[g] - p[g] + sum(alpha[g, i]*mu[i] for i = 1:n_w)) >= 0.001)
 
 @objective(model, Min, sum(C_Q[g]*((p[g] - alpha[g,:]'*mu)^2 + alpha[g,:]'*cov_mat*alpha[g,:]) + C_L[g]*(p[g] - alpha[g,:]'*mu) for g = 1:n_g))
 
@@ -89,6 +100,8 @@ p_scheduled = value.(p);
 alpha_scheduled = value.(alpha);
 electricity_price = dual(power_balance);
 reserve_price = dual.(reserve_allocation);
+dual_min_prod = dual.(min_prod);
+dual_max_prod = dual.(max_prod);
 load_payment = D*electricity_price;
 wind_energy_revenue = [W[i]*electricity_price for i = 1:n_w];
 wind_profit = [(wind_energy_revenue[i]-reserve_price[i]) for i = 1:n_w];
@@ -102,7 +115,7 @@ reported_generator_profit = [(generator_energy_revenue[g] + generator_reserve_re
 sensitivity_coeffs = zeros(n_w, n_g);
 for i = 1:n_w
     for k = 1:n_g
-        sensitivity_coeffs[i, k] = std[i] * alpha_scheduled[k, i] + sum(rho * alpha_scheduled[k, j] * std[j] for j = 1:n_w if j != i)
+        sensitivity_coeffs[i, k] = std[i] * alpha_scheduled[k, i]^2 + sum((rho * std[j] * alpha_scheduled[k, j] * alpha_scheduled[k, i]) for j = 1:n_w if j != i)
     end
 end
 
