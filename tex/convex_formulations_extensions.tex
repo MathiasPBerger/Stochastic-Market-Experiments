@@ -369,8 +369,8 @@ The proof relies on an enveloppe theorem developed for saddle point and constrai
 First, note that unlike the stochastic market clearing problem, the problem for which the result in \cite{Milgrom2002} was derived does not include any equality constraints. It is nonetheless possible to define an equivalent market clearing formulation featuring only inequality constraints by eliminating equality constraints (e.g., via the QR decomposition of the equality constraint matrix) and optimising directly over the resulting affine space. Note that an affine space is also convex, and a compact subset of the affine space containing the optimal solution associated with given parameters can be considered for our purpose. Hence, the market clearing problem satisfies conditions i), ii), iii) and iv). In particular, it is possible to find feasible solutions strictly satisfying inequality constraints, such that Slater's condition is satisfied. Now, since $c_k^Q > 0, \forall k,$ and $\Sigma \succ 0$, the Hessian of the objective function is positive definite, which in turn implies that the objective of the market clearing problem is strictly convex and the problem therefore has a unique optimal solution. Thus, by virtue of Corollary 5 in \cite{Milgrom2002}, the partial derivatives of the value function with respect to $\mu_i$ and $\sigma_i$ can be expressed as the partial derivatives of the Lagrangian function evaluated at the corresponding optimal solution.
 \end{proof}
 Next, we have the following result.
-\begin{proposition}
-(Reserve Price as Sensitivity of Expected System Cost to Forecast Error) The reserve price measures the combined sensitivity of the expected system cost with respect to the mean and standard deviation of the forecast error, such that
+\begin{proposition}\label{SensitivityReservePrice}
+(Reserve Price as Sensitivity of Expected System Cost to Forecast Error Moments) The reserve price measures the combined sensitivity of the expected system cost with respect to the mean and standard deviation of the forecast error, such that
 \begin{equation*}
 \chi_i^* = \mu_i \frac{\partial V^*}{\partial \mu_i} + \sigma_i \frac{\partial V^*}{\partial \sigma_i}.
 \end{equation*}
@@ -412,8 +412,31 @@ Since all contributions $\{\alpha_{ki}^*\}_{\forall k}$ to reserves sum to 1, we
 \end{equation*}
 \end{proof}
 We also have the following result.
-\begin{proposition}
-(Sensitivity of Expected System Cost to Standard Deviation of Forecast Error) The expected system cost increases with the standard deviation of the forecast error, that is, 
+\begin{proposition}\label{SensitivityMeanElectricityPrice}
+(Sensitivity to Mean Forecast Error) The expected system cost increases with the negative electricity price, that is,
+\begin{equation*}
+\frac{\partial V^*}{\partial \mu_i} = -\lambda_i^*.
+\end{equation*}
+\end{proposition}
+\begin{proof}
+It follows from the proof of Proposition \ref{SensitivityReservePrice} that 
+\begin{equation*}
+\frac{\partial V^*}{\partial \mu_i} = \sum_k \alpha_{ki}^* \Big(-c_k^L + 2 c_k^Q \big(- p_k^* + \alpha_{ki}^* \mu_i + \sum_{j \ne i} \alpha_{kj}^* \mu_j\big) + \underline{\nu}_k^* - \overline{\nu}_k^*\Big).
+\end{equation*}
+It is clear from the stationarity of Lagrangian with respect to $p_k$ that the term in parentheses is equal to $-\lambda^*$. We therefore have
+\begin{align*}
+\frac{\partial V^*}{\partial \mu_i} &= \sum_k \alpha_{ki}^* (-\lambda^*)\\
+&= -\lambda^*,
+\end{align*}
+since the $\alpha_{ki}^*$ sum to 1 (primal feasibility).
+\end{proof}
+
+It follows from this result that a higher mean forecast error for wind farm $i$ effectively decreases the expected system cost, provided that the electricity price $\lambda^*$ is positive. This is typically the case when the marginal generator has a positive generation cost. This proposition can therefore be interpreted as follows. First, note that a positive increment in mean forecast error for wind farm $i$ implies that, on average, more wind power generation is available. The amount of electricity that should be produced by flexible generators is thus smaller. Second, recall that wind power generation has a zero marginal cost (and does not appear in the objective), while flexible generators have a positive marginal cost. Hence, the expected system cost decreases when the mean forecast error of wind farm $i$ increases as a result of the fact that a higher share of the inflexible demand can be satisfied by wind power generation with zero marginal cost.
+
+Next, we investigate the sensitivity of the expected system cost with respect to the standard deviation of the forecast error.
+
+\begin{proposition}\label{SensitivityStandardDeviation}
+(Sensitivity to Standard Deviation of Forecast Error) The expected system cost increases with the standard deviation of the forecast error, that is, 
 \begin{equation*}
 \sum_i \sigma_i \frac{\partial V^*}{\partial \sigma_i} \ge 0.
 \end{equation*}
@@ -487,6 +510,7 @@ If $\sigma_1 = \sigma_2$ (the symmetric case), this condition is always satisfie
 \frac{\partial V^*}{\partial \sigma_1} \approx 0 \mbox{ and } \frac{\partial V^*}{\partial \sigma_2} > 0.
 \end{equation*}
 In summary, the sign of sensitivities depends upon the ratio between standard deviations. In cases with a pronounced asymmetry in standard deviations, negative sensitivities may therefore occur.
+
 
 \section*{Appendix A}
 This section derives complementarity problems based on the KKT conditions of the deterministic equivalent of the equilibrium and market problems and shows that they are identical.

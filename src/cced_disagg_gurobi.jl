@@ -28,10 +28,10 @@ R_down_max = [p_max[g] for g = 1:n_g];
 
 # Wind production parameters
 p_w_max = [250.0 for i = 1:n_w];
-mu = [0.0*p_w_max[i] for i = 1:n_w];
+mu = [0.025*p_w_max[i] for i = 1:n_w];
 std = [0.01*p_w_max[i] for i = 1:n_w];
 std[2]+= 0.015*p_w_max[2];
-rho = -0.4;
+rho = -0.75;
 corr_mat = [[1. rho]; [rho 1.]];
 cov_mat = Diagonal(std) * corr_mat * Diagonal(std);
 cov_sqrt = sqrt(cov_mat); # computes the matrix square root of covariance matrix to define SOC constraint
@@ -118,10 +118,8 @@ for i = 1:n_w
     for k = 1:n_g
         std_sensitivity_coeffs[i, k] = std[i] * alpha_scheduled[k, i]^2 + sum((rho * std[j] * alpha_scheduled[k, j] * alpha_scheduled[k, i]) for j = 1:n_w if j != i)
         std_sensitivity[i] += std_sensitivity_coeffs[i, k] * (2 * C_Q[k] + (phi_inv / sqrt(alpha_scheduled[k,:]'*cov_mat*alpha_scheduled[k,:])) * (dual_min_prod[k] + dual_max_prod[k]))
-        if mu[i] != 0
-            mean_sensitivity_coeffs[i, k] = (alpha_scheduled[k, i] / mu[i]) * (reserve_price[i] - 2 * C_Q[k] * (std[i] * std_sensitivity_coeffs[i, k] / alpha_scheduled[k, i]) - phi_inv * ((std[i] * std_sensitivity_coeffs[i, k] / alpha_scheduled[k, i]) / sqrt(alpha_scheduled[k,:]'*cov_mat*alpha_scheduled[k,:])) * (dual_min_prod[k] + dual_max_prod[k]))
-            mean_sensitivity[i] += mean_sensitivity_coeffs[i, k]
-        end
+        mean_sensitivity_coeffs[i, k] = alpha_scheduled[k, i] * (-C_L[k] + 2 * C_Q[k] * (-p_scheduled[k] + sum(alpha_scheduled[k, j] * mu[j] for j = 1:n_w)) + dual_min_prod[k] - dual_max_prod[k])
+        mean_sensitivity[i] += mean_sensitivity_coeffs[i, k]
     end
     reserve_price_est[i] = mu[i] * mean_sensitivity[i] + std[i] * std_sensitivity[i];
 end
