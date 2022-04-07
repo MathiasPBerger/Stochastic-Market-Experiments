@@ -29,7 +29,7 @@ We analyse the properties of a chance-constrained stochastic market for energy a
 
 We consider four types of agents, namely flexible electricity generators, stochastic wind power producers, inflexible electricity consumers and a market operator, which we describe further below.
 
-\textit{Wind Producers}: We consider $N \in \mathbb{N}$ stochastic wind producers. Although a forecast $\tilde{W}_i \in \mathbb{R}_+$ is available for the production of wind farm $i = 1, \ldots, N$, the actual output $\mathbf{p}_i^w(\boldsymbol{\omega}_i) \in \mathbb{R}_+$ may deviate from $\tilde{W}_i$ by some amount given by random variable $\boldsymbol{\omega}_i \in \Omega_i \subseteq \mathbb{R}$, such that $\mathbf{p}_i^w(\boldsymbol{\omega}_i) = \tilde{W}_i + \boldsymbol{\omega}_i$. Note that we use bold symbols to denote random variables. The first and second-order moments (i.e., the mean and variance) of the distribution of the forecast error $\boldsymbol{\omega}_i$ are denoted by $\mathbb{E}[\boldsymbol{\omega}_i] = \mu_i$ and $\mbox{Var}[\boldsymbol{\omega}_i] = \sigma_i^2$, respectively. The covariance between $\boldsymbol{\omega}_i$ and $\boldsymbol{\omega}_j$ is denoted by $\mbox{Cov}[\boldsymbol{\omega}_i, \boldsymbol{\omega}_j] = \kappa_{ij} = \rho_{ij} \sigma_i \sigma_j$, with $\rho_{ij}$ the Pearson correlation coefficient. All agents are assumed to have access to the same amount of information about $\{\boldsymbol{\omega}_i\}_{\forall i}$ and $\{\mathbf{p}_i^w(\boldsymbol{\omega}_i)\}_{\forall i}$. Wind producers are assumed to have zero marginal cost, be paid for their forecast production and charged for the provision of reserves.
+\textit{Wind Producers}: We consider $N \in \mathbb{N}$ stochastic wind producers. Although a forecast $\tilde{W}_i \in \mathbb{R}_+$ is available for the production of wind farm $i = 1, \ldots, N$, the actual output $\mathbf{p}_i^w(\boldsymbol{\omega}_i) \in \mathbb{R}_+$ may deviate from $\tilde{W}_i$ by some amount given by random variable $\boldsymbol{\omega}_i \in \Omega_i \subseteq \mathbb{R}$, such that $\mathbf{p}_i^w(\boldsymbol{\omega}_i) = \tilde{W}_i + \boldsymbol{\omega}_i$. Note that we use bold symbols to denote random variables. The first and second-order moments (i.e., the mean and variance) of the distribution of the forecast error $\boldsymbol{\omega}_i$ are denoted by $\mathbb{E}[\boldsymbol{\omega}_i] = \mu_i$ and $\mbox{Var}[\boldsymbol{\omega}_i] = \sigma_i^2$, respectively. The covariance between $\boldsymbol{\omega}_i$ and $\boldsymbol{\omega}_j$ is denoted by $\mbox{Cov}[\boldsymbol{\omega}_i, \boldsymbol{\omega}_j] = \kappa_{ij} = \rho_{ij} \sigma_i \sigma_j$, with $\rho_{ij}$ the Pearson correlation coefficient. For conciseness, we will use $\boldsymbol{\omega}^\top = \begin{pmatrix} \boldsymbol{\omega}_1, \ldots, \boldsymbol{\omega}_N \end{pmatrix}$ and denote the mean vector and covariance matrix as $\mu \in \mathbb{R}^N$ and $\Sigma \in \mathbb{R}^{N \times N}$, respectively. All agents are assumed to have access to the same amount of information about $\{\boldsymbol{\omega}_i\}_{\forall i}$ and $\{\mathbf{p}_i^w(\boldsymbol{\omega}_i)\}_{\forall i}$. Wind producers are assumed to have zero marginal cost, be paid for their forecast production and charged for the provision of reserves.
 
 \textit{Flexible Generators}: We consider $K \in \mathbb{N}$ flexible generators. Each generator may produce electricity and contribute to the provision of reserves in the system. Hence, the actual power output $\mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i})$ is given by an affine control law. For generator $k$, this law can be expressed as $\mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i}) = p_k - \sum_{i }\alpha_{ki} \boldsymbol{\omega}_i$, where $p_k$ denotes the scheduled power output and $\alpha_{ki}$ is the share of the forecast error of wind producer $i$ covered by generator $k$ through the reserve mechanism. It is assumed that generators are paid for their scheduled production $p_k$ (not their real-time production $\mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i})$) in the energy market and their contributions $\{\alpha_{ki}\}_{\forall i}$ to reserve procurement. Since the actual power output of generators directly depends on the uncertain wind production and only becomes known when $\{\boldsymbol{\omega}_i\}_{\forall i}$ are revealed, it must be ensured that power generation bounds are not exceeded. Chance (i.e., probabilistic) constraints can be used for this purpose, and $\epsilon_k$ denotes the tolerance for constraint violations (e.g., constraints may be violated $100 \times \epsilon_k \%$ of the time). Generator $k$ is assumed to have linear and quadratic marginal production cost components denoted by $c_k^L \in \mathbb{R}_+$ and $c_k^Q \in \mathbb{R}_+$, respectively.
 
@@ -57,7 +57,9 @@ We consider risk-neutral flexible generators (i.e., generators only care about t
 Note that electricity and reserve prices, which are denoted by $\lambda$ and $\{\chi_i\}_{\forall i}$, respectively, are treated as parameters by each producer $k$.
 \subsubsection{Deterministic Equivalent Formulation}
 
-The stochastic expected profit maximisation problem faced by producer $k$ can be recast as an equivalent deterministic program as follows. First, by linearity of the expectation operator, the expected pay-off can be re-written as
+The stochastic expected profit maximisation problem faced by producer $k$ can be recast as an equivalent deterministic program as follows. We start by re-formulating the objective and focus on chance constraints next.
+
+\paragraph{Expected Pay-Off} By linearity of the expectation operator, the expected pay-off can be re-written as
 \begin{align*}
 \Pi_k(p_k, \{\alpha_{ki}\}_{\forall i}) &= \mathbb{E}\Big[\lambda p_k + \sum_i \chi_i \alpha_{ki} - c_k^L \mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i}) - c_k^Q (\mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i}))^2\Big]\\
 &= \mathbb{E}\big[\lambda p_k\big] + \mathbb{E}\Big[\sum_i \chi_i \alpha_{ki}\Big] - \mathbb{E}\big[c_k^L \mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i})\big] - \mathbb{E}\big[c_k^Q (\mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i}))^2\big].
@@ -87,20 +89,39 @@ The first term represents the expected revenue accruing from the sale of electri
 \end{align*}
 which is a concave function of its variables. Note that the function is strictly concave if $c_k^Q > 0$ and $\Sigma \succ 0$. In particular, this will be the case if all forecast errors are independent or no forecast error can be expressed as an exact linear function of other forecast errors.
 
-Then, the chance constraints imposed on generation bounds should also be re-formulated to obtain a tractable (hopefully convex) mathematical program. Depending on the underlying forecast error distribution, chance constraints may be recast as convex constraints involving moments of said distribution. In particular, one-sided chance constraints involving a scalar random variable following a Gaussian distribution or approximations of distributionally-robust chance constraints may lead to simple linear inequality constraints \cite{Dvorkin2020}. In the multi-dimensional Gaussian setting, one-sided chance constraints can be re-formulated as second-order cone constraints. In other settings, distributionally-robust chance constraints may be recast as second-order cone constraints \cite{Xie2018}. For simplicity, we assume that $\boldsymbol{\omega}_i \sim \mathcal{N}(\mu_i, \sigma_i^2), \forall i$. The derivation then goes as follows:
+\paragraph{Chance Constraints} Chance constraints imposed on generation levels should also be re-formulated to obtain a deterministic mathematical program. For now, we assume that $\boldsymbol{\omega} \in \mathbb{R}^N$ follows a multivariate normal distribution with mean vector $\mu \in \mathbb{R}^N$ and covariance matrix $\Sigma \in \mathbb{R}^{N \times N}$. For some risk level $\epsilon_k \in (0, 0.5]$, we then have
 \begin{align*}
 &\mathbb{P}[\mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i}) \le \overline{p}_k] \ge 1 - \epsilon_k\\
 \Leftrightarrow &\mathbb{P}\Big[p_k - \sum_i \alpha_{ki} \boldsymbol{\omega}_i \le \overline{p}_k\Big] \ge 1 - \epsilon_k\\
 \Leftrightarrow &\mathbb{P}\Big[\frac{- \sum_i \alpha_{ki} \boldsymbol{\omega}_i + \alpha_k^\top \mu}{\sqrt{\alpha_k^\top \Sigma \alpha_k}} \le \frac{\overline{p}_k - p_k + \alpha_k^\top \mu}{\sqrt{\alpha_k^\top \Sigma \alpha_k}}\Big] \ge 1 - \epsilon_k\\
+\Leftrightarrow & \Phi\bigg(\frac{\overline{p}_k - p_k + \alpha_k^\top \mu}{\sqrt{\alpha_k^\top \Sigma \alpha_k}}\bigg)\ge1-\epsilon_k\\
 \Leftrightarrow &\frac{\overline{p}_k - p_k + \alpha_k^\top \mu}{\sqrt{\alpha_k^\top \Sigma \alpha_k}} \ge \Phi^{-1}(1 - \epsilon_k)\\
-\Leftrightarrow &p_k \le \overline{p}_k + \alpha_k^\top \mu - ||\alpha_k||_{\Sigma} \Phi^{-1}(1 - \epsilon_k),\\
+\Leftrightarrow &p_k \le \overline{p}_k + \alpha_k^\top \mu - ||\alpha_k||_{\Sigma} \Phi^{-1}(1 - \epsilon_k),
 \end{align*}
-which is a second-order cone constraint and where $\Phi^{-1}: (0, 1) \rightarrow \mathbb{R}$ is the quantile function of the standard normal distribution and $||\alpha_k||_{\Sigma} = \sqrt{\alpha_k^\top \Sigma \alpha_k}$. In what follows, we write $\Phi^{-1}(1 - \epsilon_k) = \Phi_k^{-1}$ for brevity. Applying the same ideas to the second chance constraint yields
+where $\Phi:\mathbb{R} \rightarrow (0, 1)$ is the cumulative distribution function and $\Phi^{-1}: (0, 1) \rightarrow \mathbb{R}$ is the quantile function of the standard normal distribution. We just proved the following result.
+
+\begin{proposition}\label{SOCP_CC}
+For some risk level $0 < \epsilon_k \le 0.5$, the chance constraint
+\begin{equation*}
+\mathbb{P}\Big[p_k - \sum_i \alpha_{ki} \boldsymbol{\omega}_i \le \overline{p}_k\Big] \ge 1 - \epsilon_k,
+\end{equation*}
+where $\boldsymbol{\omega} \in \mathbb{R}^N$ follows a multivariate normal distribution with mean vector $\mu \in \mathbb{R}^N$ and covariance matrix $\Sigma \in \mathbb{R}^{N \times N}$ is equivalent to the deterministic second-order cone constraint
+\begin{equation*}
+p_k \le \overline{p}_k + \alpha_k^\top \mu - ||\alpha_k||_{\Sigma} \Phi^{-1}(1 - \epsilon_k),
+\end{equation*}
+with $\Phi^{-1}$ the quantile function of the standard normal distribution.
+\end{proposition}
+
+In the particular case that $\boldsymbol{\omega}$ is a scalar random variable, the second-order cone constraint reduces to a linear inequality, as observed in \cite{Dvorkin2020}. Note that similar results hold for linear inequality constraints involving random vectors that follow radial distributions \cite{Calafiore2006}. \textcolor{orange}{In other settings, distributionally-robust chance constraints may be recast as second-order cone constraints \cite{Xie2018}}.
+
+Applying Proposition \ref{SOCP_CC} to the second chance constraint yields
 \begin{align*}
 &\mathbb{P}[0 \le \mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i})] \ge 1 - \epsilon_k\\
-\Leftrightarrow & \alpha_k^\top \mu + ||\alpha_k||_{\Sigma} \Phi_k^{-1} \le p_k.
+\Leftrightarrow & \alpha_k^\top \mu + ||\alpha_k||_{\Sigma} \Phi_k^{-1} \le p_k,
 \end{align*}
-Thus, the deterministic equivalent of the stochastic profit-maximisation problem of producer $k$ reads
+where we wrote $\Phi^{-1}(1 - \epsilon_k) = \Phi_k^{-1}$ for brevity. 
+
+\paragraph{Deterministic Formulation} The deterministic equivalent of the stochastic profit-maximisation problem of producer $k$ reads
 \begin{align}
 \underset{p_k, \{\alpha_{ki}\}_{\forall i}}{\max} \hspace{10pt} & \lambda p_k + \alpha_k^\top \chi - c_k^L\big(p_k - \alpha_k^\top \mu\big) - c_k^Q \Big(\big(p_k - \alpha_{k}^\top \mu \big)^2 + \alpha_k^\top \Sigma \alpha_k\Big)\\
 \mbox{s.t. } & p_k \le \overline{p}_k + \alpha_k^\top \mu - ||\alpha_k||_{\Sigma} \Phi_k^{-1}, \hspace{25pt} (\overline{\nu}_k)\\
@@ -490,18 +511,18 @@ We now have the following result.
 &+ \Phi_k^{-1} \frac{\sigma_i \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_j \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big)\\
 &=  \sum_k \alpha_{ki}^* \Big(\sigma_i \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_j\alpha_{kj}^*\Big)\Big(2c_k^Q + \frac{\Phi_k^{-1}}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
 \end{align*}
-Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$, $||\alpha_k^*||_{\Sigma} \ge 0$. In addition, $c_k^Q > 0, \forall k,$ and $0 < \epsilon_k \le 0.5, \forall k,$ by assumption, which implies that $\Phi^{-1}_k \ge 0, \forall k$. Thus, the second term in parentheses is non-negative. A sufficient condition for the sensitivity to be non-negative is therefore that
+Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$, $||\alpha_k^*||_{\Sigma} \ge 0$. In addition, $c_k^Q > 0, \forall k,$ and $0 < \epsilon_k \le 0.5, \forall k,$ by assumption, which implies that $\Phi^{-1}_k \ge 0, \forall k$. Thus, the second term in parentheses is non-negative. A sufficient condition for the sensitivity with respect to $\sigma_i$ to be non-negative is therefore that
 \begin{equation*}
-v(\rho) = \alpha_{ki}^* \Big(\sigma_i \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_j\alpha_{kj}^*\Big) \ge 0, \forall k,
+v_{ik}(\rho) = \alpha_{ki}^* \Big(\sigma_i \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_j\alpha_{kj}^*\Big) \ge 0, \forall k,
 \end{equation*}
-with $v: \mathcal{K} \rightarrow \mathbb{R}$ and $\mathcal{K} = \{A \in \mathbb{R}^{N \times N}: -1 \le A_{ij} \le 1, i \ne j, A_{ii} = 1, A \succeq 0\}$ the set of $N \times N$ correlation matrices. We use this condition to prove the first two results:
+with $v_{ik}: \mathcal{K} \rightarrow \mathbb{R}$ and $\mathcal{K} = \{A \in \mathbb{R}^{N \times N}: -1 \le A_{mn} \le 1, m \ne n, A_{nn} = 1, A \succeq 0\}$ the set of $N \times N$ correlation matrices. We use this condition to prove the first two results:
 \begin{itemize}
 \item[(i)] If forecast errors are independent, $\rho_{ij} = 0, i \ne j$. Hence, we have
 \begin{equation*}
-v(\rho) = \sigma_i (\alpha_{ki}^*)^2 \ge 0,
+v_{ik}(\rho) = \sigma_i (\alpha_{ki}^*)^2 \ge 0, \forall k,
 \end{equation*}
 since $\sigma_i > 0$ and $\alpha_{ki}^* \ge 0$.
-\item[(ii)] If forecast errors are positively-correlated, $\rho_{ij} \ge 0, i \ne j$. It follows that $v(\rho) \ge 0$.
+\item[(ii)] If forecast errors are positively-correlated, $\rho_{ij} \ge 0, i \ne j$. It directly follows from its definition that $v_{ik}(\rho) \ge 0, \forall k$.
 \item[(iii)] By contradiction. Let us assume that the sensitivity is always non-negative or non-positive. It suffices to construct a counter-example to prove the result. Such a counter-example was implemented in Julia in the stochastic market experiment repository \cite{SMER2022}. 
 \end{itemize}
 \end{proof}

@@ -28,12 +28,12 @@ R_down_max = [p_max[g] for g = 1:n_g];
 
 # Wind production parameters
 p_w_max = [250.0 for i = 1:n_w];
-mu = [-0.025*p_w_max[i] for i = 1:n_w];
-mu[2] += 0.01*p_w_max[2];
-mu[3] -= 0.01*p_w_max[3];
-std = [0.025*p_w_max[i] for i = 1:n_w];
-std[2] += 0.015*p_w_max[2];
-std[3] += 0.01*p_w_max[3];
+mu = [-0.1*p_w_max[i] for i = 1:n_w];
+mu[2] += 0.25*p_w_max[2];
+mu[3] -= 0.1*p_w_max[3];
+std = [0.1*p_w_max[i] for i = 1:n_w];
+std[2] += 0.05*p_w_max[2];
+std[3] += 0.1*p_w_max[3];
 #rho = -0.75;
 #corr_mat = [[1. rho]; [rho 1.]];
 rho_12, rho_13, rho_23 = -0.65, -0.5, -0.1;
@@ -129,6 +129,11 @@ for i = 1:n_w
     reserve_price_est[i] = mu[i] * mean_sensitivity[i] + std[i] * std_sensitivity[i];
 end
 
+estimated_generator_profit = zeros(n_g);
+for k = 1:n_g
+    estimated_generator_profit[k] = C_Q[k] * (p_scheduled[k] - sum(alpha_scheduled[k,i] * mu[i] for i = 1:n_w))^2 + C_Q[k] * alpha_scheduled[k,:]'* cov_mat * alpha_scheduled[k, :] + dual_max_prod[k] * p_max[k]
+end
+
 println("\n")
 println("Power generation: ", p_scheduled)
 println("Reserve procurement: ", alpha_scheduled)
@@ -148,6 +153,7 @@ if !truthful_bidding
     println("Reported generator cost: ", reported_generator_cost)
 end
 println("True generator profit: ", true_generator_profit)
+println("Estimated generator profit: ", estimated_generator_profit)
 if !truthful_bidding
     println("Reported generator profit: ", reported_generator_profit)
 end
