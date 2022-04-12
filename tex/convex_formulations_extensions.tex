@@ -100,7 +100,7 @@ which is a concave function of its variables. Note that the function is strictly
 \end{align*}
 where $\Phi:\mathbb{R} \rightarrow (0, 1)$ is the cumulative distribution function and $\Phi^{-1}: (0, 1) \rightarrow \mathbb{R}$ is the quantile function of the standard normal distribution. We just proved the following result.
 
-\begin{proposition}\label{SOCP_CC}
+\begin{proposition}\label{ND_SOCP_CC}
 For some risk level $0 < \epsilon_k \le 0.5$, the chance constraint
 \begin{equation*}
 \mathbb{P}\Big[p_k - \sum_i \alpha_{ki} \boldsymbol{\omega}_i \le \overline{p}_k\Big] \ge 1 - \epsilon_k,
@@ -112,9 +112,21 @@ p_k \le \overline{p}_k + \alpha_k^\top \mu - ||\alpha_k||_{\Sigma} \Phi^{-1}(1 -
 with $\Phi^{-1}$ the quantile function of the standard normal distribution.
 \end{proposition}
 
-In the particular case that $\boldsymbol{\omega}$ is a scalar random variable, the second-order cone constraint reduces to a linear inequality, as observed in \cite{Dvorkin2020}. Note that similar results hold for linear inequality constraints involving random vectors that follow radial distributions \cite{Calafiore2006}. \textcolor{orange}{In other settings, distributionally-robust chance constraints may be recast as second-order cone constraints \cite{Xie2018}}.
+In the particular case that $\boldsymbol{\omega}$ is a scalar random variable, the second-order cone constraint reduces to a linear inequality constraint, as observed in \cite{Dvorkin2020}. Note that similar results hold for linear inequality constraints involving random vectors that follow radial distributions \cite{Calafiore2006}. In addition, similar convex formulations were derived in the distributionally-robust setting by Calafiore and El Ghaoui \cite{Calafiore2006}.
 
-Applying Proposition \ref{SOCP_CC} to the second chance constraint yields
+\begin{proposition}\label{DR_SOCP_CC}
+For any risk level $0 < \epsilon_k < 1$, the distributionally-robust chance constraint
+\begin{equation*}
+\inf_{\mathbb{P} \in \Psi} \mathbb{P}\Big[p_k - \sum_i \alpha_{ki} \boldsymbol{\omega}_i \le \overline{p}_k\Big] \ge 1 - \epsilon_k,
+\end{equation*}
+where $\Psi = \{\mathbb{P}: \mathbb{E}[\boldsymbol{\omega}] = \mu, \mbox{Var}[\boldsymbol{\omega}] = \Sigma\}$ is the family of probability distributions with first and second-order moments $\mu$ and $\Sigma$, is equivalent to the second-order cone constraint
+\begin{equation*}
+\mbox{\textcolor{orange}{TO BE ADDED}}
+\end{equation*}
+\end{proposition}
+%\textcolor{orange}{In other settings, distributionally-robust chance constraints may be recast as second-order cone constraints \cite{Xie2018}}.
+
+Applying Proposition \ref{ND_SOCP_CC} to the second chance constraint yields
 \begin{align*}
 &\mathbb{P}[0 \le \mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i})] \ge 1 - \epsilon_k\\
 \Leftrightarrow & \alpha_k^\top \mu + ||\alpha_k||_{\Sigma} \Phi_k^{-1} \le p_k,
@@ -398,7 +410,7 @@ Next, we have the following result.
 \end{proposition}
 \begin{proof}
 Building upon Lemma \ref{lemma1}, we successively have
-\begin{align*} 
+\begin{align*}
 \frac{\partial V^*}{\partial \mu_i} =& \frac{\partial \mathcal{L}^*}{\partial \mu_i}\\
 =& \sum_k \Big(-c_k^L \alpha_{ki}^* + 2 c_k^Q \big(- p_k^* \alpha_{ki}^* + (\alpha_{ki}^*)^2 \mu_i + \sum_{j \ne i} \alpha_{ki}^* \alpha_{kj}^* \mu_j\big) + \underline{\nu}_k^* \alpha_{ki}^* - \overline{\nu}_k^* \alpha_{ki}^*\Big)\\
 =& \sum_k \alpha_{ki}^* \Big(-c_k^L + 2 c_k^Q \big(- p_k^* + \alpha_{ki}^* \mu_i + \sum_{j \ne i} \alpha_{kj}^* \mu_j\big) + \underline{\nu}_k^* - \overline{\nu}_k^*\Big)\\
@@ -436,7 +448,7 @@ We also have the following result.
 \begin{proposition}\label{SensitivityMeanElectricityPrice}
 (Sensitivity to Mean Forecast Error) The sensitivity of the expected system cost with respect to the mean forecast error is proportional to minus the electricity price, that is,
 \begin{equation*}
-\frac{\partial V^*}{\partial \mu_i} = -\lambda_i^*.
+\frac{\partial V^*}{\partial \mu_i} = -\lambda^*.
 \end{equation*}
 \end{proposition}
 \begin{proof}
@@ -550,6 +562,34 @@ Thus, we can write
 =& \sum_k ||\alpha_k^*||_{\Sigma} \Big(2c_k^Q ||\alpha_k^*||_{\Sigma} + \Phi_k^{-1} (\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
 \end{align*}
 Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. Clearly, $||\alpha_k^*||_{\Sigma} \ge 0$. By assumption, $c_k^Q > 0, \forall k$, and $0 < \epsilon_k \le 0.5, \forall k$, which implies that $\Phi^{-1}_k \ge 0, \forall k$. Hence, each term in the sum is non-negative and the result follows.
+\end{proof}
+
+\begin{lemma} (Reserve Allocation)
+If no reformulated chance constraints are tight at the optimum, reserve allocations $\alpha_k^* \in [0, 1]^N$ can be obtained as
+\begin{equation*}
+\alpha_k^* = \frac{1}{2 c_k^Q} \Sigma^{-1} \Big(\lambda^* \mu + \chi^* \Big).
+\end{equation*}
+\end{lemma}
+\begin{proof}
+First, note that from complementary slackness, $\overline{\mu}_k^* = \underline{\mu}_k^* = 0$ if chance constraints are not tight at the optimum. Next, let us write the stationary conditions of the Lagrangian with respect to $p_k$ and $\alpha_k$. In vector form, they read
+\begin{align*}
+\frac{\partial \mathcal{L}}{\partial \alpha_k} &= -c_k^L \mu - 2 c_k^Q (p_k - \alpha_k^\top \mu) \mu + 2 c_k^Q \Sigma \alpha_k - \chi = 0\\
+\frac{\partial \mathcal{L}}{\partial p_k} &= c_k^L + 2 c_k^Q(p_k - \alpha_k^\top \mu) - \lambda = 0,
+\end{align*}
+where terms associated with $\overline{\mu}_k^*$ and $\underline{\mu}_k^*$ do not appear since they are both equal to zero. Noting that $(\alpha_k^\top \mu) \mu = (\mu \mu^\top) \alpha_k$ and re-arranging terms yields
+\begin{align*}
+&2 c_k^Q (\Sigma + \mu \mu^\top) \alpha_k = 2 c_k^Q p_k \mu + c_k^L \mu + \chi,\\
+& 2c_k^Q p_k = 2 c_k^Q \alpha_k^\top \mu - c_k^L + \lambda.
+\end{align*}
+Substituting the left-hand side of the second equation into the right-hand side of the first one leads to
+\begin{align*}
+2 c_k^Q (\Sigma + \mu \mu^\top) \alpha_k &= 2 c_k^Q (\alpha_k^\top \mu) \mu - c_k^L \mu + \lambda \mu + c_k^L \mu + \chi\\
+&= 2 c_k^Q (\mu \mu^\top) \alpha_k + \lambda \mu + \chi,
+\end{align*}
+from which we get the result
+\begin{equation*}
+\alpha_k = \frac{1}{2 c_k^Q} \Sigma^{-1} (\lambda \mu + \chi).
+\end{equation*}
 \end{proof}
 
 %\paragraph{Comments} I am not sure that such a result holds for each individual wind producer $i$ in general. To prove it, we would basically need to show that $\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* \ge 0, \forall k$. For particular cases, it is pretty simple. For instance, the result obviously holds for individual producers if forecast errors are independent (the sum over $j$ is then equal to 0). Likewise, the result trivially holds if all forecast errors are positively correlated. In the general case, however, this will probably depend on the sign of the correlation between forecast errors.

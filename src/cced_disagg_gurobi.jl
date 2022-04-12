@@ -23,8 +23,6 @@ n_w = 3;
 # Flexible generation parameters
 p_max = [200.0 for g = 1:n_g];
 p_min = [0.0 for g = 1:n_g];
-R_up_max = [p_max[g] for g = 1:n_g];
-R_down_max = [p_max[g] for g = 1:n_g];
 
 # Wind production parameters
 p_w_max = [250.0 for i = 1:n_w];
@@ -32,23 +30,23 @@ mu = [-0.1*p_w_max[i] for i = 1:n_w];
 mu[2] += 0.25*p_w_max[2];
 mu[3] -= 0.1*p_w_max[3];
 std = [0.1*p_w_max[i] for i = 1:n_w];
+std[1] = std[1]/5.;
 std[2] += 0.05*p_w_max[2];
-std[3] += 0.1*p_w_max[3];
+std[3] = 1. + std[3]/5.;
+#std[3] += 0.1*p_w_max[3];
 #rho = -0.75;
 #corr_mat = [[1. rho]; [rho 1.]];
-rho_12, rho_13, rho_23 = -0.65, -0.5, -0.1;
+rho_12, rho_13, rho_23 = -0.65, 0.1, -0.1;
 corr_mat = [[1. rho_12 rho_13]; [rho_12 1. rho_23]; [rho_13 rho_23 1.]];
 cov_mat = Diagonal(std) * corr_mat * Diagonal(std);
-cov_sqrt = sqrt(cov_mat); # computes the matrix square root of covariance matrix to define SOC constraint
 W = [0.8*p_w_max[i] for i = 1:n_w];
 
 # Demand parameters
-D = 900;
+D = 1050;
 
 # Risk parameters
 epsilon = 0.05;
 phi = quantile(Normal(), (1-epsilon));
-phi_inv = 1/phi;
 
 # Cost parameters
 v_Q, s_Q = 0.1, 0.05;
@@ -122,7 +120,7 @@ reserve_price_est = zeros(n_w);
 for i = 1:n_w
     for k = 1:n_g
         std_sensitivity_coeffs[i, k] = std[i] * alpha_scheduled[k, i]^2 + sum((corr_mat[i, j] * std[j] * alpha_scheduled[k, j] * alpha_scheduled[k, i]) for j = 1:n_w if j != i)
-        std_sensitivity[i] += std_sensitivity_coeffs[i, k] * (2 * C_Q[k] + (phi_inv / sqrt(alpha_scheduled[k,:]'*cov_mat*alpha_scheduled[k,:])) * (dual_min_prod[k] + dual_max_prod[k]))
+        std_sensitivity[i] += std_sensitivity_coeffs[i, k] * (2 * C_Q[k] + (phi / sqrt(alpha_scheduled[k,:]'*cov_mat*alpha_scheduled[k,:])) * (dual_min_prod[k] + dual_max_prod[k]))
         mean_sensitivity_coeffs[i, k] = alpha_scheduled[k, i] * (-C_L[k] + 2 * C_Q[k] * (-p_scheduled[k] + sum(alpha_scheduled[k, j] * mu[j] for j = 1:n_w)) + dual_min_prod[k] - dual_max_prod[k])
         mean_sensitivity[i] += mean_sensitivity_coeffs[i, k]
     end
