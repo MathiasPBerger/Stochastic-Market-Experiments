@@ -42,11 +42,16 @@ cov_mat = Diagonal(std) * corr_mat * Diagonal(std);
 W = [0.8*p_w_max[i] for i = 1:n_w];
 
 # Demand parameters
-D = 1050;
+D = 900;
 
 # Risk parameters
 epsilon = 0.05;
-phi = quantile(Normal(), (1-epsilon));
+dr = true
+if dr == true
+    phi = sqrt((1-epsilon)/epsilon); # one-sided distributionally-robust CC
+else
+    phi = quantile(Normal(), (1-epsilon)); # one-sided CC using normal distrib.
+end
 
 # Cost parameters
 v_Q, s_Q = 0.1, 0.05;
@@ -85,7 +90,6 @@ set_optimizer_attribute(model, "QCPDual", 1)
 @constraint(model, aff_expr_slack_min[g = 1:n_g], s_min[g] == x[g] - p_min[g])
 @constraint(model, max_prod[g = 1:n_g], phi^2 * alpha[g,:]'*cov_mat*alpha[g,:] <= s_max[g]^2)
 @constraint(model, min_prod[g = 1:n_g], phi^2 * alpha[g,:]'*cov_mat*alpha[g,:] <= s_min[g]^2)
-#@constraint(model, test_constr[g = 1:n_g], (p_max[g] - p[g] + sum(alpha[g, i]*mu[i] for i = 1:n_w)) >= 0.001)
 
 @objective(model, Min, sum(C_Q[g]*(x[g]^2 + alpha[g,:]'*cov_mat*alpha[g,:]) + C_L[g]*x[g] for g = 1:n_g))
 
