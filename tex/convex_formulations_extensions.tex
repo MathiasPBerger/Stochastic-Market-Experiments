@@ -506,70 +506,156 @@ which corresponds to a situation where forecast errors are perfectly negatively 
 
 Before analysing the sensitivity of the expected system cost with respect to the standard deviation of the forecast error, we need a result pertaining to the way that reserve is allocated across wind farms for a given generator.
 
+%\begin{proposition} (Symmetry of Reserve Allocation)
+%For each generator $k$, reserves $\alpha_k^* \in [0, 1]^N$ are allocated in a symmetric fashion, that is,
+%\begin{equation*}
+%\alpha_{k}^* = \eta_k e,
+%\end{equation*}
+%for some $\eta_k \in [0, 1]$ such that $\sum_k \eta_k = 1$, and where $e \in \mathbb{R}^N$ denotes the all-ones vector.
+%\end{proposition}
+%\begin{proof}
+%The proof proceeds in two steps. We start by showing that
+%\begin{equation*}
+%\alpha_k^* = \gamma_k \Sigma^{-1} \Big(\lambda^* \mu + \chi^* \Big),
+%\end{equation*}
+%for some carefully selected $\gamma_k$. Next, we show that the vector expression on the right-hand side above is a multiple of the all-ones vector $e$, that is,
+%\begin{equation*}
+%\Sigma^{-1} \Big(\lambda^* \mu + \chi^* \Big) = \beta_k e,
+%\end{equation*}
+%for some appropriate $\beta_k$, from which the result can be deduced.
+%
+%First, note that from complementary slackness, $\overline{\nu}_k^* = \underline{\nu}_k^* = 0$ if chance constraints are not tight at the optimum. Next, let us write the stationarity conditions of the Lagrangian with respect to $p_k$ and $\alpha_k$. In vector form, they read
+%\begin{align*}
+%\frac{\partial \mathcal{L}}{\partial \alpha_k} &= -c_k^L \mu - 2 c_k^Q (p_k^* - (\alpha_k^*)^\top \mu) \mu + 2 c_k^Q \Sigma \alpha_k^* - \chi^* = 0,\\
+%\frac{\partial \mathcal{L}}{\partial p_k} &= c_k^L + 2 c_k^Q(p_k^* - (\alpha_k^*)^\top \mu) - \lambda^* = 0,
+%\end{align*}
+%where terms associated with $\overline{\nu}_k^*$ and $\underline{\nu}_k^*$ do not appear since they are both equal to zero. Then, noting that $((\alpha_k^*)^\top \mu) \mu = (\mu \mu^\top) \alpha_k^*$ and re-arranging terms yields
+%\begin{align*}
+%&2 c_k^Q (\Sigma + \mu \mu^\top) \alpha_k^* = 2 c_k^Q p_k^* \mu + c_k^L \mu + \chi^*,\\
+%& 2c_k^Q p_k^* = 2 c_k^Q (\alpha_k^*)^\top \mu - c_k^L + \lambda^*.
+%\end{align*}
+%Substituting the left-hand side of the second equation into the right-hand side of the first one leads to
+%\begin{align*}
+%2 c_k^Q (\Sigma + \mu \mu^\top) \alpha_k^* &= 2 c_k^Q ((\alpha_k^*)^\top \mu) \mu - c_k^L \mu + \lambda^* \mu + c_k^L \mu + \chi^*\\
+%&= 2 c_k^Q (\mu \mu^\top) \alpha_k^* + \lambda^* \mu + \chi^*,
+%\end{align*}
+%from which we get the first intermediate result
+%\begin{equation*}
+%\alpha_k^* = \frac{1}{2 c_k^Q} \Sigma^{-1} (\lambda^* \mu + \chi^*).
+%\end{equation*}
+%
+%To obtain the second intermediate result, note that reserves must be allocated so that the forecast error from each wind farm must be fully covered. Thus we have that,
+%\begin{equation*}
+%\sum_k \alpha_k^* = e.
+%\end{equation*}
+%Substituting the expression for $\alpha_k$ obtained above successively yields
+%\begin{align*}
+%&\sum_k \alpha_k^* = e\\
+%\Leftrightarrow &\sum_k \frac{1}{2 c_k^Q} \Sigma^{-1} (\lambda^* \mu + \chi^*) = e\\
+%\Leftrightarrow &\frac{1}{\gamma_k} \Sigma^{-1} (\lambda^* \mu + \chi^*) = e,
+%\end{align*}
+%where $\gamma_k = (\sum_k 1/2 c_k^Q)^{-1}$, and from which the second intermediate result follows.
+%
+%Combining the two intermediate results then gives
+%\begin{align*}
+%\alpha_k^* &= \frac{1}{2 c_k^Q} \Sigma^{-1} (\lambda^* \mu + \chi^*)\\
+%&= \frac{1}{2 c_k^Q} \gamma_k e\\
+%&= \frac{1}{2 c_k^Q} \bigg(\sum_k \frac{1}{2 c_k^Q}\bigg)^{-1} e,
+%\end{align*}
+%and defining
+%\begin{equation*}
+%\eta_k = \frac{1}{2 c_k^Q} \bigg(\sum_k \frac{1}{2 c_k^Q}\bigg)^{-1}
+%\end{equation*}
+%yields the desired result. It is simple to check that $\sum_k \eta_k = 1$, as expected.
+%\end{proof}
+
 \begin{proposition} (Symmetry of Reserve Allocation)
-If no reformulated chance constraints are tight at the optimum, reserve allocations $\alpha_k \in [0, 1]^N$ are symmetric in the sense that
+For each generator $k$, reserves $\alpha_k^* \in [0, 1]^N$ are allocated symmetrically across wind farms, that is,
 \begin{equation*}
 \alpha_{k}^* = \eta_k e,
 \end{equation*}
 for some $\eta_k \in [0, 1]$ such that $\sum_k \eta_k = 1$, and where $e \in \mathbb{R}^N$ denotes the all-ones vector.
 \end{proposition}
 \begin{proof}
-The proof proceeds in two parts. We start by showing that
+The proof proceeds in two steps. We start by showing that
 \begin{equation*}
-\alpha_k^* = \frac{1}{2 c_k^Q} \Sigma^{-1} \Big(\lambda^* \mu + \chi^* \Big).
+\alpha_k = \gamma_k \Sigma^{-1} \Big(\lambda \mu + \chi \Big),
 \end{equation*}
-Next, we show that the vector expression on the right-hand side above is a multiple of the all-ones vector, that is,
+for some carefully selected $\gamma_k$. Next, we show that the vector expression on the right-hand side above is a multiple of the all-ones vector $e$, that is,
 \begin{equation*}
-\Sigma^{-1} \Big(\lambda^* \mu + \chi^* \Big) = \gamma_k e,
+\Sigma^{-1} \Big(\lambda \mu + \chi \Big) = \beta_k e,
 \end{equation*}
-for some appropriate $\gamma_k$, from which the result is then derived.
+for some appropriate $\beta_k$, from which the result can be deduced.
 
-First, note that from complementary slackness, $\overline{\nu}_k^* = \underline{\nu}_k^* = 0$ if chance constraints are not tight at the optimum. Next, let us write the stationarity conditions of the Lagrangian with respect to $p_k$ and $\alpha_k$. In vector form, they read
+To simplify the first part of the proof, we work with an updated problem formulation in which chance constraints are re-written as
 \begin{align*}
-\frac{\partial \mathcal{L}}{\partial \alpha_k} &= -c_k^L \mu - 2 c_k^Q (p_k^* - (\alpha_k^*)^\top \mu) \mu + 2 c_k^Q \Sigma \alpha_k^* - \chi^* = 0,\\
-\frac{\partial \mathcal{L}}{\partial p_k} &= c_k^L + 2 c_k^Q(p_k^* - (\alpha_k^*)^\top \mu) - \lambda^* = 0,
+\phi_k^2 \alpha_k^\top \Sigma \alpha_k &\le (\overline{p}_k - p_k + \alpha_k^\top \mu)^2,\\
+\phi_k^2 \alpha_k^\top \Sigma \alpha_k &\le (p_k - \alpha_k^\top \mu)^2,
 \end{align*}
-where terms associated with $\overline{\nu}_k^*$ and $\underline{\nu}_k^*$ do not appear since they are both equal to zero. Then, noting that $((\alpha_k^*)^\top \mu) \mu = (\mu \mu^\top) \alpha_k^*$ and re-arranging terms yields
+with dual variables $\overline{\upsilon}_k$ and $\underline{\upsilon}_k$, respectively. Note that this formulation is equivalent to the original one, since applying a strictly increasing function (i.e., taking the square) on both sides of an inequality constraint does not change the feasible set. Hence, a primal solution that is optimal for the updated problem will also be optimal for the original problem and vice-versa. We then write the Lagrangian function of this updated problem and analyse its first-order optimality conditions. The updated Lagrangian function $\hat{\mathcal{L}}$ reads
 \begin{align*}
-&2 c_k^Q (\Sigma + \mu \mu^\top) \alpha_k^* = 2 c_k^Q p_k^* \mu + c_k^L \mu + \chi^*,\\
-& 2c_k^Q p_k^* = 2 c_k^Q (\alpha_k^*)^\top \mu - c_k^L + \lambda^*.
+\hat{\mathcal{L}}(\{p_k\}, \{\alpha_k\}, \lambda, \chi, \{\overline{\upsilon}_k\}, \{\underline{\upsilon}_k\}) &= \sum_k \Big(c_k^L(p_k - \alpha_k^\top \mu) + c_k^Q \big((p_k - \alpha_k^\top \mu)^2 + \alpha_k^\top \Sigma \alpha_k\big)\Big)\\
+&+ \sum_k \underline{\upsilon}_k \big(\phi_k^2 \alpha_k^\top \Sigma \alpha_k - (p_k - \alpha_k^\top \mu)^2\big)\\
+&+ \sum_k \overline{\upsilon}_k \big(\phi_k^2 \alpha_k^\top \Sigma \alpha_k - (\overline{p}_k - p_k + \alpha_k^\top \mu)^2\big)\\
+&+ \lambda \Big(D - \sum_k p_k - W^\top e\Big) + \chi^\top \Big(e - \sum_k \alpha_{k}\Big).
 \end{align*}
-Substituting the left-hand side of the second equation into the right-hand side of the first one leads to
+Then, in vector form, the stationarity conditions of the updated Lagrangian with respect to $p_k$ and $\alpha_k$ read
 \begin{align*}
-2 c_k^Q (\Sigma + \mu \mu^\top) \alpha_k^* &= 2 c_k^Q ((\alpha_k^*)^\top \mu) \mu - c_k^L \mu + \lambda^* \mu + c_k^L \mu + \chi^*\\
-&= 2 c_k^Q (\mu \mu^\top) \alpha_k^* + \lambda^* \mu + \chi^*,
+\frac{\partial \hat{\mathcal{L}}}{\partial p_k} =& c_k^L + 2 c_k^Q(p_k - \alpha_k^\top \mu) - 2 \underline{\upsilon}_k(p_k - \alpha_k^\top \mu) + 2 \overline{\upsilon}_k (\overline{p}_k - p_k + \alpha_k^\top \mu) - \lambda = 0,\\
+\frac{\partial \hat{\mathcal{L}}}{\partial \alpha_k} =& -c_k^L \mu - 2 c_k^Q (p_k - \alpha_k^\top \mu) \mu + 2 c_k^Q \Sigma \alpha_k + 2 \underline{\upsilon} \phi_k^2 \Sigma \alpha_k - 2 \underline{\upsilon}_k (p_k - \alpha_k^\top \mu)(-\mu),\\
+&+ 2 \overline{\upsilon}_k \phi_k^2 \Sigma \alpha_k - 2 \overline{\upsilon}_k (\overline{p}_k - p_k + \alpha_k^\top \mu) \mu - \chi = 0.
 \end{align*}
-from which we get the first intermediate result
+The first equation can be re-written as
 \begin{equation*}
-\alpha_k^* = \frac{1}{2 c_k^Q} \Sigma^{-1} (\lambda^* \mu + \chi^*).
+2c_k^Q p_k - 2 \underline{\upsilon}_k p_k + 2 \overline{\upsilon}_k \overline{p}_k - 2 \overline{\upsilon}_k p_k = -c_k^L + 2 c_k^Q \alpha_k^\top \mu - 2 \underline{\upsilon}_k \alpha_k^\top \mu - 2 \overline{\upsilon}_k \alpha_k^\top \mu + \lambda.
 \end{equation*}
+Noting that $((\alpha_k^*)^\top \mu) \mu = (\mu \mu^\top) \alpha_k^*$ and re-arranging terms, the second equation can be re-written as
+\begin{align*}
+\bigg[2 \Big(c_k^Q - \underline{\upsilon}_k - \overline{\upsilon}_k\Big) \mu \mu^\top + &2\Big(c_k^Q + \underline{\upsilon}_k \phi_k^2 + \overline{\upsilon}_k \phi_k^2\Big) \Sigma \bigg]\alpha_k\\
+&= \big(2c_k^Q p_k - 2 \underline{\upsilon}_k p_k + 2 \overline{\upsilon}_k \overline{p}_k - 2 \overline{\upsilon}_k p_k\big) \mu + c_k^L \mu + \chi.
+\end{align*}
+Substituting the left-hand side of the first equation into the right-hand side of the second equation then yields
+\begin{align*}
+\bigg[2 \Big(c_k^Q - \underline{\upsilon}_k - \overline{\upsilon}_k\Big) \mu \mu^\top + &2\Big(c_k^Q + \underline{\upsilon}_k \phi_k^2 + \overline{\upsilon}_k \phi_k^2\Big) \Sigma \bigg]\alpha_k\\
+&= -c_k^L \mu + 2 c_k^Q \mu \mu^\top \alpha_k - 2 \underline{\upsilon}_k \mu \mu^\top \alpha_k - 2 \overline{\upsilon}_k \mu \mu^\top \alpha_k + \lambda \mu + c_k^L \mu + \chi.
+\end{align*}
+Cancelling terms out on both sides then leads to
+\begin{equation*}
+\bigg[2\Big(c_k^Q + \underline{\upsilon}_k \phi_k^2 + \overline{\upsilon}_k \phi_k^2\Big) \bigg] \Sigma \alpha_k = \lambda \mu + \chi.
+\end{equation*}
+Defining 
+\begin{equation*}
+\gamma_k = \bigg[2\Big(c_k^Q + \underline{\upsilon}_k \phi_k^2 + \overline{\upsilon}_k \phi_k^2\Big) \bigg]^{-1}
+\end{equation*}
+and multiplying both sides by $\Sigma^{-1}$ and $\gamma_k$ yields the first intermediate result. 
 
-To obtain the second intermediate result, note that reserves must be allocated so that the forecast error from each wind farm must be fully covered. Thus we have that,
+To obtain the second intermediate result, note that reserves must be allocated so that the forecast error from each wind farm is fully covered. Thus, we have that
 \begin{equation*}
-\sum_k \alpha_k^* = e.
+\sum_k \alpha_k = e.
 \end{equation*}
-Substituting the expression for $\alpha_k$ obtained above successively yields
-\begin{align*}
-&\sum_k \alpha_k^* = e\\
-\Leftrightarrow &\sum_k \frac{1}{2 c_k^Q} \Sigma^{-1} (\lambda^* \mu + \chi^*) = e\\
-\Leftrightarrow &\frac{1}{\gamma_k} \Sigma^{-1} (\lambda^* \mu + \chi^*) = e,
-\end{align*}
-where $\gamma_k = (\sum_k 1/2 c_k^Q)^{-1}$, and from which the second intermediate result follows.
+Substituting the expression for $\alpha_k$ obtained above yields
+\begin{equation*}
+\sum_k \gamma_k \Sigma^{-1} (\lambda \mu + \chi) = e
+\end{equation*}
+The second intermediate result then follows from defining
+\begin{equation*}
+\beta_k = \bigg[\sum_k \gamma_k\bigg]^{-1}
+\end{equation*}
+and multiplying both sides by $\beta_k$.
 
 Combining the two intermediate results then gives
 \begin{align*}
-\alpha_k^* &= \frac{1}{2 c_k^Q} \Sigma^{-1} (\lambda^* \mu + \chi^*)\\
-&= \frac{1}{2 c_k^Q} \gamma_k e\\
-&= \frac{1}{2 c_k^Q} \bigg(\sum_k \frac{1}{2 c_k^Q}\bigg)^{-1} e,
+\alpha_k &= \gamma_k \Sigma^{-1} (\lambda \mu + \chi)\\
+&= \gamma_k \beta_k e,
 \end{align*}
-and defining
+such that defining
 \begin{equation*}
-\eta_k = \frac{1}{2 c_k^Q} \bigg(\sum_k \frac{1}{2 c_k^Q}\bigg)^{-1}
+\eta_k = \gamma_k \beta_k =  \gamma_k \bigg(\sum_k \gamma_k\bigg)^{-1}
 \end{equation*}
-yields the desired result. It is simple to check that $\sum_k \eta_k = 1$, as expected.
+leads to the desired result. It is simple to check that $\sum_k \eta_k = 1$, as expected.
 \end{proof}
 
-We can now derive the following result.
+We can now derive the main result.
 
 \begin{proposition}\label{SensitivityStandardDeviation}
 (Sensitivity to Standard Deviation of Forecast Error) The sensitivity of the expected system cost with respect to the standard deviation of forecast errors depends on their correlation structure. More precisely, we have:
@@ -588,7 +674,7 @@ We can now derive the following result.
 &+ \phi_k \frac{\sigma_i \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_j \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big)\\
 &=  \sum_k \alpha_{ki}^* \Big(\sigma_i \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_j\alpha_{kj}^*\Big)\Big(2c_k^Q + \frac{\phi_k}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
 \end{align*}
-Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$, $||\alpha_k^*||_{\Sigma} \ge 0$. In addition, $c_k^Q > 0, \forall k,$ and $0 < \epsilon_k \le 0.5, \forall k,$ by assumption, which implies that $\Phi^{-1}_k \ge 0, \forall k$. Thus, the second term in parentheses is non-negative. A sufficient condition for the sensitivity with respect to $\sigma_i$ to be non-negative is therefore that
+Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$, $||\alpha_k^*||_{\Sigma} \ge 0$. In addition, $c_k^Q > 0, \forall k,$ and $0 < \epsilon_k \le 0.5, \forall k,$ by assumption, which implies that $\phi_k \ge 0, \forall k$. Thus, the second term in parentheses is non-negative. A sufficient condition for the sensitivity with respect to $\sigma_i$ to be non-negative is therefore that
 \begin{equation*}
 v_{ik}(\rho) = \alpha_{ki}^* \Big(\sigma_i \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_j\alpha_{kj}^*\Big) \ge 0, \forall k,
 \end{equation*}
@@ -626,7 +712,7 @@ Thus, we can write
 =& \sum_k \Big(2c_k^Q + \frac{\phi_k}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big) \times(\alpha_k^*)^\top \Sigma \alpha_k^*\\
 =& \sum_k ||\alpha_k^*||_{\Sigma} \Big(2c_k^Q ||\alpha_k^*||_{\Sigma} + \phi_k (\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
 \end{align*}
-Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. Clearly, $||\alpha_k^*||_{\Sigma} \ge 0$. By assumption, $c_k^Q > 0, \forall k$, and $0 < \epsilon_k \le 0.5, \forall k$, which implies that $\Phi^{-1}_k \ge 0, \forall k$. Hence, each term in the sum is non-negative and the result follows.
+Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. Clearly, $||\alpha_k^*||_{\Sigma} \ge 0$. By assumption, $c_k^Q > 0, \forall k$, and $0 < \epsilon_k \le 0.5, \forall k$, which implies that $\phi_k \ge 0, \forall k$. Hence, each term in the sum is non-negative and the result follows.
 \end{proof}
 
 %\paragraph{Comments} I am not sure that such a result holds for each individual wind producer $i$ in general. To prove it, we would basically need to show that $\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* \ge 0, \forall k$. For particular cases, it is pretty simple. For instance, the result obviously holds for individual producers if forecast errors are independent (the sum over $j$ is then equal to 0). Likewise, the result trivially holds if all forecast errors are positively correlated. In the general case, however, this will probably depend on the sign of the correlation between forecast errors.
