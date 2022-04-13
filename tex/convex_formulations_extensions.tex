@@ -734,12 +734,46 @@ Thus, we can write
 Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. Clearly, $||\alpha_k^*||_{\Sigma} \ge 0, \forall k$. In addition, by Assumption \ref{strictconvexity}, $c_k^Q > 0$ and $\phi_k \ge 0, \forall k$. Hence, each term in the sum is non-negative and the result follows.
 \end{proof}
 
-%\begin{proposition}
-%(Sign of Reserve Payment to Flexible Generators) TBA
-%\end{proposition}
-%\begin{proof}
-%TBA
-%\end{proof}
+\begin{proposition}
+(Sign of Reserve Payment to Flexible Generators) The sign of payments made to flexible generator $k$ for reserves depends on the expression
+\begin{equation*}
+-\lambda e^\top \mu + \vartheta_k e^\top \Sigma e,
+\end{equation*}
+where $\vartheta_k \ge 0$ depends on the quadratic cost component, the risk parameter and dual variables of chance constraints. In the particular case that chance constraints are not tight, its expression simplifies to
+\begin{equation*}
+\vartheta_k = \bigg[\sum_k \frac{1}{2 c_k^Q} \bigg]^{-1}.
+\end{equation*} 
+\end{proposition}
+\begin{proof}
+The payment received by generator $k$ for reserves can be written as follows
+\begin{equation*}
+\alpha_k^\top \chi = \sum_i \alpha_{ki} \chi_i,
+\end{equation*}
+where we omitted the star symbols for clarity. By virtue of Proposition \ref{reserveallocation}, $\alpha_k = \eta_k e$ for some $\eta_k \in [0, 1]$, which implies that $\alpha_{ki} = \alpha_{kj} = \eta_k$ for all $i$ and $j$. In addition, Proposition \ref{SensitivityReservePrice} provides an expression for $\chi_i$, which leads to
+\begin{equation*}
+\alpha_k^\top \chi = \eta_k \sum_i \bigg(\mu_i \frac{\partial V^*}{\partial \mu_i} + \sigma_i \frac{\partial V^*}{\partial \sigma_i}\bigg).
+\end{equation*}
+Proposition \ref{SensitivityMeanElectricityPrice} provides an expression for the sensitivity with respect to $\mu_i$, such that
+\begin{equation*}
+\alpha_k^\top \chi = \eta_k \bigg(-\lambda \sum_i \mu_i + \sum_i \sigma_i \frac{\partial V^*}{\partial \sigma_i}\bigg).
+\end{equation*}
+Based on the proof of Proposition \ref{SensitivityStandardDeviation}, it is easy to see that
+\begin{equation*}
+\sum_i \sigma_i \frac{\partial V^*}{\partial \sigma_i} = \sum_k \varphi_k \eta_k^2 \sum_i\Big(\sigma_i^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_k\Big) = \vartheta_k e^\top \Sigma e,
+\end{equation*}
+where $\vartheta_k = \sum_k \varphi_k \eta_k^2 \ge 0$. The payment for reserves thus becomes
+\begin{equation*}
+\alpha_k^\top \chi = \eta_k \Big(-\lambda e^\top \mu + \vartheta_k e^\top \Sigma e\Big),
+\end{equation*}
+which completes the proof.
+\end{proof}
+
+\begin{corollary}
+Reserve payments to generator $k$ will always be non-negative if the aggregate mean forecast error is negative (i.e., $e^\top \mu \le 0$).
+\end{corollary}
+\begin{proof}
+In the current setting, $\lambda \ge 0$ since all generating units non-negative marginal costs. Furthermore, $\eta_k \ge 0$, $\vartheta_k \ge 0$ and $e^\top \Sigma e > 0$ (as $\Sigma \succ 0$). It follows that $\alpha_k^\top \chi \ge 0$.
+\end{proof}
 
 %\paragraph{Comments} I am not sure that such a result holds for each individual wind producer $i$ in general. To prove it, we would basically need to show that $\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* \ge 0, \forall k$. For particular cases, it is pretty simple. For instance, the result obviously holds for individual producers if forecast errors are independent (the sum over $j$ is then equal to 0). Likewise, the result trivially holds if all forecast errors are positively correlated. In the general case, however, this will probably depend on the sign of the correlation between forecast errors.
 
@@ -783,7 +817,6 @@ If $\sigma_1 = \sigma_2$ (the symmetric case), this condition is always satisfie
 \frac{\partial V^*}{\partial \sigma_1} \approx 0 \mbox{ and } \frac{\partial V^*}{\partial \sigma_2} > 0.
 \end{equation*}
 In summary, the sign of sensitivities depends upon the ratio between standard deviations. In cases with a pronounced asymmetry in standard deviations, negative sensitivities and reserve prices may therefore occur.
-
 
 \section*{Appendix A}
 This section derives complementarity problems based on the KKT conditions of the deterministic equivalent of the equilibrium and market problems and shows that they are identical.
