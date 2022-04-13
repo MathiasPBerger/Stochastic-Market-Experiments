@@ -50,7 +50,7 @@ end
 W = [0.8*p_w_max[i] for i = 1:n_w];
 
 # Demand parameters
-D = 750;
+D = 1050;
 
 # Risk parameters
 epsilon = 0.05;

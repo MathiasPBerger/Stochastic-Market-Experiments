@@ -202,9 +202,11 @@ where the dual variables of the energy balance and reserve allocation constraint
 
 We analyse four key properties of the proposed stochastic market design, namely whether it supports a \textit{competitive equilibrium}, guarantees \textit{cost recovery} for flexible generators, \textit{revenue adequacy} for the market operator, and is \textit{incentive compatible}.
 
-\begin{assumption}
-We assume throughout this section that $c_k > 0, \bar{p}_k > 0, 0.5 \ge \epsilon_k > 0, \forall k,$ and $\Sigma \succ 0$.
+\begin{assumption}\label{strictconvexity}
+We assume throughout this section that $c_k > 0, \bar{p}_k > 0, \phi_k \ge 0, \forall k,$ and $\Sigma \succ 0$.
 \end{assumption}
+
+Note that selecting $\epsilon_k \in (0, 0.5]$ will guarantee that $\phi_k \ge 0$ if forecast errors are assumed to follow normal distributions. On the other hand, $\phi_k > 0$ always holds for $\epsilon_k \in (0, 1)$ in the distributionally robust setting.
 
 \begin{definition}
 (Competitive Equilibrium) A competitive equilibrium for the stochastic market is a set of prices $\{\lambda^*, \{\chi_i^*\}_{\forall i}\}$ and decisions $\{p_k^*, \{\alpha_{ki}^*\}_{\forall i}\}_{\forall k}$ that\vspace{-5pt}
@@ -379,8 +381,10 @@ Market properties are also discussed in \cite{Ratha2019} in a similar set-up. Th
 In this section, we carry out a sensitivity analysis of the stochastic market clearing problem with respect to two essential statistical parameters, namely the mean $\mu_i$ and standard deviation $\sigma_i$ of the forecast error of wind producer $i$.
 
 \begin{assumption}
-We assume throughout this section that $c_k > 0, 0.5 \ge \epsilon_k > 0, \forall k$, and $\Sigma \succ 0$.
+We assume throughout this section that $c_k > 0,\phi_k \ge 0, \forall k$, and $\Sigma \succ 0$.
 \end{assumption}
+
+Note that selecting $\epsilon_k \in (0, 0.5]$ will guarantee that $\phi_k \ge 0$ if forecast errors are assumed to follow normal distributions. On the other hand, $\phi_k > 0$ always holds for $\epsilon_k \in (0, 1)$ in the distributionally robust setting.
 
 Let $(\{p_k^*\}_{\forall k}, \{\alpha_k^*\}_{\forall k})$ and $(\lambda^*, \chi^*, \{\underline{\nu}_k^*\}_{\forall k}, \{\overline{\nu}_k^*\}_{\forall k})$ denote optimal primal and dual solutions obtained by solving the stochastic market clearing problem. Then, let $V^*: \mathbb{R} \times \mathbb{R}_+ \rightarrow \mathbb{R}$ denote the value function of the stochastic market clearing problem, that is, 
 \begin{align*}
@@ -609,7 +613,7 @@ The first equation can be re-written as
 \begin{equation*}
 2c_k^Q p_k - 2 \underline{\upsilon}_k p_k + 2 \overline{\upsilon}_k \overline{p}_k - 2 \overline{\upsilon}_k p_k = -c_k^L + 2 c_k^Q \alpha_k^\top \mu - 2 \underline{\upsilon}_k \alpha_k^\top \mu - 2 \overline{\upsilon}_k \alpha_k^\top \mu + \lambda.
 \end{equation*}
-Noting that $((\alpha_k^*)^\top \mu) \mu = (\mu \mu^\top) \alpha_k^*$ and re-arranging terms, the second equation can be re-written as
+Noting that $(\alpha_k^\top \mu) \mu = (\mu \mu^\top) \alpha_k$ and re-arranging terms, the second equation can be re-written as
 \begin{align*}
 \bigg[2 \Big(c_k^Q - \underline{\upsilon}_k - \overline{\upsilon}_k\Big)& \mu \mu^\top + 2\Big(c_k^Q + \underline{\upsilon}_k \phi_k^2 + \overline{\upsilon}_k \phi_k^2\Big) \Sigma \bigg]\alpha_k\\
 &= \big(2c_k^Q p_k - 2 \underline{\upsilon}_k p_k + 2 \overline{\upsilon}_k \overline{p}_k - 2 \overline{\upsilon}_k p_k\big) \mu + c_k^L \mu + \chi.
@@ -682,7 +686,7 @@ where we defined
 \begin{equation*}
 \varphi_k = 2c_k^Q + \frac{\phi_k}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)
 \end{equation*}
-for brevity. Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$, and $||\alpha_k^*||_{\Sigma} \ge 0$. In addition, $c_k^Q > 0, \forall k,$ and $\phi_k \ge 0, \forall k$, by assumption (since $0 < \epsilon_k \le 0.5, \forall k,$ for a normal distribution and $\phi_k$ is always positive in the distributionally robust setting). Thus, $\varphi_k \ge 0, \forall k$. By virtue of Proposition \ref{reserveallocation}, $\alpha_k = \eta_k e$ for some $\eta_k \in [0, 1]$, which implies that $\alpha_{ki} = \alpha_{kj} = \eta_k$ for all $i$ and $j$. The sensitivity with respect to $\sigma_i$ can therefore be re-written as
+for brevity. Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$ and $||\alpha_k^*||_{\Sigma} \ge 0$, $\forall k$. In addition, by Assumption \ref{strictconvexity}, $c_k^Q > 0$ and $\phi_k \ge 0, \forall k$. Thus, $\varphi_k \ge 0, \forall k$. By virtue of Proposition \ref{reserveallocation}, $\alpha_k = \eta_k e$ for some $\eta_k \in [0, 1]$, which implies that $\alpha_{ki} = \alpha_{kj} = \eta_k$ for all $i$ and $j$. The sensitivity with respect to $\sigma_i$ can therefore be re-written as
 \begin{equation*}
 \frac{\partial V^*}{\partial \sigma_i} = \bigg(\sigma_i + \sum_{j \ne i} \rho_{ij} \sigma_j \bigg)\sum_k \varphi_k \eta_k^2.
 \end{equation*}
@@ -702,18 +706,19 @@ v_{i}(\rho) > 0.
 \end{equation*}
 \item[(iii)] The result is clear from the expression of the sensitivity derived above.
 \end{itemize}
+This concludes the proof.
 \end{proof}
 
-Finally, we have a result pertaining to what we refer to as the \textit{total sensitivity}.
+Finally, we analyse the sign of reserve payments made to flexible producers based on sensitivity results obtained above. We start with a result pertaining to what we term the \textit{combined sensitivity of expected system cost to standard deviation}.
 
-\begin{proposition}\label{SensitivityTotalStandardDeviation}
-(Total Sensitivity to Standard Deviation of Forecast Error) The expected system cost increases with the standard deviation of the forecast error, that is, 
+\begin{lemma}\label{SensitivityTotalStandardDeviation}
+(Combined Sensitivity to Standard Deviation of Forecast Error) The combined sensitivity of expected system cost with respect to the standard deviation of the forecast error is non-negative, that is, 
 \begin{equation*}
 \sum_i \sigma_i \frac{\partial V^*}{\partial \sigma_i} \ge 0.
 \end{equation*}
-\end{proposition}
+\end{lemma}
 \begin{proof}
-It follows from the proof of the Proposition \ref{SensitivityReservePrice} that
+It follows from the proof of Proposition \ref{SensitivityReservePrice} that
 \begin{align*}
 \sigma_i \frac{\partial V^*}{\partial \sigma_i} =& \sum_k\alpha_{ki}^*\Big(2c_k^Q\big(\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j\alpha_{kj}^*\big)\\
 &+ \phi_k \frac{\sigma_i^2 \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big)\\
@@ -726,8 +731,15 @@ Thus, we can write
 =& \sum_k \Big(2c_k^Q + \frac{\phi_k}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big) \times(\alpha_k^*)^\top \Sigma \alpha_k^*\\
 =& \sum_k ||\alpha_k^*||_{\Sigma} \Big(2c_k^Q ||\alpha_k^*||_{\Sigma} + \phi_k (\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
 \end{align*}
-Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. Clearly, $||\alpha_k^*||_{\Sigma} \ge 0$. By assumption, $c_k^Q > 0, \forall k$, and $0 < \epsilon_k \le 0.5, \forall k$, which implies that $\phi_k \ge 0, \forall k$. Hence, each term in the sum is non-negative and the result follows.
+Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. Clearly, $||\alpha_k^*||_{\Sigma} \ge 0, \forall k$. In addition, by Assumption \ref{strictconvexity}, $c_k^Q > 0$ and $\phi_k \ge 0, \forall k$. Hence, each term in the sum is non-negative and the result follows.
 \end{proof}
+
+%\begin{proposition}
+%(Sign of Reserve Payment to Flexible Generators) TBA
+%\end{proposition}
+%\begin{proof}
+%TBA
+%\end{proof}
 
 %\paragraph{Comments} I am not sure that such a result holds for each individual wind producer $i$ in general. To prove it, we would basically need to show that $\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* \ge 0, \forall k$. For particular cases, it is pretty simple. For instance, the result obviously holds for individual producers if forecast errors are independent (the sum over $j$ is then equal to 0). Likewise, the result trivially holds if all forecast errors are positively correlated. In the general case, however, this will probably depend on the sign of the correlation between forecast errors.
 
@@ -737,7 +749,7 @@ Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. 
 
 We analyse a system with three flexible generators ($K = 3$) and two wind farms ($N = 2$), which is implemented in \cite{SMER2022}. 
 
-\paragraph{Symmetric Forecast Errors} We consider a configuration where $\mu_1 = \mu_2 = 0$, $\sigma_1 = \sigma_2 = \sigma > 0$ and $\rho_{12} = \rho < 0$ (i.e., the forecast errors of wind farms are negatively correlated). It was consistently observed in experiments that $\alpha_{k1}^* = \alpha_{k2}^*, k = 1, \ldots, 3,$ in the optimal solution. \textcolor{orange}{Under the assumption that this holds true in the case of symmetric forecast errors}, it follows that
+\paragraph{Symmetric Forecast Errors} We consider a configuration where $\mu_1 = \mu_2 = 0$, $\sigma_1 = \sigma_2 = \sigma > 0$ and $\rho_{12} = \rho < 0$ (i.e., the forecast errors of wind farms are negatively correlated). It was consistently observed in experiments that $\alpha_{k1}^* = \alpha_{k2}^*, k = 1, \ldots, 3,$ in the optimal solution, which is in line with Proposition \ref{reserveallocation}. It follows that
 \begin{align*}
 \sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* &= \sigma^2 (\alpha_{ki}^*)^2 + \rho \sigma^2 (\alpha_{ki}^*)^2\\
 &= \sigma^2 (\alpha_{ki}^*)^2 \big(1 + \rho\big)\\
@@ -749,7 +761,7 @@ since $\sigma > 0$, $\alpha_{ki}^* > 0$ and $|\rho| \le 1$. Note that these deve
 \end{equation*}
 In other words, the expected system cost increases with the standard deviation of any wind farm. Note that reserve prices corresponding to different wind farms are symmetric (and both positive) in this set-up.
 
-\paragraph{Asymmetric Forecast Errors} We consider a configuration where $\mu_1 = \mu_2 = 0$, $\sigma_1 \ne \sigma_2$, $\sigma_1 > 0, \sigma_2 > 0$ and $\rho_{12} = \rho < 0$ (i.e., the forecast errors of wind farms are negatively correlated). More precisely, we assume that $\rho = -0.75$, $\sigma_1 = 0.01 \bar{p}^w$ and $\sigma_2 = 0.025 \bar{p}^w$, where $\bar{p}^w$ denotes the maximum wind generation from each wind farm. In other words, the standard deviations of both farms are equal to 1\% and 2.5\% of their rated capacity, respectively. \textcolor{orange}{Somewhat counter-intuitively,} it can be observed in experiments that $\alpha_{k1}^* = \alpha_{k2}^*, k = 1, \ldots, 3,$ in the optimal solution. It follows that one of the sensitivities is negative, while the other is positive. Indeed, we have
+\paragraph{Asymmetric Forecast Errors} We consider a configuration where $\mu_1 = \mu_2 = 0$, $\sigma_1 \ne \sigma_2$, $\sigma_1 > 0, \sigma_2 > 0$ and $\rho_{12} = \rho < 0$ (i.e., the forecast errors of wind farms are negatively correlated). More precisely, we assume that $\rho = -0.75$, $\sigma_1 = 0.01 \bar{p}^w$ and $\sigma_2 = 0.025 \bar{p}^w$, where $\bar{p}^w$ denotes the maximum wind generation from each wind farm. In other words, the standard deviations of both farms are equal to 1\% and 2.5\% of their rated capacity, respectively. It can be observed in experiments that $\alpha_{k1}^* = \alpha_{k2}^*, k = 1, \ldots, 3,$ in the optimal solution, which is again consistent with Proposition \ref{reserveallocation}. It follows that one of the sensitivities is negative, while the other is positive. Indeed, we have
 \begin{equation*}
 \sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* = \sigma_i (\alpha_{ki}^*)^2 \big( \sigma_i + \rho \sigma_j \big),
 \end{equation*}
@@ -762,7 +774,7 @@ Thus,
 \begin{equation*}
 \frac{\partial V^*}{\partial \sigma_1} < 0 \mbox{ and } \frac{\partial V^*}{\partial \sigma_2} > 0.
 \end{equation*}
-Since standard deviations are positive in this example, these observations are also consistent with the fact that the reserve prices associated with wind farm 1 and 2 are negative and positive, respectively. Note that such an outcome will always occur unless $\rho$ is such that the following conditions are satisfied simultaneously, 
+Since standard deviations are positive, these observations are also consistent with the fact that the reserve prices associated with wind farm 1 and 2 are negative and positive, respectively. Note that such an outcome will always occur unless $\rho$ is such that the following conditions are satisfied simultaneously, 
 \begin{equation*}
 \rho \ge -\frac{\sigma_1}{\sigma_2} \mbox{ and } \rho \ge -\frac{\sigma_1}{\sigma_2}.
 \end{equation*}
@@ -770,7 +782,7 @@ If $\sigma_1 = \sigma_2$ (the symmetric case), this condition is always satisfie
 \begin{equation*}
 \frac{\partial V^*}{\partial \sigma_1} \approx 0 \mbox{ and } \frac{\partial V^*}{\partial \sigma_2} > 0.
 \end{equation*}
-In summary, the sign of sensitivities depends upon the ratio between standard deviations. In cases with a pronounced asymmetry in standard deviations, negative sensitivities may therefore occur.
+In summary, the sign of sensitivities depends upon the ratio between standard deviations. In cases with a pronounced asymmetry in standard deviations, negative sensitivities and reserve prices may therefore occur.
 
 
 \section*{Appendix A}
