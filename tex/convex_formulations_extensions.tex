@@ -504,7 +504,7 @@ In the application at hand, the correlation matrix $\rho$ is defined through the
 \end{equation*}
 which corresponds to a situation where forecast errors are perfectly negatively correlated, cannot be treated since it is singular. The positive definiteness assumption of the covariance matrix therefore imposes constraints on the structure of the correlation matrix.
 
-Before analysing the sensitivity of the expected system cost with respect to the standard deviation of the forecast error, we need a result pertaining to the way that reserve is allocated across wind farms for a given generator.
+Before analysing the sensitivity of the expected system cost with respect to the standard deviation of the forecast error, we need a result pertaining to the way that reserves are allocated across wind farms for a given generator.
 
 %\begin{proposition} (Symmetry of Reserve Allocation)
 %For each generator $k$, reserves $\alpha_k^* \in [0, 1]^N$ are allocated in a symmetric fashion, that is,
@@ -569,8 +569,8 @@ Before analysing the sensitivity of the expected system cost with respect to the
 %yields the desired result. It is simple to check that $\sum_k \eta_k = 1$, as expected.
 %\end{proof}
 
-\begin{proposition} (Symmetry of Reserve Allocation)
-For each generator $k$, reserves $\alpha_k^* \in [0, 1]^N$ are allocated symmetrically across wind farms, that is,
+\begin{proposition}\label{reserveallocation}
+(Symmetry of Reserve Allocation) For each generator $k$, reserves $\alpha_k^* \in [0, 1]^N$ are allocated symmetrically across wind farms, that is,
 \begin{equation*}
 \alpha_{k}^* = \eta_k e,
 \end{equation*}
@@ -585,21 +585,21 @@ for some carefully selected $\gamma_k$. Next, we show that the vector expression
 \begin{equation*}
 \Sigma^{-1} \Big(\lambda \mu + \chi \Big) = \beta_k e,
 \end{equation*}
-for some appropriate $\beta_k$, from which the result can be deduced.
+for some appropriate $\beta_k$, from which the main result can be deduced.
 
 To simplify the first part of the proof, we work with an updated problem formulation in which chance constraints are re-written as
 \begin{align*}
 \phi_k^2 \alpha_k^\top \Sigma \alpha_k &\le (\overline{p}_k - p_k + \alpha_k^\top \mu)^2,\\
 \phi_k^2 \alpha_k^\top \Sigma \alpha_k &\le (p_k - \alpha_k^\top \mu)^2,
 \end{align*}
-with dual variables $\overline{\upsilon}_k$ and $\underline{\upsilon}_k$, respectively. Note that this formulation is equivalent to the original one, since applying a strictly increasing function (i.e., taking the square) on both sides of an inequality constraint does not change the feasible set. Hence, a primal solution that is optimal for the updated problem will also be optimal for the original problem and vice-versa. We then write the Lagrangian function of this updated problem and analyse its first-order optimality conditions. The updated Lagrangian function $\hat{\mathcal{L}}$ reads
+with Lagrangian dual variables $\overline{\upsilon}_k$ and $\underline{\upsilon}_k$, respectively. Note that this formulation is equivalent to the original one, since applying a strictly increasing function (i.e., taking the square) on both sides of an inequality constraint does not change the feasible set. Hence, a primal solution that is optimal for the updated problem will also be optimal for the original problem and vice-versa. We then write the Lagrangian function of this updated problem and analyse its first-order optimality conditions. The updated Lagrangian function $\hat{\mathcal{L}}$ reads
 \begin{align*}
 \hat{\mathcal{L}}(\{p_k\}, \{\alpha_k\}, \lambda, \chi, \{\overline{\upsilon}_k\}, \{\underline{\upsilon}_k\}) &= \sum_k \Big(c_k^L(p_k - \alpha_k^\top \mu) + c_k^Q \big((p_k - \alpha_k^\top \mu)^2 + \alpha_k^\top \Sigma \alpha_k\big)\Big)\\
 &+ \sum_k \underline{\upsilon}_k \big(\phi_k^2 \alpha_k^\top \Sigma \alpha_k - (p_k - \alpha_k^\top \mu)^2\big)\\
 &+ \sum_k \overline{\upsilon}_k \big(\phi_k^2 \alpha_k^\top \Sigma \alpha_k - (\overline{p}_k - p_k + \alpha_k^\top \mu)^2\big)\\
 &+ \lambda \Big(D - \sum_k p_k - W^\top e\Big) + \chi^\top \Big(e - \sum_k \alpha_{k}\Big).
 \end{align*}
-Then, in vector form, the stationarity conditions of the updated Lagrangian with respect to $p_k$ and $\alpha_k$ read
+Then, in matrix form, the stationarity conditions of the updated Lagrangian with respect to $p_k$ and $\alpha_k$ read
 \begin{align*}
 \frac{\partial \hat{\mathcal{L}}}{\partial p_k} =& c_k^L + 2 c_k^Q(p_k - \alpha_k^\top \mu) - 2 \underline{\upsilon}_k(p_k - \alpha_k^\top \mu) + 2 \overline{\upsilon}_k (\overline{p}_k - p_k + \alpha_k^\top \mu) - \lambda = 0,\\
 \frac{\partial \hat{\mathcal{L}}}{\partial \alpha_k} =& -c_k^L \mu - 2 c_k^Q (p_k - \alpha_k^\top \mu) \mu + 2 c_k^Q \Sigma \alpha_k + 2 \underline{\upsilon} \phi_k^2 \Sigma \alpha_k - 2 \underline{\upsilon}_k (p_k - \alpha_k^\top \mu)(-\mu),\\
@@ -611,12 +611,12 @@ The first equation can be re-written as
 \end{equation*}
 Noting that $((\alpha_k^*)^\top \mu) \mu = (\mu \mu^\top) \alpha_k^*$ and re-arranging terms, the second equation can be re-written as
 \begin{align*}
-\bigg[2 \Big(c_k^Q - \underline{\upsilon}_k - \overline{\upsilon}_k\Big) \mu \mu^\top + &2\Big(c_k^Q + \underline{\upsilon}_k \phi_k^2 + \overline{\upsilon}_k \phi_k^2\Big) \Sigma \bigg]\alpha_k\\
+\bigg[2 \Big(c_k^Q - \underline{\upsilon}_k - \overline{\upsilon}_k\Big)& \mu \mu^\top + 2\Big(c_k^Q + \underline{\upsilon}_k \phi_k^2 + \overline{\upsilon}_k \phi_k^2\Big) \Sigma \bigg]\alpha_k\\
 &= \big(2c_k^Q p_k - 2 \underline{\upsilon}_k p_k + 2 \overline{\upsilon}_k \overline{p}_k - 2 \overline{\upsilon}_k p_k\big) \mu + c_k^L \mu + \chi.
 \end{align*}
 Substituting the left-hand side of the first equation into the right-hand side of the second equation then yields
 \begin{align*}
-\bigg[2 \Big(c_k^Q - \underline{\upsilon}_k - \overline{\upsilon}_k\Big) \mu \mu^\top + &2\Big(c_k^Q + \underline{\upsilon}_k \phi_k^2 + \overline{\upsilon}_k \phi_k^2\Big) \Sigma \bigg]\alpha_k\\
+\bigg[2 \Big(c_k^Q -& \underline{\upsilon}_k - \overline{\upsilon}_k\Big) \mu \mu^\top + 2\Big(c_k^Q + \underline{\upsilon}_k \phi_k^2 + \overline{\upsilon}_k \phi_k^2\Big) \Sigma \bigg]\alpha_k\\
 &= -c_k^L \mu + 2 c_k^Q \mu \mu^\top \alpha_k - 2 \underline{\upsilon}_k \mu \mu^\top \alpha_k - 2 \overline{\upsilon}_k \mu \mu^\top \alpha_k + \lambda \mu + c_k^L \mu + \chi.
 \end{align*}
 Cancelling terms out on both sides then leads to
@@ -629,13 +629,13 @@ Defining
 \end{equation*}
 and multiplying both sides by $\Sigma^{-1}$ and $\gamma_k$ yields the first intermediate result. 
 
-To obtain the second intermediate result, note that reserves must be allocated so that the forecast error from each wind farm is fully covered. Thus, we have that
+To obtain the second intermediate result, note that reserves must be allocated so that the forecast error from each wind farm is fully covered. Thus, we have
 \begin{equation*}
 \sum_k \alpha_k = e.
 \end{equation*}
 Substituting the expression for $\alpha_k$ obtained above yields
 \begin{equation*}
-\sum_k \gamma_k \Sigma^{-1} (\lambda \mu + \chi) = e
+\sum_k \gamma_k \Sigma^{-1} (\lambda \mu + \chi) = e.
 \end{equation*}
 The second intermediate result then follows from defining
 \begin{equation*}
@@ -664,29 +664,43 @@ We can now derive the main result.
 \begin{equation*}
 \frac{\partial V^*}{\partial \sigma_i} > 0.
 \end{equation*}
-\item[(ii)] If forecast errors are positively-correlated, the sensitivity with respect to $\sigma_i$ is always positive.
-\item[(iii)] In general, the sensitivity with respect to $\sigma_i$ may be either positive or negative.
+\item[(ii)] If forecast errors are positively correlated, the sensitivity with respect to $\sigma_i$ is always positive.
+\item[(iii)] In general, the sign of the sensitivity with respect to $\sigma_i$ is given by the sign of the expression
+\begin{equation*}
+\sigma_i +\sum_{j \ne i} \rho_{ij} \sigma_j.
+\end{equation*}
 \end{itemize}
 \end{proposition}
-\begin{proof} In order to prove these results, we start by writing an expression for the sensitivity with respect to the standard deviation of the forecast error. Notably, it follows from the proof of Proposition \ref{SensitivityReservePrice} that
+\begin{proof} In order to prove these results, we start by deriving an expression for the sensitivity with respect to the standard deviation of the forecast error. Notably, it follows from the proof of Proposition \ref{SensitivityReservePrice} that
 \begin{align*}
 \frac{\partial V^*}{\partial \sigma_i} =& \sum_k\alpha_{ki}^*\Big(2c_k^Q\big(\sigma_i \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_j\alpha_{kj}^*\big)\\
 &+ \phi_k \frac{\sigma_i \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_j \alpha_{kj}^*}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big)\\
-&=  \sum_k \alpha_{ki}^* \Big(\sigma_i \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_j\alpha_{kj}^*\Big)\Big(2c_k^Q + \frac{\phi_k}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
+&=  \sum_k \alpha_{ki}^* \Big(\sigma_i \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_j\alpha_{kj}^*\Big)\Big(2c_k^Q + \frac{\phi_k}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big)\\
+&= \sum_k \varphi_k \alpha_{ki}^* \Big(\sigma_i \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_j\alpha_{kj}^*\Big),
 \end{align*}
-Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$, $||\alpha_k^*||_{\Sigma} \ge 0$. In addition, $c_k^Q > 0, \forall k,$ and $0 < \epsilon_k \le 0.5, \forall k,$ by assumption, which implies that $\phi_k \ge 0, \forall k$. Thus, the second term in parentheses is non-negative. A sufficient condition for the sensitivity with respect to $\sigma_i$ to be non-negative is therefore that
+where we defined
 \begin{equation*}
-v_{ik}(\rho) = \alpha_{ki}^* \Big(\sigma_i \alpha_{ki}^* + \sum_{j \ne i} \rho_{ij} \sigma_j\alpha_{kj}^*\Big) \ge 0, \forall k,
+\varphi_k = 2c_k^Q + \frac{\phi_k}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)
 \end{equation*}
-with $v_{ik}: \mathcal{K} \rightarrow \mathbb{R}$ and $\mathcal{K} = \{A \in \mathbb{R}^{N \times N}: -1 \le A_{mn} \le 1, m \ne n, A_{nn} = 1, A \succeq 0\}$ the set of $N \times N$ correlation matrices. We use this condition to prove the first two results:
+for brevity. Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$, and $||\alpha_k^*||_{\Sigma} \ge 0$. In addition, $c_k^Q > 0, \forall k,$ and $\phi_k \ge 0, \forall k$, by assumption (since $0 < \epsilon_k \le 0.5, \forall k,$ for a normal distribution and $\phi_k$ is always positive in the distributionally robust setting). Thus, $\varphi_k \ge 0, \forall k$. By virtue of Proposition \ref{reserveallocation}, $\alpha_k = \eta_k e$ for some $\eta_k \in [0, 1]$, which implies that $\alpha_{ki} = \alpha_{kj} = \eta_k$ for all $i$ and $j$. The sensitivity with respect to $\sigma_i$ can therefore be re-written as
+\begin{equation*}
+\frac{\partial V^*}{\partial \sigma_i} = \bigg(\sigma_i + \sum_{j \ne i} \rho_{ij} \sigma_j \bigg)\sum_k \varphi_k \eta_k^2.
+\end{equation*}
+Since the second term is itself a sum of non-negative terms, the sign of the sensitivity essentially depends on the sign of the expression in parentheses, for which we use the shorthand notation
+\begin{equation*}
+v_{i}(\rho) = \sigma_i + \sum_{j \ne i} \rho_{ij} \sigma_j,
+\end{equation*}
+with $v_{i}: \mathcal{K} \rightarrow \mathbb{R}$ and $\mathcal{K} = \{A \in \mathbb{R}^{N \times N}: -1 \le A_{mn} \le 1, m \ne n, A_{nn} = 1, A \succeq 0\}$ the set of $N \times N$ correlation matrices. Next, the analysis focuses on the sign of $v_i$ under different assumptions on the structure of the correlation matrix $\rho$.
 \begin{itemize}
 \item[(i)] If forecast errors are independent, $\rho_{ij} = 0, i \ne j$. Hence, we have
 \begin{equation*}
-v_{ik}(\rho) = \sigma_i (\alpha_{ki}^*)^2 \ge 0, \forall k,
+v_{i}(\rho) = \sigma_i > 0.
 \end{equation*}
-since $\sigma_i > 0$ and $\alpha_{ki}^* \ge 0$.
-\item[(ii)] If forecast errors are positively-correlated, $\rho_{ij} \ge 0, i \ne j$. It directly follows from its definition that $v_{ik}(\rho) \ge 0, \forall k$.
-\item[(iii)] By contradiction. Let us assume that the sensitivity is always non-negative or non-positive. It suffices to construct a counter-example to prove the result. Such a counter-example was implemented in Julia in the stochastic market experiment repository \cite{SMER2022}. 
+\item[(ii)] If forecast errors are positively correlated, $\rho_{ij} \ge 0, i \ne j$. It directly follows from its definition that 
+\begin{equation*}
+v_{i}(\rho) > 0.
+\end{equation*}
+\item[(iii)] The result is clear from the expression of the sensitivity derived above.
 \end{itemize}
 \end{proof}
 
