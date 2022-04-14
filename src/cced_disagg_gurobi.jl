@@ -105,8 +105,8 @@ p_scheduled = value.(p);
 alpha_scheduled = value.(alpha);
 electricity_price = dual(power_balance);
 reserve_price = dual.(reserve_allocation);
-dual_min_prod = dual.(min_prod);
-dual_max_prod = dual.(max_prod);
+dual_min_prod = abs.(dual.(min_prod)); # absolute value is taken since Gurobi does not seem to use the same sign convention for dual variables (it is negative when it should be positive)
+dual_max_prod = abs.(dual.(max_prod)); # absolute value is taken since Gurobi does not seem to use the same sign convention for dual variables (it is negative when it should be positive)
 load_payment = D*electricity_price;
 wind_energy_revenue = [W[i]*electricity_price for i = 1:n_w];
 wind_profit = [(wind_energy_revenue[i]-reserve_price[i]) for i = 1:n_w];

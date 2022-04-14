@@ -121,17 +121,17 @@ For any risk level $0 < \epsilon_k < 1$, the distributionally-robust chance cons
 \end{equation*}
 where $\Psi = \{\mathbb{P}: \mathbb{E}[\boldsymbol{\omega}] = \mu, \mbox{Var}[\boldsymbol{\omega}] = \Sigma\}$ is the family of probability distributions with first and second-order moments $\mu$ and $\Sigma$, is equivalent to the second-order cone constraint
 \begin{equation*}
-\mbox{\textcolor{orange}{TO BE ADDED}}
+p_k - \alpha_k^\top \mu \le \overline{p}_k - \sqrt{\frac{1-\epsilon_k}{\epsilon_k}} ||\alpha_k||_{\Sigma}.
 \end{equation*}
 \end{proposition}
 %\textcolor{orange}{In other settings, distributionally-robust chance constraints may be recast as second-order cone constraints \cite{Xie2018}}.
 
-Applying Proposition \ref{ND_SOCP_CC} to the second chance constraint yields
+Applying Proposition \ref{ND_SOCP_CC} (or Proposition \ref{DR_SOCP_CC}) to the second chance constraint yields
 \begin{align*}
 &\mathbb{P}[0 \le \mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i})] \ge 1 - \epsilon_k\\
 \Leftrightarrow & \alpha_k^\top \mu + ||\alpha_k||_{\Sigma} \phi_k \le p_k,
 \end{align*}
-where we used $\phi_k = \Phi^{-1}(1 - \epsilon_k)$ for brevity. 
+where $\phi_k = \Phi^{-1}(1 - \epsilon_k)$ under and the assumption that the forecast errors follow normal distribution and $\phi_k = \sqrt{(1-\epsilon_k)/\epsilon_k}$ in the distributionally robust setting.
 
 \paragraph{Deterministic Formulation} The deterministic equivalent of the stochastic profit-maximisation problem of producer $k$ reads
 \begin{align}
@@ -202,7 +202,7 @@ where the dual variables of the energy balance and reserve allocation constraint
 
 We analyse four key properties of the proposed stochastic market design, namely whether it supports a \textit{competitive equilibrium}, guarantees \textit{cost recovery} for flexible generators, \textit{revenue adequacy} for the market operator, and is \textit{incentive compatible}.
 
-\begin{assumption}\label{strictconvexity}
+\begin{assumption}\label{StrictConvexity}
 We assume throughout this section that $c_k > 0, \bar{p}_k > 0, \phi_k \ge 0, \forall k,$ and $\Sigma \succ 0$.
 \end{assumption}
 
@@ -573,7 +573,7 @@ Before analysing the sensitivity of the expected system cost with respect to the
 %yields the desired result. It is simple to check that $\sum_k \eta_k = 1$, as expected.
 %\end{proof}
 
-\begin{proposition}\label{reserveallocation}
+\begin{proposition}\label{ReserveAllocation}
 (Symmetry of Reserve Allocation) For each generator $k$, reserves $\alpha_k^* \in [0, 1]^N$ are allocated symmetrically across wind farms, that is,
 \begin{equation*}
 \alpha_{k}^* = \eta_k e,
@@ -581,11 +581,11 @@ Before analysing the sensitivity of the expected system cost with respect to the
 for some $\eta_k \in [0, 1]$ such that $\sum_k \eta_k = 1$, and where $e \in \mathbb{R}^N$ denotes the all-ones vector.
 \end{proposition}
 \begin{proof}
-The proof proceeds in two steps. We start by showing that
+The proof proceeds in two steps. We start by showing that the optimal reserve allocation of generator $k$ can be expressed as
 \begin{equation*}
 \alpha_k = \gamma_k \Sigma^{-1} \Big(\lambda \mu + \chi \Big),
 \end{equation*}
-for some carefully selected $\gamma_k$. Next, we show that the vector expression on the right-hand side above is a multiple of the all-ones vector $e$, that is,
+for some carefully selected $\gamma_k$ and where the star superscript was omitted for clarity (we keep this convention throughout the proof). Next, we show that the vector expression on the right-hand side above is a multiple of the all-ones vector $e$, that is,
 \begin{equation*}
 \Sigma^{-1} \Big(\lambda \mu + \chi \Big) = \beta_k e,
 \end{equation*}
@@ -596,7 +596,7 @@ To simplify the first part of the proof, we work with an updated problem formula
 \phi_k^2 \alpha_k^\top \Sigma \alpha_k &\le (\overline{p}_k - p_k + \alpha_k^\top \mu)^2,\\
 \phi_k^2 \alpha_k^\top \Sigma \alpha_k &\le (p_k - \alpha_k^\top \mu)^2,
 \end{align*}
-with Lagrangian dual variables $\overline{\upsilon}_k$ and $\underline{\upsilon}_k$, respectively. Note that this formulation is equivalent to the original one, since applying a strictly increasing function (i.e., taking the square) on both sides of an inequality constraint does not change the feasible set. Hence, a primal solution that is optimal for the updated problem will also be optimal for the original problem and vice-versa. We then write the Lagrangian function of this updated problem and analyse its first-order optimality conditions. The updated Lagrangian function $\hat{\mathcal{L}}$ reads
+with Lagrangian dual variables $\overline{\upsilon}_k$ and $\underline{\upsilon}_k$, respectively. Note that this formulation is equivalent to the original one, since applying a strictly increasing function (i.e., taking the square) on both sides of an inequality constraint does not change the feasible set. Hence, a primal solution that is optimal for the updated problem will also be optimal for the original problem and vice-versa. If the constraints are tight, however, $\overline{\upsilon}_k \ne \overline{\nu}_k$ and $\underline{\upsilon}_k \ne \underline{\nu}_k$. We now write the Lagrangian function of this updated problem and analyse its first-order optimality conditions. The updated Lagrangian function $\hat{\mathcal{L}}$ reads
 \begin{align*}
 \hat{\mathcal{L}}(\{p_k\}, \{\alpha_k\}, \lambda, \chi, \{\overline{\upsilon}_k\}, \{\underline{\upsilon}_k\}) &= \sum_k \Big(c_k^L(p_k - \alpha_k^\top \mu) + c_k^Q \big((p_k - \alpha_k^\top \mu)^2 + \alpha_k^\top \Sigma \alpha_k\big)\Big)\\
 &+ \sum_k \underline{\upsilon}_k \big(\phi_k^2 \alpha_k^\top \Sigma \alpha_k - (p_k - \alpha_k^\top \mu)^2\big)\\
@@ -686,7 +686,7 @@ where we defined
 \begin{equation*}
 \varphi_k = 2c_k^Q + \frac{\phi_k}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)
 \end{equation*}
-for brevity. Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$ and $||\alpha_k^*||_{\Sigma} \ge 0$, $\forall k$. In addition, by Assumption \ref{strictconvexity}, $c_k^Q > 0$ and $\phi_k \ge 0, \forall k$. Thus, $\varphi_k \ge 0, \forall k$. By virtue of Proposition \ref{reserveallocation}, $\alpha_k = \eta_k e$ for some $\eta_k \in [0, 1]$, which implies that $\alpha_{ki} = \alpha_{kj} = \eta_k$ for all $i$ and $j$. The sensitivity with respect to $\sigma_i$ can therefore be re-written as
+for brevity. Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$ and $||\alpha_k^*||_{\Sigma} \ge 0$, $\forall k$. In addition, by Assumption \ref{StrictConvexity}, $c_k^Q > 0$ and $\phi_k \ge 0, \forall k$. Thus, $\varphi_k \ge 0, \forall k$. By virtue of Proposition \ref{ReserveAllocation}, $\alpha_k = \eta_k e$ for some $\eta_k \in [0, 1]$, which implies that $\alpha_{ki} = \alpha_{kj} = \eta_k$ for all $i$ and $j$. The sensitivity with respect to $\sigma_i$ can therefore be re-written as
 \begin{equation*}
 \frac{\partial V^*}{\partial \sigma_i} = \bigg(\sigma_i + \sum_{j \ne i} \rho_{ij} \sigma_j \bigg)\sum_k \varphi_k \eta_k^2.
 \end{equation*}
@@ -731,7 +731,7 @@ Thus, we can write
 =& \sum_k \Big(2c_k^Q + \frac{\phi_k}{||\alpha_k^*||_{\Sigma}}(\underline{\nu}_k^* + \overline{\nu}_k^*)\Big) \times(\alpha_k^*)^\top \Sigma \alpha_k^*\\
 =& \sum_k ||\alpha_k^*||_{\Sigma} \Big(2c_k^Q ||\alpha_k^*||_{\Sigma} + \phi_k (\underline{\nu}_k^* + \overline{\nu}_k^*)\Big).
 \end{align*}
-Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. Clearly, $||\alpha_k^*||_{\Sigma} \ge 0, \forall k$. In addition, by Assumption \ref{strictconvexity}, $c_k^Q > 0$ and $\phi_k \ge 0, \forall k$. Hence, each term in the sum is non-negative and the result follows.
+Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. Clearly, $||\alpha_k^*||_{\Sigma} \ge 0, \forall k$. In addition, by Assumption \ref{StrictConvexity}, $c_k^Q > 0$ and $\phi_k \ge 0, \forall k$. Hence, each term in the sum is non-negative and the result follows.
 \end{proof}
 
 \begin{proposition}
@@ -763,9 +763,9 @@ Based on the proof of Proposition \ref{SensitivityStandardDeviation}, it is easy
 \end{equation*}
 where $\vartheta_k = \sum_k \varphi_k \eta_k^2 \ge 0$. The payment for reserves thus becomes
 \begin{equation*}
-\alpha_k^\top \chi = \eta_k \Big(-\lambda e^\top \mu + \vartheta_k e^\top \Sigma e\Big),
+\alpha_k^\top \chi = \eta_k \Big(-\lambda e^\top \mu + \vartheta_k e^\top \Sigma e\Big).
 \end{equation*}
-which completes the proof.
+When chance constraints are not tight, the expression of $\vartheta_k$ is relatively simple to derive from the expressions of $\eta_k$ (given in Proposition \ref{ReserveAllocation}) and $\varphi_k$ (given in Proposition \ref{SensitivityStandardDeviation}).
 \end{proof}
 
 \begin{corollary}
@@ -783,7 +783,7 @@ In the current setting, $\lambda \ge 0$ since all generating units non-negative 
 
 We analyse a system with three flexible generators ($K = 3$) and two wind farms ($N = 2$), which is implemented in \cite{SMER2022}. 
 
-\paragraph{Symmetric Forecast Errors} We consider a configuration where $\mu_1 = \mu_2 = 0$, $\sigma_1 = \sigma_2 = \sigma > 0$ and $\rho_{12} = \rho < 0$ (i.e., the forecast errors of wind farms are negatively correlated). It was consistently observed in experiments that $\alpha_{k1}^* = \alpha_{k2}^*, k = 1, \ldots, 3,$ in the optimal solution, which is in line with Proposition \ref{reserveallocation}. It follows that
+\paragraph{Symmetric Forecast Errors} We consider a configuration where $\mu_1 = \mu_2 = 0$, $\sigma_1 = \sigma_2 = \sigma > 0$ and $\rho_{12} = \rho < 0$ (i.e., the forecast errors of wind farms are negatively correlated). It was consistently observed in experiments that $\alpha_{k1}^* = \alpha_{k2}^*, k = 1, \ldots, 3,$ in the optimal solution, which is in line with Proposition \ref{ReserveAllocation}. It follows that
 \begin{align*}
 \sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* &= \sigma^2 (\alpha_{ki}^*)^2 + \rho \sigma^2 (\alpha_{ki}^*)^2\\
 &= \sigma^2 (\alpha_{ki}^*)^2 \big(1 + \rho\big)\\
@@ -795,7 +795,7 @@ since $\sigma > 0$, $\alpha_{ki}^* > 0$ and $|\rho| \le 1$. Note that these deve
 \end{equation*}
 In other words, the expected system cost increases with the standard deviation of any wind farm. Note that reserve prices corresponding to different wind farms are symmetric (and both positive) in this set-up.
 
-\paragraph{Asymmetric Forecast Errors} We consider a configuration where $\mu_1 = \mu_2 = 0$, $\sigma_1 \ne \sigma_2$, $\sigma_1 > 0, \sigma_2 > 0$ and $\rho_{12} = \rho < 0$ (i.e., the forecast errors of wind farms are negatively correlated). More precisely, we assume that $\rho = -0.75$, $\sigma_1 = 0.01 \bar{p}^w$ and $\sigma_2 = 0.025 \bar{p}^w$, where $\bar{p}^w$ denotes the maximum wind generation from each wind farm. In other words, the standard deviations of both farms are equal to 1\% and 2.5\% of their rated capacity, respectively. It can be observed in experiments that $\alpha_{k1}^* = \alpha_{k2}^*, k = 1, \ldots, 3,$ in the optimal solution, which is again consistent with Proposition \ref{reserveallocation}. It follows that one of the sensitivities is negative, while the other is positive. Indeed, we have
+\paragraph{Asymmetric Forecast Errors} We consider a configuration where $\mu_1 = \mu_2 = 0$, $\sigma_1 \ne \sigma_2$, $\sigma_1 > 0, \sigma_2 > 0$ and $\rho_{12} = \rho < 0$ (i.e., the forecast errors of wind farms are negatively correlated). More precisely, we assume that $\rho = -0.75$, $\sigma_1 = 0.01 \bar{p}^w$ and $\sigma_2 = 0.025 \bar{p}^w$, where $\bar{p}^w$ denotes the maximum wind generation from each wind farm. In other words, the standard deviations of both farms are equal to 1\% and 2.5\% of their rated capacity, respectively. It can be observed in experiments that $\alpha_{k1}^* = \alpha_{k2}^*, k = 1, \ldots, 3,$ in the optimal solution, which is again consistent with Proposition \ref{ReserveAllocation}. It follows that one of the sensitivities is negative, while the other is positive. Indeed, we have
 \begin{equation*}
 \sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* = \sigma_i (\alpha_{ki}^*)^2 \big( \sigma_i + \rho \sigma_j \big),
 \end{equation*}
