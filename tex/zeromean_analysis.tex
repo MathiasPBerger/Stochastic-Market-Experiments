@@ -1,0 +1,99 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{assumption}{Assumption}
+
+\title{Zero Mean Assumption Analysis}
+\author{Mathias Berger}
+\date{Spring 2022}
+
+\begin{document}
+
+\maketitle
+
+\section{Preliminaries}
+
+We consider four types of agents, namely flexible electricity generators, stochastic wind power producers, and inflexible electricity consumers, which we describe further below.
+
+\textit{Wind Producers}: We consider $N \in \mathbb{N}$ stochastic wind producers. Although a forecast $W_i \in \mathbb{R}_+$ is available for the production of wind farm $i = 1, \ldots, N$, the actual output $\mathbf{p}_i^w(\boldsymbol{\omega}_i) \in \mathbb{R}_+$ may deviate from $W_i$ by some amount given by random variable $\boldsymbol{\omega}_i \in \Omega_i \subseteq \mathbb{R}$, such that $\mathbf{p}_i^w(\boldsymbol{\omega}_i) = W_i + \boldsymbol{\omega}_i$. Note that we use bold symbols to denote random variables. The first and second-order moments (i.e., the mean and variance) of the distribution of the forecast error $\boldsymbol{\omega}_i$ are denoted by $\mathbb{E}[\boldsymbol{\omega}_i] = \mu_i$ and $\mbox{Var}[\boldsymbol{\omega}_i] = \sigma_i^2$, respectively. The covariance between $\boldsymbol{\omega}_i$ and $\boldsymbol{\omega}_j$ is denoted by $\mbox{Cov}[\boldsymbol{\omega}_i, \boldsymbol{\omega}_j] = \kappa_{ij} = \rho_{ij} \sigma_i \sigma_j$, with $\rho_{ij}$ the Pearson correlation coefficient. For conciseness, we will use $\boldsymbol{\omega}^\top = \begin{pmatrix} \boldsymbol{\omega}_1, \ldots, \boldsymbol{\omega}_N \end{pmatrix}$ and denote the mean vector and covariance matrix as $\mu \in \mathbb{R}^N$ and $\Sigma \in \mathbb{R}^{N \times N}$, respectively. All agents are assumed to have access to the same amount of information about $\{\boldsymbol{\omega}_i\}_{\forall i}$ and $\{\mathbf{p}_i^w(\boldsymbol{\omega}_i)\}_{\forall i}$. Wind producers are assumed to have zero marginal cost, be paid for their forecast production and charged for the provision of reserves.
+
+\textit{Flexible Generators}: We consider $K \in \mathbb{N}$ flexible generators. Each generator may produce electricity and contribute to the provision of reserves in the system. Hence, the actual power output $\mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i})$ is given by an affine control law. For generator $k$, this law can be expressed as $\mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i}) = p_k - \sum_{i }\alpha_{ki} \boldsymbol{\omega}_i$, where $p_k$ denotes the scheduled power output and $\alpha_{ki}$ is the share of the forecast error of wind producer $i$ covered by generator $k$ through the reserve mechanism. It is assumed that generators are paid for their scheduled production $p_k$ (not their real-time production $\mathbf{p}_k^g(\{\boldsymbol{\omega}_i\}_{\forall i})$) in the energy market and their contributions $\{\alpha_{ki}\}_{\forall i}$ to reserve procurement. Since the actual power output of generators directly depends on the uncertain wind production and only becomes known when $\{\boldsymbol{\omega}_i\}_{\forall i}$ are revealed, it must be ensured that power generation bounds are not exceeded. Chance (i.e., probabilistic) constraints can be used for this purpose, and $\epsilon_k$ denotes the tolerance for constraint violations (e.g., constraints may be violated $100 \times \epsilon_k \%$ of the time). Generator $k$ is assumed to have linear and quadratic marginal production cost components denoted by $c_k^L \in \mathbb{R}_+$ and $c_k^Q \in \mathbb{R}_+$, respectively.
+
+\textit{Inflexible Consumers}: We consider a set of consumers with aggregate demand $D \in \mathbb{R}_+$, which is assumed inelastic and known with certainty. 
+
+\section{Nonzero Mean Formulation}
+
+The first formulation reads:
+\begin{align}
+\underset{\{p_k, \alpha_k\}_{\forall k}}{\min} \hspace{10pt} & \sum_k \Big(c_k^L\big(p_k - \alpha_k^\top \mu\big) + c_k^Q \Big(\big(p_k - \alpha_{k}^\top \mu \big)^2 + \alpha_k^\top \Sigma \alpha_k\Big)\Big)\\
+\mbox{s.t. } & p_k - \alpha_k^\top \mu\le \overline{p}_k - \phi_k ||\alpha_k||_{\Sigma}, \mbox{ }\forall k, \hspace{15pt}(\overline{\nu}_k)\\
+& \phi_k ||\alpha_k||_{\Sigma} \le p_k - \alpha_k^\top \mu, \mbox{ }\forall k, \hspace{37pt}(\underline{\nu}_k)\\
+& \sum_k p_k + \sum_i W_i = D, \hspace{60pt} (\lambda)\\
+& \sum_k \alpha_{ki} = 1, \forall i, \hspace{85pt} (\chi_i)\\
+& 0 \le \alpha_{ki} \le 1, \forall k, \forall i,\\
+& p_k \in \mathbb{R}, \forall k.
+\end{align}
+
+\section{Zero Mean Formulation}
+
+The only difference is that mean forecast errors are not explicitly taken into account in reserve provisions and are instead directly introduced in the energy balance equation (thereby offsetting its right-hand side). The formulation reads:
+\begin{align}
+\underset{\{\tilde{p}_k, \tilde{\alpha}_k\}_{\forall k}}{\min} \hspace{10pt} & \sum_k \Big(c_k^L \tilde{p}_k + c_k^Q \Big(\tilde{p}_k^2 + \tilde{\alpha}_k^\top \Sigma \tilde{\alpha}_k\Big)\Big)\\
+\mbox{s.t. } & \tilde{p}_k \le \overline{p}_k - \phi_k ||\tilde{\alpha}_k||_{\Sigma}, \mbox{ }\forall k, \hspace{42pt}(\overline{\nu}_k)\\
+& \phi_k ||\tilde{\alpha}_k||_{\Sigma} \le \tilde{p}_k, \mbox{ }\forall k, \hspace{65pt}(\underline{\nu}_k)\\
+& \sum_k \tilde{p}_k + \sum_i W_i + \sum_i \mu_i = D, \hspace{20pt} (\lambda)\\
+& \sum_k \tilde{\alpha}_{ki} = 1, \forall i, \hspace{85pt} (\chi_i)\\
+& 0 \le \tilde{\alpha}_{ki} \le 1, \forall k, \forall i,\\
+& \tilde{p}_k \in \mathbb{R}, \forall k.
+\end{align}
+
+\section{Analysis}
+
+\begin{proposition}
+The primal solutions to problem 1 and 2 are equivalent.
+\end{proposition}
+\begin{proof}
+Let $S_1^*$ and $S_2^*$ denote the sets of optimal solutions to problems 1 and 2, respectively. The proof proceeds in two steps. We first show that for each $x_1^* \in S_1^*$ we can construct some $x_2^* \in S_2^*$. We then show that for each $x_2^* \in S_2^*$, we can construct some $x_1^* \in S_1^*$, from which the result follows. The problem thus boils down to finding relations between the variables of the first and second problems such that the optimality of a solution for one problem translates into the optimality of the associated solution for the other problem. 
+
+Let $x_1^* = (\{p_k^*, \alpha_k^*\}_{\forall k}) \in S_1^*$ denote an optimal primal solution to the first problem. We define the (bijective) change of variables
+\begin{align*}
+&\tilde{p}_k = p_k - \alpha_k^\top \mu = p_k - \sum_i \alpha_{ki} \mu_i, \forall k,\\
+&\tilde{\alpha}_k = \alpha_k, \forall k,
+\end{align*}
+which is valid for any feasible solution $x_1 = (\{p_k, \alpha_k\}_{\forall k})$ of the first problem and is thus applicable to its optimal solutions too. We note that
+\begin{align*}
+\sum_k p_k^* &= \sum_k \Big(\tilde{p}_k^* + \sum_i \alpha_{ki}^* \mu_i\Big)\\
+&= \sum_k \tilde{p}_k^* + \sum_i \mu_i \sum_k \alpha_{ki}^*\\
+&= \sum_k \tilde{p}_k^* + \sum_i \mu_i,
+\end{align*}
+where the third equality follows from reserve allocation constraints, from which we get 
+\begin{equation*}
+\sum_k \tilde{p}_k^* + \sum_i W_i + \sum_i \mu_i = D. 
+\end{equation*}
+Since $x_1^*$ also satisfies constraints other than the energy balance equation, it is straightforward to see that $x_2^* = (\{\tilde{p}_k^*, \tilde{\alpha}_k^*\}_{\forall k})$ satisfies all constraints in the second formulation. In addition, by definition of $x_1^*$,
+\begin{align*}
+\sum_k \Big(c_k^L\big(p_k &- \alpha_k^\top \mu\big) + c_k^Q \Big(\big(p_k - \alpha_{k}^\top \mu \big)^2 + \alpha_k^\top \Sigma \alpha_k\Big)\Big)\\
+&\ge \sum_k \Big(c_k^L\big(p_k^* - (\alpha_k^*)^\top \mu\big) + c_k^Q \Big(\big(p_k^* - (\alpha_{k}^*)^\top \mu \big)^2 + (\alpha_k^*)^\top \Sigma \alpha_k^*\Big)\Big)
+\end{align*}
+for all feasible $x_1$. It follows that 
+\begin{align*}
+\sum_k \Big(c_k^L \tilde{p}_k & + c_k^Q \Big(\tilde{p}_k^2 + \tilde{\alpha}_k^\top \Sigma \tilde{\alpha}_k\Big)\Big)\\
+&\ge \sum_k \Big(c_k^L \tilde{p}_k^* + c_k^Q \Big((\tilde{p}_k^*)^2 + (\tilde{\alpha}_k^*)^\top \Sigma \tilde{\alpha}_k^*\Big)\Big),
+\end{align*}
+for all $x_2 = (\{\tilde{p}_k, \tilde{\alpha}_k\}_{\forall k})$, from which we conclude that $x_2^*$ is optimal for the second problem formulation (i.e., $x_2^* \in S_2^*$). 
+
+Applying the inverse change of variables allows us to show that we can construct some $x_1^* \in S_1^*$ from some $x_2^* \in S_2^*$, which concludes the proof.
+\end{proof}
+
+\bibliographystyle{plain} % We choose the "plain" reference style
+\bibliography{references}
+
+\end{document}

@@ -1,25 +1,22 @@
 using JuMP
-using Gurobi
 using LinearAlgebra
 using Distributions
+using Ipopt
 
 ## Comments
 #
 # This script formulates the problem as a convex program with a convex quadratic
-# objective to be minimised subject to affine and quadratic constraints.
-# It then solves the problem with Gurobi. This has non-trivial implications
+# objective to be minimised subject to affine and second-order cone constraints.
+# It then solves the problem with Ipopt. This has non-trivial implications
 # for post-processing because of the primal and dual forms used by the solver.
-# More precisely, Gurobi seems to use Lagragian duality, as the dual variables
-# associated with quadratic (second-order cone) constraints are scalar.
-# Theoretical results in the tex documents were derived based on Lagrangian
-# duality. The formulation used in the theoretical analysis had to be recast
-# to be solved by Gurobi (i.e., turning the second-order cone constraints
-# into quadratic constraints), however, which has implications for the
-# interpretation of dual variables. Indeed, the dual variables returned by
-# Gurobi do not have the exact same meaning as the ones used in our theoretical
-# developments, and some slight discrepancy should be expected between
-# theoretical and empirical results should be expected when these variables
-# have nonzero values.
+# More precisely, Ipopt relies on Lagrangian duality, which means that the dual
+# variables associated with second-order cone constraints are scalar variables.
+# Theoretical developments are also based on Lagrangian duality and the
+# formulation used in the theoretical analysis can be solved as such, which
+# implies that the meaning of dual variables of second-order cone constraints
+# retrieved from the solver is roughly the same (they are the opposite of the
+# ones used in our developments). They can therefore be used to check our
+# results numerically.
 
 ## Data
 
@@ -46,10 +43,14 @@ std[3] = 1. + std[3]/5.;
 rho_12, rho_13, rho_23 = -0.65, 0.1, -0.1;
 corr_mat = [[1. rho_12 rho_13]; [rho_12 1. rho_23]; [rho_13 rho_23 1.]];
 cov_mat = Diagonal(std) * corr_mat * Diagonal(std);
+cov_sqrt = sqrt(cov_mat); # computes the matrix square root of covariance matrix to define SOC constraint
+if eigvals(imag(cov_sqrt)) == zeros(Float64, n_w)
+    cov_sqrt = convert.(Float64, cov_sqrt)
+end
 W = [0.8*p_w_max[i] for i = 1:n_w];
 
 # Demand parameters
-D = 1050;
+D = 900;
 
 # Risk parameters
 epsilon = 0.05;
@@ -59,6 +60,7 @@ if dr == true
 else
     phi = quantile(Normal(), (1-epsilon)); # one-sided CC using normal distrib.
 end
+phi_inv = 1 / phi;
 
 # Cost parameters
 v_Q, s_Q = 0.1, 0.05;
@@ -73,6 +75,7 @@ if truthful_bidding == true
     C_L = deepcopy(true_C_L);
 else
     fake_C_L = zeros(Float64, n_g);
+    fake_C_L[n_g] += 1.0;
     C_Q = deepcopy(true_C_Q);
     C_L = deepcopy(true_C_L) .+ fake_C_L;
 end
@@ -80,24 +83,25 @@ end
 
 ## Model
 
-model = Model(Gurobi.Optimizer)
-set_optimizer_attribute(model, "QCPDual", 1)
+NL_model = true # setting it to true defines a model that is exactly identical to the one used in our theoretical developments (guaranteeing consistency of dual variables)
+
+model = Model(Ipopt.Optimizer)
 
 @variable(model, 0.0 <= p[g = 1:n_g])
 @variable(model, 0.0 <= alpha[g = 1:n_g, i = 1:n_w] <= 1.0)
-@variable(model, x[g = 1:n_g]) # auxiliary variable required to bring LHS of quadratic constraints to form recognised by Gurobi
-@variable(model, 0 <= s_max[g = 1:n_g]) # auxiliary variable defining LHS slacks (required to bring problem to form recognised by Gurobi)
-@variable(model, 0 <= s_min[g = 1:n_g]) # auxiliary variable defining LHS slacks of quadratic constraint (required to bring problem to form recognised by Gurobi)
 
-@constraint(model, power_balance, sum(p[g] for g = 1:n_g) + sum(W[i] for i = 1:n_w) == D)
+@constraint(model, power_balance, sum(p[g] for g = 1:n_g) + sum(W[i] for i = 1:n_w) + sum(mu[i] for i = 1:n_w) == D)
 @constraint(model, reserve_allocation[i = 1:n_w], sum(alpha[g, i] for g = 1:n_g) == 1.0)
-@constraint(model, aff_expr[g = 1:n_g], x[g] == p[g] - sum(alpha[g, i]*mu[i] for i = 1:n_w))
-@constraint(model, aff_expr_slack_max[g = 1:n_g], s_max[g] == p_max[g] - x[g])
-@constraint(model, aff_expr_slack_min[g = 1:n_g], s_min[g] == x[g] - p_min[g])
-@constraint(model, max_prod[g = 1:n_g], phi^2 * alpha[g,:]'*cov_mat*alpha[g,:] <= s_max[g]^2)
-@constraint(model, min_prod[g = 1:n_g], phi^2 * alpha[g,:]'*cov_mat*alpha[g,:] <= s_min[g]^2)
+if NL_model == true
+    @expression(model, qt[g = 1:n_g], alpha[g,:]'*cov_mat*alpha[g, :])
+    @NLconstraint(model, max_prod[g = 1:n_g], phi * sqrt(qt[g]) <= p_max[g] - p[g])
+    @NLconstraint(model, min_prod[g = 1:n_g], phi * sqrt(qt[g]) <= p[g] - p_min[g])
+else
+    @constraint(model, max_prod[g = 1:n_g], phi^2 * alpha[g,:]'*cov_mat*alpha[g, :] <= (p_max[g] - p[g])^2)
+    @constraint(model, min_prod[g = 1:n_g], phi^2 * alpha[g,:]'*cov_mat*alpha[g, :] <= (p[g] - p_min[g])^2)
+end
 
-@objective(model, Min, sum(C_Q[g]*(x[g]^2 + alpha[g,:]'*cov_mat*alpha[g,:]) + C_L[g]*x[g] for g = 1:n_g))
+@objective(model, Min, sum(C_Q[g]*(p[g]^2 + alpha[g,:]'*cov_mat*alpha[g,:]) + C_L[g]*p[g] for g = 1:n_g))
 
 ## Solve
 
@@ -112,8 +116,8 @@ p_scheduled = value.(p);
 alpha_scheduled = value.(alpha);
 electricity_price = dual(power_balance);
 reserve_price = dual.(reserve_allocation);
-dual_min_prod = abs.(dual.(min_prod)); # absolute value is taken since Gurobi does not seem to use the same sign convention for dual variables (it is negative when it should be positive)
-dual_max_prod = abs.(dual.(max_prod)); # absolute value is taken since Gurobi does not seem to use the same sign convention for dual variables (it is negative when it should be positive)
+dual_min_prod = abs.(dual.(min_prod)); # absolute value is taken since Ipopt does not seem to use the same sign convention for dual variables (it is negative when it should be positive)
+dual_max_prod = abs.(dual.(max_prod)); # absolute value is taken since Ipopt does not seem to use the same sign convention for dual variables (it is negative when it should be positive)
 load_payment = D*electricity_price;
 wind_energy_revenue = [W[i]*electricity_price for i = 1:n_w];
 wind_profit = [(wind_energy_revenue[i]-reserve_price[i]) for i = 1:n_w];
@@ -148,7 +152,6 @@ println("Reserve procurement: ", alpha_scheduled)
 println("Electricity price: ", electricity_price)
 println("Reserve price: ", reserve_price)
 println("Reserve price estimate: ", reserve_price_est)
-#println("Sensitivity coefficients: ", sensitivity_coeffs)
 println("Sensitivity to mean forecast error: ", mean_sensitivity)
 println("Sensitivity to standard deviation of forecast error: ", std_sensitivity)
 println("Load payment: ", load_payment)

@@ -7,16 +7,16 @@ using Ipopt
 #
 # This script formulates the problem as a convex program with a convex quadratic
 # objective to be minimised subject to affine and second-order cone constraints.
-# It then solves the problem with Mosek. This has non-trivial implications
+# It then solves the problem with Ipopt. This has non-trivial implications
 # for post-processing because of the primal and dual forms used by the solver.
-# More precisely, Mosek uses conic programming duality (rather than Lagrangian
-# duality), which means that the dual variables associated with second-order
-# cone constraints are vector variables (belonging to the dual SOCP cone) and
-# not scalar variables (as would be the case in Lagrangian duality for nonlinear
-# programs). Theoretical results in the tex documents were derived based on
-# Lagrangian duality and it is not entirely clear how conic dual variables
-# relate to Lagrangian dual variables. For affine constraints, the
-# interpretation of dual variables remains unchanged.
+# More precisely, Ipopt relies on Lagrangian duality, which means that the dual
+# variables associated with second-order cone constraints are scalar variables.
+# Theoretical developments are also based on Lagrangian duality and the
+# formulation used in the theoretical analysis can be solved as such, which
+# implies that the meaning of dual variables of second-order cone constraints
+# retrieved from the solver is roughly the same (they are the opposite of the
+# ones used in our developments). They can therefore be used to check our
+# results numerically.
 
 ## Data
 
@@ -50,7 +50,7 @@ end
 W = [0.8*p_w_max[i] for i = 1:n_w];
 
 # Demand parameters
-D = 1050;
+D = 900;
 
 # Risk parameters
 epsilon = 0.05;
@@ -152,7 +152,6 @@ println("Reserve procurement: ", alpha_scheduled)
 println("Electricity price: ", electricity_price)
 println("Reserve price: ", reserve_price)
 println("Reserve price estimate: ", reserve_price_est)
-#println("Sensitivity coefficients: ", sensitivity_coeffs)
 println("Sensitivity to mean forecast error: ", mean_sensitivity)
 println("Sensitivity to standard deviation of forecast error: ", std_sensitivity)
 println("Load payment: ", load_payment)
