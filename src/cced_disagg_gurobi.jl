@@ -18,8 +18,8 @@ using Distributions
 # interpretation of dual variables. Indeed, the dual variables returned by
 # Gurobi do not have the exact same meaning as the ones used in our theoretical
 # developments, and some slight discrepancy should be expected between
-# theoretical and empirical results should be expected when these variables
-# have nonzero values.
+# theoretical and empirical results when these variables have nonzero values (
+# i.e., when generation bound constraints are tight).
 
 ## Data
 
@@ -49,7 +49,7 @@ cov_mat = Diagonal(std) * corr_mat * Diagonal(std);
 W = [0.8*p_w_max[i] for i = 1:n_w];
 
 # Demand parameters
-D = 1050;
+D = 900;
 
 # Risk parameters
 epsilon = 0.05;
@@ -137,6 +137,11 @@ for i = 1:n_w
     reserve_price_est[i] = mu[i] * mean_sensitivity[i] + std[i] * std_sensitivity[i];
 end
 
+gamma, eta = zeros(Float64, n_w), zeros(Float64, n_w);
+gamma .= 1 ./ (2 .* (C_Q .+ dual_min_prod .* phi.^2 + dual_max_prod .* phi.^2));
+beta = 1 / sum(gamma);
+eta .= beta .* gamma;
+
 estimated_generator_profit = zeros(n_g);
 for k = 1:n_g
     estimated_generator_profit[k] = C_Q[k] * (p_scheduled[k] - sum(alpha_scheduled[k,i] * mu[i] for i = 1:n_w))^2 + C_Q[k] * alpha_scheduled[k,:]'* cov_mat * alpha_scheduled[k, :] + dual_max_prod[k] * p_max[k]
@@ -145,10 +150,10 @@ end
 println("\n")
 println("Power generation: ", p_scheduled)
 println("Reserve procurement: ", alpha_scheduled)
+println("Estimated reserve procurement: ", eta)
 println("Electricity price: ", electricity_price)
 println("Reserve price: ", reserve_price)
 println("Reserve price estimate: ", reserve_price_est)
-#println("Sensitivity coefficients: ", sensitivity_coeffs)
 println("Sensitivity to mean forecast error: ", mean_sensitivity)
 println("Sensitivity to standard deviation of forecast error: ", std_sensitivity)
 println("Load payment: ", load_payment)

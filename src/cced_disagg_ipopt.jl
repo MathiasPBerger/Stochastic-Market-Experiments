@@ -43,10 +43,6 @@ std[3] = 1. + std[3]/5.;
 rho_12, rho_13, rho_23 = -0.65, 0.1, -0.1;
 corr_mat = [[1. rho_12 rho_13]; [rho_12 1. rho_23]; [rho_13 rho_23 1.]];
 cov_mat = Diagonal(std) * corr_mat * Diagonal(std);
-cov_sqrt = sqrt(cov_mat); # computes the matrix square root of covariance matrix to define SOC constraint
-if eigvals(imag(cov_sqrt)) == zeros(Float64, n_w)
-    cov_sqrt = convert.(Float64, cov_sqrt)
-end
 W = [0.8*p_w_max[i] for i = 1:n_w];
 
 # Demand parameters
@@ -60,7 +56,6 @@ if dr == true
 else
     phi = quantile(Normal(), (1-epsilon)); # one-sided CC using normal distrib.
 end
-phi_inv = 1 / phi;
 
 # Cost parameters
 v_Q, s_Q = 0.1, 0.05;
@@ -141,6 +136,11 @@ for i = 1:n_w
     reserve_price_est[i] = mu[i] * mean_sensitivity[i] + std[i] * std_sensitivity[i];
 end
 
+gamma, eta = zeros(Float64, n_w), zeros(Float64, n_w);
+gamma .= 1 ./ (2 .* (C_Q .+ dual_min_prod .* phi.^2 + dual_max_prod .* phi.^2));
+beta = 1 / sum(gamma);
+eta .= beta .* gamma;
+
 estimated_generator_profit = zeros(n_g);
 for k = 1:n_g
     estimated_generator_profit[k] = C_Q[k] * (p_scheduled[k] - sum(alpha_scheduled[k,i] * mu[i] for i = 1:n_w))^2 + C_Q[k] * alpha_scheduled[k,:]'* cov_mat * alpha_scheduled[k, :] + dual_max_prod[k] * p_max[k]
@@ -151,6 +151,7 @@ println("Power generation: ", p_scheduled)
 println("Reserve procurement: ", alpha_scheduled)
 println("Electricity price: ", electricity_price)
 println("Reserve price: ", reserve_price)
+println("Reserve procurement estimate: ", eta)
 println("Reserve price estimate: ", reserve_price_est)
 println("Sensitivity to mean forecast error: ", mean_sensitivity)
 println("Sensitivity to standard deviation of forecast error: ", std_sensitivity)

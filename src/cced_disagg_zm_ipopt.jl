@@ -43,10 +43,6 @@ std[3] = 1. + std[3]/5.;
 rho_12, rho_13, rho_23 = -0.65, 0.1, -0.1;
 corr_mat = [[1. rho_12 rho_13]; [rho_12 1. rho_23]; [rho_13 rho_23 1.]];
 cov_mat = Diagonal(std) * corr_mat * Diagonal(std);
-cov_sqrt = sqrt(cov_mat); # computes the matrix square root of covariance matrix to define SOC constraint
-if eigvals(imag(cov_sqrt)) == zeros(Float64, n_w)
-    cov_sqrt = convert.(Float64, cov_sqrt)
-end
 W = [0.8*p_w_max[i] for i = 1:n_w];
 
 # Demand parameters
@@ -60,7 +56,6 @@ if dr == true
 else
     phi = quantile(Normal(), (1-epsilon)); # one-sided CC using normal distrib.
 end
-phi_inv = 1 / phi;
 
 # Cost parameters
 v_Q, s_Q = 0.1, 0.05;

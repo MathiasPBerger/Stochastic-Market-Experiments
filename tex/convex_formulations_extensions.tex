@@ -524,9 +524,9 @@ Before analysing the sensitivity of the expected system cost with respect to the
 %\end{equation*}
 %for some carefully selected $\gamma_k$. Next, we show that the vector expression on the right-hand side above is a multiple of the all-ones vector $e$, that is,
 %\begin{equation*}
-%\Sigma^{-1} \Big(\lambda^* \mu + \chi^* \Big) = \beta_k e,
+%\Sigma^{-1} \Big(\lambda^* \mu + \chi^* \Big) = \beta e,
 %\end{equation*}
-%for some appropriate $\beta_k$, from which the result can be deduced.
+%for some appropriate $\beta$, from which the result can be deduced.
 %
 %First, note that from complementary slackness, $\overline{\nu}_k^* = \underline{\nu}_k^* = 0$ if chance constraints are not tight at the optimum. Next, let us write the stationarity conditions of the Lagrangian with respect to $p_k$ and $\alpha_k$. In vector form, they read
 %\begin{align*}
@@ -587,9 +587,9 @@ The proof proceeds in two steps. We start by showing that the optimal reserve al
 \end{equation*}
 for some carefully selected $\gamma_k$ and where the star superscript was omitted for clarity (we keep this convention throughout the proof). Next, we show that the vector expression on the right-hand side above is a multiple of the all-ones vector $e$, that is,
 \begin{equation*}
-\Sigma^{-1} \Big(\lambda \mu + \chi \Big) = \beta_k e,
+\Sigma^{-1} \Big(\lambda \mu + \chi \Big) = \beta e,
 \end{equation*}
-for some appropriate $\beta_k$, from which the main result can be deduced.
+for some appropriate $\beta$, from which the main result can be deduced.
 
 To simplify the first part of the proof, we work with an updated problem formulation in which chance constraints are re-written as
 \begin{align*}
@@ -641,20 +641,20 @@ Substituting the expression for $\alpha_k$ obtained above yields
 \begin{equation*}
 \sum_k \gamma_k \Sigma^{-1} (\lambda \mu + \chi) = e.
 \end{equation*}
-The second intermediate result then follows from defining
+The second intermediate result then follows by defining
 \begin{equation*}
-\beta_k = \bigg[\sum_k \gamma_k\bigg]^{-1}
+\beta = \bigg[\sum_k \gamma_k\bigg]^{-1}
 \end{equation*}
-and multiplying both sides by $\beta_k$.
+and multiplying both sides by $\beta$.
 
 Combining the two intermediate results then gives
 \begin{align*}
 \alpha_k &= \gamma_k \Sigma^{-1} (\lambda \mu + \chi)\\
-&= \gamma_k \beta_k e,
+&= \gamma_k \beta e,
 \end{align*}
 such that defining
 \begin{equation*}
-\eta_k = \gamma_k \beta_k =  \gamma_k \bigg(\sum_k \gamma_k\bigg)^{-1}
+\eta_k = \gamma_k \beta =  \gamma_k \bigg(\sum_k \gamma_k\bigg)^{-1}
 \end{equation*}
 leads to the desired result. It is simple to check that $\sum_k \eta_k = 1$, as expected.
 \end{proof}
@@ -749,7 +749,7 @@ The payment received by generator $k$ for reserves can be written as follows
 \begin{equation*}
 \alpha_k^\top \chi = \sum_i \alpha_{ki} \chi_i,
 \end{equation*}
-where we omitted the star symbols for clarity. By virtue of Proposition \ref{reserveallocation}, $\alpha_k = \eta_k e$ for some $\eta_k \in [0, 1]$, which implies that $\alpha_{ki} = \alpha_{kj} = \eta_k$ for all $i$ and $j$. In addition, Proposition \ref{SensitivityReservePrice} provides an expression for $\chi_i$, which leads to
+where we omitted the star symbols for clarity. By virtue of Proposition \ref{ReserveAllocation}, $\alpha_k = \eta_k e$ for some $\eta_k \in [0, 1]$, which implies that $\alpha_{ki} = \alpha_{kj} = \eta_k$ for all $i$ and $j$. In addition, Proposition \ref{SensitivityReservePrice} provides an expression for $\chi_i$, which leads to
 \begin{equation*}
 \alpha_k^\top \chi = \eta_k \sum_i \bigg(\mu_i \frac{\partial V^*}{\partial \mu_i} + \sigma_i \frac{\partial V^*}{\partial \sigma_i}\bigg).
 \end{equation*}
@@ -772,7 +772,7 @@ When chance constraints are not tight, the expression of $\vartheta_k$ is relati
 Reserve payments to generator $k$ will always be non-negative if the aggregate mean forecast error is negative (i.e., $e^\top \mu \le 0$).
 \end{corollary}
 \begin{proof}
-In the current setting, $\lambda \ge 0$ since all generating units non-negative marginal costs. Furthermore, $\eta_k \ge 0$, $\vartheta_k \ge 0$ and $e^\top \Sigma e > 0$ (as $\Sigma \succ 0$). It follows that $\alpha_k^\top \chi \ge 0$.
+In the current setting, $\lambda \ge 0$ since all generating units have non-negative marginal costs. Furthermore, $\eta_k \ge 0$, $\vartheta_k \ge 0$ and $e^\top \Sigma e > 0$ (as $\Sigma \succ 0$). It follows that $\alpha_k^\top \chi \ge 0$.
 \end{proof}
 
 %\paragraph{Comments} I am not sure that such a result holds for each individual wind producer $i$ in general. To prove it, we would basically need to show that $\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* \ge 0, \forall k$. For particular cases, it is pretty simple. For instance, the result obviously holds for individual producers if forecast errors are independent (the sum over $j$ is then equal to 0). Likewise, the result trivially holds if all forecast errors are positively correlated. In the general case, however, this will probably depend on the sign of the correlation between forecast errors.
@@ -871,7 +871,7 @@ The KKT conditions associated with the stochastic market clearing problem theref
 0 \le \overline{\nu}_k &\perp \overline{p}_k + \alpha_k^\top \mu - ||\alpha_k||_{\Sigma} \phi_k - p_k \ge 0, \forall k,\\
 0 \le \underline{\nu}_k & \perp p_k - \alpha_k^\top \mu - ||\alpha_k||_{\Sigma}\phi_k \ge 0, \forall k,
 \end{align*}
-from which the range constraints of $\alpha_{ki}$ variables were omitted for conciseness. Since the objective function is convex, the functions forming the constraints are continuously differentiable and the problem satisfies Slater's condition, the KKT conditions are necessary and sufficient. Thus, a solution to the complementarity problem gives a (globally) optimal solution of the market clearing problem. In addition, since the objective is strongly convex and the feasible set is convex (and non-empty), there is also a unique optimal solution to the problem.
+from which the range constraints of $\alpha_{ki}$ variables were omitted for conciseness. Since the objective function is convex, the functions forming the constraints are continuously differentiable and the problem satisfies Slater's condition, the KKT conditions are necessary and sufficient. Thus, a solution to the complementarity problem gives a (globally) optimal solution to the market clearing problem. In addition, since the objective is strongly convex and the feasible set is convex (and non-empty), there is also a unique optimal solution to the problem.
 
 \bibliographystyle{plain} % We choose the "plain" reference style
 \bibliography{references}

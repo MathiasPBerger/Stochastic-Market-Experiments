@@ -11,8 +11,8 @@ using MosekTools
 # for post-processing because of the primal and dual forms used by the solver.
 # More precisely, Mosek uses conic programming duality (rather than Lagrangian
 # duality), which means that the dual variables associated with second-order
-# cone constraints are vector variables (belonging to the dual SOCP cone) and
-# not scalar variables (as would be the case in Lagrangian duality for nonlinear
+# cone constraints are vector variables (belonging to the dual SOC) and not
+# scalar variables (as would be the case in Lagrangian duality for nonlinear
 # programs). Theoretical results in the tex documents were derived based on
 # Lagrangian duality and it is not entirely clear how conic dual variables
 # relate to Lagrangian dual variables. For affine constraints, the
@@ -50,7 +50,7 @@ end
 W = [0.8*p_w_max[i] for i = 1:n_w];
 
 # Demand parameters
-D = 1050;
+D = 900;
 
 # Risk parameters
 epsilon = 0.05;
