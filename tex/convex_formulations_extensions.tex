@@ -734,14 +734,14 @@ Thus, we can write
 Note that $\underline{\nu}_k^* \ge 0$, $\overline{\nu}_k^* \ge 0$, $\forall k$. Clearly, $||\alpha_k^*||_{\Sigma} \ge 0, \forall k$. In addition, by Assumption \ref{StrictConvexity}, $c_k^Q > 0$ and $\phi_k \ge 0, \forall k$. Hence, each term in the sum is non-negative and the result follows.
 \end{proof}
 
-\begin{proposition}
-(Sign of Reserve Payment to Flexible Generators) The sign of payments made to flexible generator $k$ for reserves depends on the expression
+\begin{proposition}\label{SignReservePayment}
+(Sign of Reserve Payment to Flexible Generators) The sign of payments made to flexible generators for reserves depends on the sign of the following expression
 \begin{equation*}
--\lambda e^\top \mu + \vartheta_k e^\top \Sigma e,
+-\lambda e^\top \mu + \vartheta e^\top \Sigma e,
 \end{equation*}
-where $\vartheta_k \ge 0$ depends on the quadratic cost component, the risk parameter and dual variables of chance constraints. In the particular case that chance constraints are not tight, its expression simplifies to
+where $\vartheta \ge 0$ is a function of the quadratic cost components, the risk parameter and dual variables of chance constraints. In the particular case that chance constraints are not tight, its expression simplifies to
 \begin{equation*}
-\vartheta_k = \bigg[\sum_k \frac{1}{2 c_k^Q} \bigg]^{-1}.
+\vartheta = \bigg[\sum_k \frac{1}{2 c_k^Q} \bigg]^{-1}.
 \end{equation*} 
 \end{proposition}
 \begin{proof}
@@ -759,20 +759,35 @@ Proposition \ref{SensitivityMeanElectricityPrice} provides an expression for the
 \end{equation*}
 Based on the proof of Proposition \ref{SensitivityStandardDeviation}, it is easy to see that
 \begin{equation*}
-\sum_i \sigma_i \frac{\partial V^*}{\partial \sigma_i} = \sum_k \varphi_k \eta_k^2 \sum_i\Big(\sigma_i^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_k\Big) = \vartheta_k e^\top \Sigma e,
+\sum_i \sigma_i \frac{\partial V^*}{\partial \sigma_i} = \sum_k \varphi_k \eta_k^2 \sum_i\Big(\sigma_i^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_k\Big) = \vartheta e^\top \Sigma e,
 \end{equation*}
-where $\vartheta_k = \sum_k \varphi_k \eta_k^2 \ge 0$. The payment for reserves thus becomes
+where $\vartheta = \sum_k \varphi_k \eta_k^2 \ge 0$. The payment for reserves thus becomes
 \begin{equation*}
-\alpha_k^\top \chi = \eta_k \Big(-\lambda e^\top \mu + \vartheta_k e^\top \Sigma e\Big).
+\alpha_k^\top \chi = \eta_k \Big(-\lambda e^\top \mu + \vartheta e^\top \Sigma e\Big).
 \end{equation*}
-When chance constraints are not tight, the expression of $\vartheta_k$ is relatively simple to derive from the expressions of $\eta_k$ (given in Proposition \ref{ReserveAllocation}) and $\varphi_k$ (given in Proposition \ref{SensitivityStandardDeviation}).
+When chance constraints are not tight, the expression of $\vartheta$ is relatively simple to derive from the expressions of $\eta_k$ (given in Proposition \ref{ReserveAllocation}) and $\varphi_k$ (given in Proposition \ref{SensitivityStandardDeviation}).
 \end{proof}
-
+It is worth noting that 
+\begin{equation*}
+\mathbb{E}\Big[\sum_i \boldsymbol{\omega}_i\Big] = e^\top \mu \mbox{ and } \mbox{Var}\Big[\sum_i \boldsymbol{\omega}_i\Big] = e^\top \Sigma e.
+\end{equation*}
+Hence, the expression derived in Proposition \ref{SignReservePayment} depends directly on the mean and variance of the aggregate forecast error.
 \begin{corollary}
-Reserve payments to generator $k$ will always be non-negative if the aggregate mean forecast error is negative (i.e., $e^\top \mu \le 0$).
+The sign of reserve payments to generators depend on the mean of the aggregate forecast error. Specifically, 
+\begin{enumerate}
+\item if the aggregate mean forecast error is non-positive (i.e., $e^\top \mu \le 0$), reserve payments are always non-negative.
+\item if the aggregate mean forecast error is positive (i.e., $e^\top \mu > 0$), reserve payments are non-negative if and only if the index of dispersion of the aggregate forecast error is high enough, that is,
+\begin{equation*}
+\frac{e^\top \Sigma e}{e^\top \mu} \ge \frac{\lambda}{\vartheta}.
+\end{equation*}
+\end{enumerate}
 \end{corollary}
 \begin{proof}
-In the current setting, $\lambda \ge 0$ since all generating units have non-negative marginal costs. Furthermore, $\eta_k \ge 0$, $\vartheta_k \ge 0$ and $e^\top \Sigma e > 0$ (as $\Sigma \succ 0$). It follows that $\alpha_k^\top \chi \ge 0$.
+In the current setting, $\lambda \ge 0$ since all generating units have non-negative marginal costs, such that $-\lambda e^\top \mu \ge 0$ if the mean of the aggregate forecast error is non-positive. Furthermore, $\eta_k \ge 0$, $\vartheta \ge 0$ and $e^\top \Sigma e > 0$ (as $\Sigma \succ 0$), which yields first result. If the mean of the aggregate forecast error is positive, however, we need to ensure that
+\begin{equation*}
+- \lambda e^\top \mu + \vartheta e^\top \Sigma e \ge 0
+\end{equation*}
+for reserve payments to be non-negative.
 \end{proof}
 
 %\paragraph{Comments} I am not sure that such a result holds for each individual wind producer $i$ in general. To prove it, we would basically need to show that $\sigma_i^2 (\alpha_{ki}^*)^2 + \sum_{j \ne i} \rho_{ij} \sigma_i \sigma_j \alpha_{ki}^* \alpha_{kj}^* \ge 0, \forall k$. For particular cases, it is pretty simple. For instance, the result obviously holds for individual producers if forecast errors are independent (the sum over $j$ is then equal to 0). Likewise, the result trivially holds if all forecast errors are positively correlated. In the general case, however, this will probably depend on the sign of the correlation between forecast errors.
