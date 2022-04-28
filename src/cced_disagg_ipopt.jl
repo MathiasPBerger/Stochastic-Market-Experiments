@@ -31,12 +31,14 @@ p_min = [0.0 for g = 1:n_g];
 # Wind production parameters
 p_w_max = [250.0 for i = 1:n_w];
 mu = [-0.1*p_w_max[i] for i = 1:n_w];
+#mu[1] = 0.1*p_w_max[1]
 mu[2] += 0.25*p_w_max[2];
 mu[3] -= 0.1*p_w_max[3];
 std = [0.1*p_w_max[i] for i = 1:n_w];
 std[1] = std[1]/5.;
 std[2] += 0.05*p_w_max[2];
 std[3] = 1. + std[3]/5.;
+#std[3] = 40.;
 #std[3] += 0.1*p_w_max[3];
 #rho = -0.75;
 #corr_mat = [[1. rho]; [rho 1.]];
@@ -115,13 +117,16 @@ dual_min_prod = abs.(dual.(min_prod)); # absolute value is taken since Ipopt doe
 dual_max_prod = abs.(dual.(max_prod)); # absolute value is taken since Ipopt does not seem to use the same sign convention for dual variables (it is negative when it should be positive)
 load_payment = D*electricity_price;
 wind_energy_revenue = [W[i]*electricity_price for i = 1:n_w];
+wind_reserve_penalty = reserve_price;
 wind_profit = [(wind_energy_revenue[i]-reserve_price[i]) for i = 1:n_w];
 generator_energy_revenue = [(electricity_price*p_scheduled[g]) for g = 1:n_g];
 generator_reserve_revenue = [(reserve_price'*alpha_scheduled[g,:]) for g = 1:n_g];
-true_generator_cost = [(true_C_Q[g]*((p_scheduled[g] - alpha_scheduled[g,:]'*mu)^2 + alpha_scheduled[g,:]'*cov_mat*alpha_scheduled[g,:]) + true_C_L[g]*(p_scheduled[g] - alpha_scheduled[g,:]'*mu)) for g = 1:n_g];
-reported_generator_cost = [(C_Q[g]*((p_scheduled[g] - alpha_scheduled[g,:]'*mu)^2 + alpha_scheduled[g,:]'*cov_mat*alpha_scheduled[g,:]) + C_L[g]*(p_scheduled[g] - alpha_scheduled[g,:]'*mu)) for g = 1:n_g];
-true_generator_profit = [(generator_energy_revenue[g] + generator_reserve_revenue[g] - true_generator_cost[g]) for g = 1:n_g];
-reported_generator_profit = [(generator_energy_revenue[g] + generator_reserve_revenue[g] - reported_generator_cost[g]) for g = 1:n_g];
+true_generator_total_cost = [(true_C_Q[g]*((p_scheduled[g] - alpha_scheduled[g,:]'*mu)^2 + alpha_scheduled[g,:]'*cov_mat*alpha_scheduled[g,:]) + true_C_L[g]*(p_scheduled[g] - alpha_scheduled[g,:]'*mu)) for g = 1:n_g];
+true_generator_profit = [(generator_energy_revenue[g] + generator_reserve_revenue[g] - true_generator_total_cost[g]) for g = 1:n_g];
+if !truthful_bidding
+    reported_generator_total_cost = [(C_Q[g]*((p_scheduled[g] - alpha_scheduled[g,:]'*mu)^2 + alpha_scheduled[g,:]'*cov_mat*alpha_scheduled[g,:]) + C_L[g]*(p_scheduled[g] - alpha_scheduled[g,:]'*mu)) for g = 1:n_g];
+    reported_generator_profit = [(generator_energy_revenue[g] + generator_reserve_revenue[g] - reported_generator_total_cost[g]) for g = 1:n_g];
+end
 
 std_sensitivity_coeffs, mean_sensitivity_coeffs = zeros(n_w, n_g), zeros(n_w, n_g);
 std_sensitivity, mean_sensitivity = zeros(n_w), zeros(n_w);
@@ -146,6 +151,9 @@ for k = 1:n_g
     estimated_generator_profit[k] = C_Q[k] * (p_scheduled[k] - sum(alpha_scheduled[k,i] * mu[i] for i = 1:n_w))^2 + C_Q[k] * alpha_scheduled[k,:]'* cov_mat * alpha_scheduled[k, :] + dual_max_prod[k] * p_max[k]
 end
 
+generator_marginal_cost_energy = [(2 * C_Q[k] * (p_scheduled[k] - sum(alpha_scheduled[k,i] * mu[i] for i = 1:n_w)) + C_L[k]) for k = 1:n_g];
+generator_marginal_cost_reserve = [(-2 * C_Q[k] * (p_scheduled[k] - sum(alpha_scheduled[k,i] * mu[i] for i = 1:n_w)) * mu[k] - C_L[k] * mu[k] + 2 * C_Q[k] * cov_mat[k, :]' * alpha_scheduled[k, :]) for k = 1:n_g];
+
 println("\n")
 println("Power generation: ", p_scheduled)
 println("Reserve procurement: ", alpha_scheduled)
@@ -157,16 +165,19 @@ println("Sensitivity to mean forecast error: ", mean_sensitivity)
 println("Sensitivity to standard deviation of forecast error: ", std_sensitivity)
 println("Load payment: ", load_payment)
 println("Wind energy revenue: ", wind_energy_revenue)
+println("Wind reserve penalty: ", wind_reserve_penalty)
 println("Wind profit: ", wind_profit)
 println("Generators energy revenue: ", generator_energy_revenue)
 println("Generators reserve revenue: ", generator_reserve_revenue)
-println("True generator cost: ", true_generator_cost)
+println("True generator total cost: ", true_generator_total_cost)
 if !truthful_bidding
-    println("Reported generator cost: ", reported_generator_cost)
+    println("Reported generator total cost: ", reported_generator_total_cost)
 end
 println("True generator profit: ", true_generator_profit)
 println("Estimated generator profit: ", estimated_generator_profit)
 if !truthful_bidding
     println("Reported generator profit: ", reported_generator_profit)
 end
+println("Generators marginal cost (energy): ", generator_marginal_cost_energy)
+println("Generators marginal cost (reserve): ", generator_marginal_cost_reserve)
 println("\n")

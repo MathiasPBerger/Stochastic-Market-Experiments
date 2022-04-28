@@ -1,0 +1,96 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{assumption}{Assumption}
+
+\title{Game Theory \& Mechanism Design Primer}
+\author{Mathias Berger}
+\date{Spring 2022}
+
+\begin{document}
+
+\maketitle
+
+\section{Prelude}
+
+We informally introduce some useful concepts and definitions:
+
+\begin{definition}
+(Pareto Optimality) An outcome from which any attempt to benefit a given player by deviating to some other outcome will necessarily result in a loss in utility to someone else.
+\end{definition}
+
+In economics, an efficient outcome is typically understood as a Pareto-optimal outcome. In mechanism design and auction theory, an efficient outcome is sometimes defined as that maximising the sum of utilities of all players.
+
+\begin{definition}
+(Price-Taking) \textcolor{red}{TBA}
+\end{definition}  
+
+\begin{definition}
+(Dominant Strategy) The strategy chosen by a player is dominant if it maximises her utility, irrespective of what other players do.
+\end{definition}
+
+\begin{definition}
+(Dominant Strategy Equilibrium) An outcome in which every player is doing the best she possibly can irrespective of what other players do.
+\end{definition}
+
+\begin{definition}
+(Nash Equilibrium) An outcome in which every player is doing the best she possibly can given other players' choices: no player can benefit from unilaterally changing her choice.
+\end{definition}
+
+Note that a Nash equilibrium may be strictly Pareto inefficient. This is notably the case in the Prisoner's dilemma, in the sense that there is an outcome other than the (unique) Nash equilibrium in which all of the players achieve a smaller cost.
+
+%\begin{definition}
+%(Bayesian Nash Equilibrium) .
+%\end{definition}
+
+\begin{definition}
+(Direct Mechanism) \textcolor{red}{TBA}
+\end{definition}
+
+\begin{definition}
+(Incentive Compatibility) A mechanism is incentive compatible if it is a dominant strategy for each player to report her private information truthfully.
+\end{definition}
+
+\begin{definition}
+(Implementation) \textcolor{red}{TBA}
+\end{definition}
+
+\begin{proposition}
+(Revelation Principle) If there exists an arbitrary mechanism that implements a given social choice function in dominant strategies, then there exists an incentive compatible mechanism that implements this same social choice function. The payments of the players in the incentive compatible mechanism are identical to those, obtained at equilibrium, of the original mechanism.
+\end{proposition}
+
+\begin{proposition}
+(Uniqueness of Prices) Given a social choice function and a set of payment functions defining an incentive compatible mechanism, a new mechanism constructed by taking the same social choice function and changing payment functions is incentive compatible if and only if the payment function of each player in the new mechanism can be expressed as the sum of i) the payment function of the same player in the original mechanism, ii) some function that does not depend on the valuation function of this player.
+\end{proposition}
+
+\begin{corollary}
+(Social Welfare and Incentive Compatibility) The only incentive compatible mechanisms that maximise social welfare are those with Vickrey-Clarke-Groves payments.
+\end{corollary}
+
+\begin{definition}
+(Incentive Efficiency) \textcolor{red}{TBA}
+\end{definition}
+
+\begin{definition}
+(Price of Anarchy) The price of anarchy of a game, for some choice of objective function and equilibrium concept, is defined as the ratio between the worst objective function value of an equilibrium of the game and that of an optimal outcome.
+\end{definition}
+
+\begin{definition}
+(Price of Stability) The price of stability is a measure of inefficiency designed to differentiate between games in which all equilibria are inefficient and those in which some equilibrium is inefficient. It can be computed as the ratio between the best objective function value of one of its equilibria and that of an optimal outcome.
+\end{definition}
+
+Note that the price of anarchy and stability are the same in games with a unique equilibrium.
+
+
+\bibliographystyle{plain} % We choose the "plain" reference style
+\bibliography{references}
+
+\end{document}
