@@ -21,21 +21,67 @@
 
 \section{Prelude}
 
-We informally introduce some useful concepts and definitions:
+We informally introduce some useful concepts and definitions from the fields of economics, game theory and mechanism design.
+
+\subsection{Economics}
 
 \begin{definition}
 (Pareto Optimality) An outcome from which any attempt to benefit a given player by deviating to some other outcome will necessarily result in a loss in utility to someone else.
 \end{definition}
 
-In economics, an efficient outcome is typically understood as a Pareto-optimal outcome. In mechanism design and auction theory, an efficient outcome is sometimes defined as that maximising the sum of utilities of all players.
+In economics, the concept of \textit{efficiency} is typically understood as a Pareto-optimal outcome.
 
 \begin{definition}
-(Price-Taking) \textcolor{red}{TBA}
+(Price-Taking) A situation where producers cannot single-handedly influence market outcomes and prices.
 \end{definition}  
+
+\subsection{Game Theory}
+
+In its basic form, a game is as follows.
+
+\begin{definition}
+(Game)
+\end{definition}
+
+\begin{definition}
+(Full-Information Game) A game in which all players know the utilities and strategies of other players.
+\end{definition}
+
+\begin{definition}
+(Bayesian Game) A game in which players have limited information about the utilities and strategies of other players.
+\end{definition}
+
+\begin{definition}
+(Non-Cooperative Game) A game in which all players act selfishly and seek to deviate alone from proposed solutions.
+\end{definition}
+
+\begin{definition}
+(Cooperative Game) A game in which groups of players coordinate their actions.
+\end{definition}
+
+\begin{definition}
+(Pure Strategy) A complete definition of how a player will play a game.
+\end{definition}
+
+\begin{definition}
+(Mixed Strategy) An assignment of a probability to each pure strategy and subsequent random selection of the played strategy.
+\end{definition}
+
+In other words, a mixed strategy can be interpreted as a randomised strategy, whereby a player picks a probability distribution over her set of pure strategies and independently selects a strategy at random based on this distribution.
+
+\begin{definition}
+(One-Shot Simultaneous Move Game) A game in which all players simultaneously choose an action from their set of possible strategies.
+\end{definition}
 
 \begin{definition}
 (Dominant Strategy) The strategy chosen by a player is dominant if it maximises her utility, irrespective of what other players do.
 \end{definition}
+
+\begin{definition}
+(Solution Concept) \textcolor{red}{TBA}
+\end{definition}
+
+For non-cooperative games, different types of solution concepts can be employed.
 
 \begin{definition}
 (Dominant Strategy Equilibrium) An outcome in which every player is doing the best she possibly can irrespective of what other players do.
@@ -47,12 +93,38 @@ In economics, an efficient outcome is typically understood as a Pareto-optimal o
 
 Note that a Nash equilibrium may be strictly Pareto inefficient. This is notably the case in the Prisoner's dilemma, in the sense that there is an outcome other than the (unique) Nash equilibrium in which all of the players achieve a smaller cost.
 
-%\begin{definition}
-%(Bayesian Nash Equilibrium) .
-%\end{definition}
+\begin{definition}
+(Pure-Strategy Nash Equilibrium) A Nash equilibrium in which each player deterministically plays her chosen strategy.
+\end{definition}
+
+In some settings, pure-strategy Nash equilibria may not exist, which leads to the introduction of the following concept.
 
 \begin{definition}
-(Direct Mechanism) \textcolor{red}{TBA}
+(Mixed-Strategy Nash Equilibrium) A Nash equilibrium in which each player plays a mixed-strategy.
+\end{definition}
+
+Note that players are typically assumed to be risk-neutral in mixed-strategy Nash equilibria.
+
+\begin{definition}
+(Bayesian Nash Equilibrium) \textcolor{red}{TBA}
+\end{definition}
+
+In the context of cooperative games, the Nash equilibrium concept can be extended as follows.
+
+\begin{definition}
+(Strong Nash Equilibrium) An outcome in which no subset of players has a way to simultaneously change their strategies in order to improve each of the participant's welfare.
+\end{definition}
+
+\begin{definition}
+(Correlated Equilibrium) \textcolor{red}{TBA}
+\end{definition}
+
+\subsection{Mechanism Design}
+
+Roughly, mechanism design aims to design games that have dominant strategy solutions and such that this solution leads to a desirable outcome (e.g., socially desirable). In mechanism design and auction theory, an efficient outcome is sometimes defined as an outcome maximising the sum of utilities of all players (i.e., maximising social welfare).
+
+\begin{definition}
+(Direct Mechanism) A direct mechanism is defined by a social choice function (which maps players' preferences or valuations to an outcome or allocation) and a set of payment functions (which determine how players are rewarded or penalised).
 \end{definition}
 
 \begin{definition}
@@ -80,11 +152,13 @@ Note that a Nash equilibrium may be strictly Pareto inefficient. This is notably
 \end{definition}
 
 \begin{definition}
-(Price of Anarchy) The price of anarchy of a game, for some choice of objective function and equilibrium concept, is defined as the ratio between the worst objective function value of an equilibrium of the game and that of an optimal outcome.
+(Price of Anarchy) The price of anarchy of a game, for some choice of objective function and equilibrium concept, is defined as the ratio between the worst objective function value of an equilibrium of the game and that of an optimal outcome (i.e., an outcome optimising the chosen objective).
 \end{definition}
 
+We would ideally like the price of anarchy to be as close to 1 as possible. Note that in the case of games with multiple equilibria, the price of anarchy will be large even if only one of these equilibria is highly inefficient. 
+
 \begin{definition}
-(Price of Stability) The price of stability is a measure of inefficiency designed to differentiate between games in which all equilibria are inefficient and those in which some equilibrium is inefficient. It can be computed as the ratio between the best objective function value of one of its equilibria and that of an optimal outcome.
+(Price of Stability) The price of stability, for some choice of objective function and equilibrium concept, is a measure of inefficiency designed to differentiate between games in which all equilibria are inefficient and those in which some equilibrium is inefficient. It can be computed as the ratio between the best objective function value of one of its equilibria and that of an optimal outcome (i.e., an outcome optimising the chosen objective).
 \end{definition}
 
 Note that the price of anarchy and stability are the same in games with a unique equilibrium.
