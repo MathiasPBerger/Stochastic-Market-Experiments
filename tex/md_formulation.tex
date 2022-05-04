@@ -57,7 +57,7 @@ In its basic form, a game is as follows.
 \end{definition}
 
 \begin{definition}
-(Strategy) Any of the options that a player chooses in a setting where the outcome depends not only on its own actions but on the actions of others.
+(Strategy) Any of the options that a player chooses in a setting where the outcome depends not only on her own actions but on the actions of others.
 \end{definition}
 
 \begin{definition}
@@ -114,7 +114,11 @@ In some settings, pure-strategy Nash equilibria may not exist, which leads to th
 (Mixed-Strategy Nash Equilibrium) A Nash equilibrium in which each player plays a mixed-strategy.
 \end{definition}
 
-Note that players are typically assumed to be risk-neutral in mixed-strategy Nash equilibria.
+Note that players are typically assumed to be risk-neutral in mixed-strategy Nash equilibria. A weaker notion of equilibrium also exists.
+
+\begin{definition}
+(Correlated Equilibrium) An outcome in which no single player can unilaterally improve its expected profit by switching to a different strategy.
+\end{definition}
 
 \begin{definition}
 (Incomplete-Information Game) A game in which players have limited information about the utilities and strategies of other players.
@@ -127,6 +131,10 @@ Incomplete-information games are often referred to as \textit{Bayesian} games.
 \end{definition}
 
 \begin{definition}
+(Independent Private Values) The utility of a player depends fully on his private information and not on any information of others as it is independent from his own information.
+\end{definition}
+
+\begin{definition}
 (Strategy) A strategy in a game of incomplete information is a function that maps an agent's type to
 any of the agent's possible actions in the game.
 \end{definition}
@@ -134,10 +142,10 @@ any of the agent's possible actions in the game.
 The concept of a Nash equilibrium can be also extended to a game of incomplete information.
 
 \begin{definition}
-(Bayesian Nash Equilibrium) A strategy profile such that no player can increase their ex-ante utility by unilaterally changing their strategy.
+(Bayesian Nash Equilibrium) A strategy profile such that no player can increase their ex-ante expected utility by unilaterally changing their strategy.
 \end{definition}
 
-In this context, the expectation is taken with respect to a distribution over types. This distribution, which is known by all players, is assumed to reflect prior (probabilistic) knowledge about their types.
+In this context, when computing their ex-ante expected utility, players take the expectation with respect to a distribution over types. This distribution, which is assumed known by all players, is assumed to reflect prior (probabilistic) knowledge about types. If no such probabilistic information about players' types is available (a setting sometimes referred to as \textit{pre-Bayesian}), a different solution concept must be used. 
 
 \begin{definition}
 (Ex-Post Nash Equilibrium) A strategy profile such that the strategy of each player is a best response to the strategies of all other players for all possible values of their types.
@@ -151,24 +159,24 @@ In this context, the expectation is taken with respect to a distribution over ty
 (Coalition) Any subset of players.
 \end{definition}
 
-In the context of cooperative games, the Nash equilibrium concept can be extended as follows.
+In the context of full-information cooperative games, the Nash equilibrium concept can be extended as follows.
 
 \begin{definition}
 (Strong Nash Equilibrium) An outcome in which no subset of players has a way to simultaneously change their strategies in order to improve each of the participant's welfare.
-\end{definition}
-
-\begin{definition}
-(Correlated Equilibrium) An outcome in which no single player can unilaterally improve its expected profit by switching to a different strategy.
 \end{definition}
 
 \subsection{Mechanism Design}
 
 Roughly, mechanism design aims to design games that have dominant strategy solutions and such that these solutions lead to desirable outcomes (e.g., socially desirable). Alternatively, it seeks to implement social choice functions by pairing them with payments that induce players to report their preferences truthfully. In mechanism design and auction theory, an efficient outcome is sometimes defined as an outcome maximising the sum of utilities of all players (so-called social welfare).
 
-\textcolor{red}{improve mechanism definition}
-
 \begin{definition}
 (Mechanism) A mechanism is defined by a social choice function (which maps players' preferences or valuations to an outcome or allocation) and a set of payment functions (which determine how players are rewarded or penalised).
+\end{definition}
+
+\textcolor{red}{clarify distinction between "mechanism" and "revelation mechanism"; does the concept of "indirect revelation mechanism" make sense?; link with revelation principle?}
+
+\begin{definition}
+(Revelation Mechanism) \textcolor{red}{TBA}
 \end{definition}
 
 \begin{definition}
@@ -176,8 +184,10 @@ Roughly, mechanism design aims to design games that have dominant strategy solut
 \end{definition}
 
 \begin{definition}
-(Incentive Compatibility) A mechanism is incentive compatible if it is a dominant strategy for each player to report her private information truthfully.
+(Dominant-Strategy Incentive Compatibility) A mechanism is incentive compatible if it is a dominant strategy for each player to report her private information truthfully.
 \end{definition}
+
+\textcolor{red}{Add other notions of incentive compatibility (e.g., Bayesian incentive compatibility and ex-post incentive compatibility)}
 
 \begin{definition}
 (Implementation) \textcolor{red}{TBA}
@@ -198,15 +208,15 @@ Roughly, mechanism design aims to design games that have dominant strategy solut
 \end{proposition}
 
 \begin{proposition}
-(Uniqueness of Prices) Given a social choice function and a set of payment functions defining an incentive compatible mechanism, a new mechanism constructed by taking the same social choice function and changing payment functions is incentive compatible if and only if the payment function of each player in the new mechanism can be expressed as the sum of i) the payment function of the same player in the original mechanism, ii) some function that does not depend on the valuation function of this player.
+(Uniqueness of Prices) Given a social choice function and a set of payment functions defining a (dominant-strategy) incentive compatible mechanism, a new mechanism constructed by taking the same social choice function and changing payment functions is incentive compatible if and only if the payment function of each player in the new mechanism can be expressed as the sum of i) the payment function of the same player in the original mechanism, ii) some function that does not depend on the valuation function of this player.
 \end{proposition}
 
 \begin{corollary}
-(Social Welfare and Incentive Compatibility) The only incentive compatible mechanisms that maximise social welfare are those with Vickrey-Clarke-Groves payments.
+(Social Welfare and Incentive Compatibility) The only (dominant-strategy) incentive compatible mechanisms that maximise social welfare are those with Vickrey-Clarke-Groves payments.
 \end{corollary}
 
 \begin{definition}
-(Incentive Efficiency) A direct mechanism is said to be incentive efficient if it maximises some weighted sum of the agents? expected pay-offs subject to their incentive compatibility constraints.
+(Incentive Efficiency) A direct mechanism is said to be incentive efficient if it maximises some weighted sum of the agents' expected pay-offs subject to their incentive compatibility constraints.
 \end{definition}
 
 \begin{definition}
@@ -219,11 +229,25 @@ We would ideally like the price of anarchy to be as close to 1 as possible. Note
 (Price of Stability) The price of stability, for some choice of objective function and equilibrium concept, is a measure of inefficiency designed to differentiate between games in which all equilibria are inefficient and those in which some equilibrium is inefficient. It can be computed as the ratio between the best objective function value of one of its equilibria and that of an optimal outcome (i.e., an outcome optimising the chosen objective).
 \end{definition}
 
-Note that the price of anarchy and stability are the same in games with a unique equilibrium.
+Note that the price of anarchy and the price of stability are the same in games with a unique equilibrium.
 
 \section{Formulation}
 
-We consider the case of a wholesale electricity market with inelastic demand and model it as a reverse auction. Let us consider a set $\mathcal{G} = \{1, \ldots, n\}$ of power generators and a market operator. We consider a set of possible market outcomes $\mathcal{D} = \bigtimes_g \mathcal{D}_g$, where $\mathcal{D}_g \subseteq \mathbb{R}^{m_g}$ represents the set of possible market outcomes of generator $g$. We assume that each generator $g \in \mathcal{G}$ has cost function $c_g(\hat{\beta}_g): \mathcal{D} \rightarrow \mathbb{R}_+$. More precisely, the cost function $c_g(\beta_g)$ of generator $g$ is parametrised by $\beta_g \in \mathcal{B}_g$, where $\mathcal{B}_g$ defines the set of bids that may be placed by generator $g$ in the market, and the true parameter value $\hat{\beta}_g$ is private. In what follows, we will use $c_g = c_g(\beta_g)$ and $\hat{c}_g = c_g(\hat{\beta}_g)$ as shorthand where appropriate. Note that $\beta_g$ may be a vector or scalar parameter, depending on the context, and it usually has non-negative entries. The bid profile is defined as $\mathcal{B} = \bigtimes_g \mathcal{B}_g$. Then, we define our mechanism as the combination of a (social) choice function $f: \mathcal{B} \rightarrow \mathcal{D}$ and a set of payment functions $p_g: \mathcal{B} \rightarrow \mathbb{R}, \forall g \in \mathcal{G}$. The choice function can be interpreted as mapping a bid profile to market outcomes, while payment functions map a bid profile to payments made to each generator. We assume that generators have quasilinear preferences, that is, the utility of each generator is the difference between the monetary payment she receives and her intrinsic cost for the outcome, $u_g(\beta) = p_g(\beta) - \hat{c}_g\big(f(\beta)\big)$.
+We consider the case of a wholesale electricity market with inelastic demand and model it as a sealed-bid reverse auction. Let us consider a set $\mathcal{G} = \{1, \ldots, n\}$ of power generators (the bidders) and a market operator (the auctioneer). We consider a set of possible outcomes $\mathcal{D} = \bigtimes_g \mathcal{D}_g$, where $\mathcal{D}_g$ represents the set of possible outcomes of generator $g$. We assume that each generator $g \in \mathcal{G}$ has cost function $c_g(\hat{\beta}_g): \mathcal{D} \rightarrow \mathbb{R}_+$. The cost function $c_g(\beta_g)$ of generator $g$ is assumed to be parametrised by $\beta_g \in \mathcal{B}_g$, where $\mathcal{B}_g$ is the set of possible parameters for generator $g$. The functional form of the cost function of generator $g$ is known to the auctioneer but the true parameter values $\hat{\beta}_g$ are private (i.e., only known to $g$). Note that $\hat{\beta}_g$ may be a vector or scalar parameter, depending on the context, and it usually has non-negative entries. In what follows, we will use $c_g = c_g(\beta_g)$ and $\hat{c}_g = c_g(\hat{\beta}_g)$ as shorthand where appropriate.
+
+The auction process works as follows. First, each generator willing to take part in the auction is required to post a bid $\beta_g \in \mathcal{B}_g$. The collection of bids from all generators forms a bid profile $\beta \in \mathcal{B} = \bigtimes_g \mathcal{B}_g$. Then, a mechanism defines the rules of the auction, which take the form of a (social) choice function and a set of payment functions. More formally, a \textit{choice} function $f: \mathcal{B} \rightarrow \mathcal{D}$ maps bid profiles provided by participants to outcomes, indicating whether (and to what extent) bids are accepted. Note that the choice function is sometimes referred to as the \textit{decision}, \textit{outcome} or \textit{allocation} function in the literature. On the other hand, \textit{payment} functions $p_g: \mathcal{B} \rightarrow \mathbb{R}, \forall g \in \mathcal{G},$  can be interpreted as mapping bid profiles to payments made to each generator. We assume that generators have quasilinear preferences, that is, the utility functions of generators can be expressed as the difference between the monetary payments they receive for their bids and their intrinsic costs for the outcome, $u_g(\beta) = p_g(\beta) - \hat{c}_g\big(f(\beta)\big), \forall g$.
+
+The mechanism induces a game of incomplete information.
+
+\section{Examples}
+
+\subsection{Pay-as-Bid}
+
+\subsection{Locational Marginal Pricing}
+
+\subsection{Vickrey-Clarke-Groves}
+
+\textcolor{red}{Provide general payment rule and then Clarke Pivot rule}
 
 \section{Application to Chance-Constrained Markets}
 
@@ -237,6 +261,7 @@ We consider the case of a wholesale electricity market with inelastic demand and
 \item In electricity market applications, we don't have much flexibility when picking the choice/allocation function: in most cases, it will be defined as the argmax of some social welfare maximisation formulation including a variety of operational and physical (e.g., power flow) constraints. This means that the only degree of freedom we have when designing electricity market mechanisms are payment functions. 
 \item A theoretical result in Roughgarden's book (Chapter 9, one of the corollaries to Theorem 9.37) states that the VCG payment rule is the only one yielding an incentive-compatible mechanism when the social choice function is social welfare maximisation. I guess that this result was derived for basic social welfare maximisation without any constraints like the ones typically found in electricity market applications. To what extent is that result applicable to electricity markets? My guess is that if it does not work for the unconstrained case, it is highly unlikely to work in the constrained case (since the former can be seen as a relaxation of the 
 \item What would an application of the VCG mechanism look like for a variance product?
+\item Most of the literature on incentive compatibility in mechanism design makes use of the concept of dominant-strategy incentive-compatibility (DSIC). Would it make sense to relax these requirements and work with different notions of incentive compatibility (e.g., Bayesian-Nash or ex-Post Nash incentive compatibility)?
 \end{itemize}
 
 \bibliographystyle{plain} % We choose the "plain" reference style
