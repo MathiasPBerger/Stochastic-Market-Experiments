@@ -49,23 +49,23 @@ In economics, the concept of \textit{efficiency} is typically understood as a Pa
 In its basic form, a game is as follows.
 
 \begin{definition}
-(Game)
+(Game) A situation in which players make rational decisions according to defined rules in an attempt to receive some sort of pay-off.
+\end{definition}
+
+\begin{definition}
+(Utility) A measure of the preferences of an agent.
+\end{definition}
+
+\begin{definition}
+(Strategy) Any of the options that a player chooses in a setting where the outcome depends not only on its own actions but on the actions of others.
+\end{definition}
+
+\begin{definition}
+(One-Shot Simultaneous Move Game) A game in which all players simultaneously choose an action from their set of possible strategies.
 \end{definition}
 
 \begin{definition}
 (Full-Information Game) A game in which all players know the utilities and strategies of other players.
-\end{definition}
-
-\begin{definition}
-(Bayesian Game) A game in which players have limited information about the utilities and strategies of other players.
-\end{definition}
-
-\begin{definition}
-(Non-Cooperative Game) A game in which all players act selfishly and seek to deviate alone from proposed solutions.
-\end{definition}
-
-\begin{definition}
-(Cooperative Game) A game in which groups of players coordinate their actions.
 \end{definition}
 
 \begin{definition}
@@ -79,15 +79,15 @@ In its basic form, a game is as follows.
 In other words, a mixed strategy can be interpreted as a randomised strategy, whereby a player picks a probability distribution over her set of pure strategies and independently selects a strategy at random based on this distribution.
 
 \begin{definition}
-(One-Shot Simultaneous Move Game) A game in which all players simultaneously choose an action from their set of possible strategies.
-\end{definition}
-
-\begin{definition}
 (Dominant Strategy) The strategy chosen by a player is dominant if it maximises her utility, irrespective of what other players do.
 \end{definition}
 
 \begin{definition}
-(Solution Concept) \textcolor{red}{TBA}
+(Solution Concept) A formal rule for predicting how a game will be played. These predictions are called "solutions", and describe which strategies will be adopted by players and, therefore, the result of the game.
+\end{definition}
+
+\begin{definition}
+(Non-Cooperative Game) A game in which all players act selfishly and seek to deviate alone from proposed solutions.
 \end{definition}
 
 For non-cooperative games, different types of solution concepts can be employed.
@@ -97,10 +97,12 @@ For non-cooperative games, different types of solution concepts can be employed.
 \end{definition}
 
 \begin{definition}
-(Nash Equilibrium) An outcome in which every player is doing the best she possibly can given other players' choices: no player can benefit from unilaterally changing her choice.
+(Nash Equilibrium) In a game of complete information, a Nash equilibrium is a strategy profile
+where each player's strategy is a best response to the strategies of the other players as given
+by the strategy profile.
 \end{definition}
 
-Note that a Nash equilibrium may be strictly Pareto inefficient. This is notably the case in the Prisoner's dilemma, in the sense that there is an outcome other than the (unique) Nash equilibrium in which all of the players achieve a smaller cost.
+Put differently, in a Nash Equilibrium, every player is doing the best she possibly can given other players' choices: no player can benefit from unilaterally changing her choice. Note that a Nash equilibrium may be strictly Pareto inefficient. This is notably the case in the Prisoner's dilemma, in the sense that there is an outcome other than the (unique) Nash equilibrium in which all of the players achieve a smaller cost.
 
 \begin{definition}
 (Pure-Strategy Nash Equilibrium) A Nash equilibrium in which each player deterministically plays her chosen strategy.
@@ -115,7 +117,38 @@ In some settings, pure-strategy Nash equilibria may not exist, which leads to th
 Note that players are typically assumed to be risk-neutral in mixed-strategy Nash equilibria.
 
 \begin{definition}
-(Bayesian Nash Equilibrium) \textcolor{red}{TBA}
+(Incomplete-Information Game) A game in which players have limited information about the utilities and strategies of other players.
+\end{definition}
+
+Incomplete-information games are often referred to as \textit{Bayesian} games.
+
+\begin{definition}
+(Type) The private information held by an agent.
+\end{definition}
+
+\begin{definition}
+(Strategy) A strategy in a game of incomplete information is a function that maps an agent's type to
+any of the agent's possible actions in the game.
+\end{definition}
+
+The concept of a Nash equilibrium can be also extended to a game of incomplete information.
+
+\begin{definition}
+(Bayesian Nash Equilibrium) A strategy profile such that no player can increase their ex-ante utility by unilaterally changing their strategy.
+\end{definition}
+
+In this context, the expectation is taken with respect to a distribution over types. This distribution, which is known by all players, is assumed to reflect prior (probabilistic) knowledge about their types.
+
+\begin{definition}
+(Ex-Post Nash Equilibrium) A strategy profile such that the strategy of each player is a best response to the strategies of all other players for all possible values of their types.
+\end{definition}
+
+\begin{definition}
+(Cooperative Game) A game in which groups of players coordinate their actions.
+\end{definition}
+
+\begin{definition}
+(Coalition) Any subset of players.
 \end{definition}
 
 In the context of cooperative games, the Nash equilibrium concept can be extended as follows.
@@ -125,15 +158,21 @@ In the context of cooperative games, the Nash equilibrium concept can be extende
 \end{definition}
 
 \begin{definition}
-(Correlated Equilibrium) \textcolor{red}{TBA}
+(Correlated Equilibrium) An outcome in which no single player can unilaterally improve its expected profit by switching to a different strategy.
 \end{definition}
 
 \subsection{Mechanism Design}
 
-Roughly, mechanism design aims to design games that have dominant strategy solutions and such that these solutions lead to desirable outcomes (e.g., socially desirable). In mechanism design and auction theory, an efficient outcome is sometimes defined as an outcome maximising the sum of utilities of all players (i.e., maximising social welfare).
+Roughly, mechanism design aims to design games that have dominant strategy solutions and such that these solutions lead to desirable outcomes (e.g., socially desirable). Alternatively, it seeks to implement social choice functions by pairing them with payments that induce players to report their preferences truthfully. In mechanism design and auction theory, an efficient outcome is sometimes defined as an outcome maximising the sum of utilities of all players (so-called social welfare).
+
+\textcolor{red}{improve mechanism definition}
 
 \begin{definition}
-(Direct Mechanism) A direct mechanism is defined by a social choice function (which maps players' preferences or valuations to an outcome or allocation) and a set of payment functions (which determine how players are rewarded or penalised).
+(Mechanism) A mechanism is defined by a social choice function (which maps players' preferences or valuations to an outcome or allocation) and a set of payment functions (which determine how players are rewarded or penalised).
+\end{definition}
+
+\begin{definition}
+(Direct Mechanism) A direct mechanism is one in which the space of possible actions is equal to the space of possible types.
 \end{definition}
 
 \begin{definition}
@@ -147,6 +186,8 @@ Roughly, mechanism design aims to design games that have dominant strategy solut
 \begin{definition}
 (Shill Bidding) \textcolor{red}{TBA}
 \end{definition}
+
+\textcolor{red}{Is this related to the \textit{false-name bids} issue discussed in Lehmann et al.'s paper?}
 
 \begin{definition}
 (Collusion) \textcolor{red}{TBA}
@@ -165,7 +206,7 @@ Roughly, mechanism design aims to design games that have dominant strategy solut
 \end{corollary}
 
 \begin{definition}
-(Incentive Efficiency) \textcolor{red}{TBA}
+(Incentive Efficiency) A direct mechanism is said to be incentive efficient if it maximises some weighted sum of the agents? expected pay-offs subject to their incentive compatibility constraints.
 \end{definition}
 
 \begin{definition}
@@ -182,14 +223,20 @@ Note that the price of anarchy and stability are the same in games with a unique
 
 \section{Formulation}
 
-We consider the case of a wholesale electricity market with inelastic demand and model it as a reverse auction. Let us consider a set $\mathcal{G} = \{1, \ldots, n\}$ of power generators and a market operator. We consider a set of possible market outcomes $\mathcal{D} = \bigtimes_g \mathcal{D}_g$, where $\mathcal{D}_g \subseteq \mathbb{R}^{m_g}$ represents the set of possible market outcomes of generator $g$. We assume that each generator $g \in \mathcal{G}$ has cost function $c_g(\hat{\beta}_g): \mathcal{D} \rightarrow \mathbb{R}_+$. More precisely, the cost function $c_g(\beta_g)$ of generator $g$ is parametrised by $\beta_g \in \mathcal{B}_g$, where $\mathcal{B}_g$ defines the set of bids that may be placed by generator $g$ in the market, and the true parameter value $\hat{\beta}_g$ is private. In what follows, we will use $c_g = c_g(\beta_g)$ and $\hat{c}_g = c_g(\hat{\beta}_g)$ as shorthand where appropriate. Note that $\beta_g$ may be a vector or scalar parameter, depending on the context, and it usually has non-negative entries. The bid profile is defined as $\mathcal{B} = \bigtimes_g \mathcal{B}_g$. Then, we define our mechanism as the combination of a social choice function $f: \mathcal{B} \rightarrow \mathcal{D}$ and a set of payment functions $p_g: \mathcal{B} \rightarrow \mathbb{R}, \forall g \in \mathcal{G}$. The social choice function can be interpreted as mapping a bid profile to market outcomes, while payment functions map a bid profile to payments made to each generator. We assume that generators have quasilinear preferences, that is, the utility of each generator is defined as $u_g(\beta) = p_g(\beta) - \hat{c}_g\big(f(\beta)\big)$.
+We consider the case of a wholesale electricity market with inelastic demand and model it as a reverse auction. Let us consider a set $\mathcal{G} = \{1, \ldots, n\}$ of power generators and a market operator. We consider a set of possible market outcomes $\mathcal{D} = \bigtimes_g \mathcal{D}_g$, where $\mathcal{D}_g \subseteq \mathbb{R}^{m_g}$ represents the set of possible market outcomes of generator $g$. We assume that each generator $g \in \mathcal{G}$ has cost function $c_g(\hat{\beta}_g): \mathcal{D} \rightarrow \mathbb{R}_+$. More precisely, the cost function $c_g(\beta_g)$ of generator $g$ is parametrised by $\beta_g \in \mathcal{B}_g$, where $\mathcal{B}_g$ defines the set of bids that may be placed by generator $g$ in the market, and the true parameter value $\hat{\beta}_g$ is private. In what follows, we will use $c_g = c_g(\beta_g)$ and $\hat{c}_g = c_g(\hat{\beta}_g)$ as shorthand where appropriate. Note that $\beta_g$ may be a vector or scalar parameter, depending on the context, and it usually has non-negative entries. The bid profile is defined as $\mathcal{B} = \bigtimes_g \mathcal{B}_g$. Then, we define our mechanism as the combination of a (social) choice function $f: \mathcal{B} \rightarrow \mathcal{D}$ and a set of payment functions $p_g: \mathcal{B} \rightarrow \mathbb{R}, \forall g \in \mathcal{G}$. The choice function can be interpreted as mapping a bid profile to market outcomes, while payment functions map a bid profile to payments made to each generator. We assume that generators have quasilinear preferences, that is, the utility of each generator is the difference between the monetary payment she receives and her intrinsic cost for the outcome, $u_g(\beta) = p_g(\beta) - \hat{c}_g\big(f(\beta)\big)$.
 
 \section{Application to Chance-Constrained Markets}
 
-\section{Comments}
+\section{Comments/Questions}
 
 \begin{itemize}
-\item In the chance-constrained setting, the cost of flexible generators will depend upon the variance/covariance of the forecast error. If we assume that the latter is only known by wind producers, we would probably need some concept of Bayesian-Nash equilibrium since this implies that flexible generators will need to make assumptions about other players' information to compute their own cost. Is this setting even possible in standard game theory? or do we generally assume that all players can compute their own costs based on their own private information (type)
+\item In the chance-constrained setting, the cost of flexible generators will depend upon the variance/covariance of the forecast error. If we assume that the latter is only known by wind producers, flexible generators will need to make assumptions about other players' information to compute their own cost. More specifically, the dependence of the cost function on these parameters would be explicit (through the term involving the covariance matrix) rather than implicit (through the outcome of the allocation process, which may be influenced by other players' strategies). Can this setting be handled in standard game theory or is it generally assumed that all players can compute their own costs based on their own private information (type)? Does some concept of Bayesian-Nash equilibrium suffice to capture this kind of set-up?
+\item In the current setting, flexible generators are not explicitly bidding for reserves (i.e., they are not providing explicit reserve bids like they do for power generation). Would it make sense/be useful at all to introduce reserve bids as well?
+\item In the definition of the optimisation problem from which the social choice function is derived, the wind production should be turned into a variable. Indeed, in the current formulation, if the load is smaller than the expected wind production, the problem will be infeasible. It is not entirely clear how it should be bounded, however. It would probably make sense to introduce chance constraints on wind generation bounds. 
+\item The bid structure of renewable power plants should be clarified: to what product does a "variance bid" correspond? For instance, in the case of flexible generators, a "generation cost/capacity" bid will correspond to some power generation product 
+\item In electricity market applications, we don't have much flexibility when picking the choice/allocation function: in most cases, it will be defined as the argmax of some social welfare maximisation formulation including a variety of operational and physical (e.g., power flow) constraints. This means that the only degree of freedom we have when designing electricity market mechanisms are payment functions. 
+\item A theoretical result in Roughgarden's book (Chapter 9, one of the corollaries to Theorem 9.37) states that the VCG payment rule is the only one yielding an incentive-compatible mechanism when the social choice function is social welfare maximisation. I guess that this result was derived for basic social welfare maximisation without any constraints like the ones typically found in electricity market applications. To what extent is that result applicable to electricity markets? My guess is that if it does not work for the unconstrained case, it is highly unlikely to work in the constrained case (since the former can be seen as a relaxation of the 
+\item What would an application of the VCG mechanism look like for a variance product?
 \end{itemize}
 
 \bibliographystyle{plain} % We choose the "plain" reference style
