@@ -141,7 +141,7 @@ for i = 1:n_w
     reserve_price_est[i] = mu[i] * mean_sensitivity[i] + std[i] * std_sensitivity[i];
 end
 
-gamma, eta = zeros(Float64, n_w), zeros(Float64, n_w);
+gamma, eta = zeros(Float64, n_g), zeros(Float64, n_g);
 gamma .= 1 ./ (2 .* (C_Q .+ dual_min_prod .* phi.^2 + dual_max_prod .* phi.^2));
 beta = 1 / sum(gamma);
 eta .= beta .* gamma;
@@ -152,7 +152,7 @@ for k = 1:n_g
 end
 
 generator_marginal_cost_energy = [(2 * C_Q[k] * (p_scheduled[k] - sum(alpha_scheduled[k,i] * mu[i] for i = 1:n_w)) + C_L[k]) for k = 1:n_g];
-generator_marginal_cost_reserve = [(-2 * C_Q[k] * (p_scheduled[k] - sum(alpha_scheduled[k,i] * mu[i] for i = 1:n_w)) * mu[k] - C_L[k] * mu[k] + 2 * C_Q[k] * cov_mat[k, :]' * alpha_scheduled[k, :]) for k = 1:n_g];
+generator_marginal_cost_reserve = [[(-2 * C_Q[k] * (p_scheduled[k] - sum(alpha_scheduled[k,i] * mu[i] for i = 1:n_w)) * mu[i] - C_L[k] * mu[i] + 2 * C_Q[k] * cov_mat[i, :]' * alpha_scheduled[k, :]) for i = 1:n_w] for k = 1:n_g];
 
 println("\n")
 println("Power generation: ", p_scheduled)

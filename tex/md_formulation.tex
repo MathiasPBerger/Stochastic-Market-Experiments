@@ -33,16 +33,22 @@ We informally introduce some useful concepts and definitions from the fields of 
 In economics, the concept of \textit{efficiency} is typically understood as a Pareto-optimal outcome.
 
 \begin{definition}
-(Competitive Equilibrium) \textcolor{red}{TBA}
-\end{definition}
-
-\begin{definition}
-(Linear Prices) \textcolor{red}{TBA}
+(Competitive Equilibrium) An outcome that clears the market and maximises the pay-off of market participants.
 \end{definition}
 
 \begin{definition}
 (Price-Taking) A situation where producers cannot single-handedly influence market outcomes and prices.
 \end{definition}  
+
+\begin{definition}
+(Market Power) The ability of a producer to unilaterally influence market outcomes and prices. 
+\end{definition}
+
+In the context of electricity markets, a useful term is the following.
+
+\begin{definition}
+(Linear Pricing) All electricity traded via an exchange at a given location and time period is traded at a unique market-clearing price.
+\end{definition}
 
 \subsection{Game Theory}
 
@@ -69,11 +75,11 @@ In its basic form, a game is as follows.
 \end{definition}
 
 \begin{definition}
-(Pure Strategy) A complete definition of how a player will play a game.
+(Pure Strategy) Deterministically selecting an action and playing it.
 \end{definition}
 
 \begin{definition}
-(Mixed Strategy) An assignment of a probability to each pure strategy and subsequent random selection of the played strategy.
+(Mixed Strategy) Assigning a probability to each action, randomly selecting an action and playing it.
 \end{definition}
 
 In other words, a mixed strategy can be interpreted as a randomised strategy, whereby a player picks a probability distribution over her set of pure strategies and independently selects a strategy at random based on this distribution.
@@ -184,23 +190,39 @@ Roughly, mechanism design aims to design games that have dominant strategy solut
 \end{definition}
 
 \begin{definition}
-(Dominant-Strategy Incentive Compatibility) A mechanism is incentive compatible if it is a dominant strategy for each player to report her private information truthfully.
+(Individual Rationality) The property that the utility of players is always non-negative for outcomes of the mechanism.
 \end{definition}
 
-\textcolor{red}{Add other notions of incentive compatibility (e.g., Bayesian incentive compatibility and ex-post incentive compatibility)}
+This property is sometimes referred to as \textit{cost recovery}.
 
 \begin{definition}
-(Implementation) \textcolor{red}{TBA}
+(Dominant-Strategy Incentive Compatibility) A mechanism is dominant-strategy incentive compatible (DSIC) if it is a dominant strategy for each player to report her private information truthfully.
 \end{definition}
 
 \begin{definition}
-(Shill Bidding) \textcolor{red}{TBA}
+(Bayesian Incentive Compatibility) A mechanism is Bayesian incentive compatible (BIC) if truthful bidding results in a Bayesian-Nash equilibrium.
 \end{definition}
 
-\textcolor{red}{Is this related to the \textit{false-name bids} issue discussed in Lehmann et al.'s paper?}
+\begin{definition}
+(Ex-Post Incentive Compatibility) A mechanism is ex-post incentive compatible (EPIC) if truthful bidding results in an ex-post Nash equilibrium.
+\end{definition}
+
+A requirement that all players have non-negative utilities at equilibrium is sometimes added to these definitions.
 
 \begin{definition}
-(Collusion) \textcolor{red}{TBA}
+(Implementation) A mechanism implements a social choice function if some equilibrium of the game it induces leads to outcomes that coincide with outcomes produced by said choice function for all possible values of players' types.
+\end{definition}
+
+The type of implementation depends on the type of players' strategies and associated equilibrium.
+
+\begin{definition}
+(False-Name Bidding) A situation where a player places multiple bids under false names in order to influence the outcome of the auction and increase her utility.
+\end{definition}
+
+False-name bidding is sometimes referred to as \textit{shill bidding}.
+
+\begin{definition}
+(Collusion) A situation where a coalition of players coordinate their strategies to increase their respective utilities.
 \end{definition}
 
 \begin{proposition}
