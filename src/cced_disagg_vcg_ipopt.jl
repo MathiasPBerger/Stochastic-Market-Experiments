@@ -32,7 +32,7 @@ mu = [-0.1*p_w_max[i] for i = 1:n_w];
 mu[2] += 0.25*p_w_max[2];
 mu[3] -= 0.1*p_w_max[3];
 std = [0.1*p_w_max[i] for i = 1:n_w];
-std[1] = std[1]/5.;
+std[1] = std[1];
 std[2] += 0.05*p_w_max[2];
 std[3] = 1. + std[3]/5.;
 #std[3] = 40.;
@@ -62,14 +62,16 @@ v_L, s_L = 1.0, 0.1;
 true_C_Q = [(v_Q + s_Q*g) for g = 1:n_g];
 true_C_L = [(v_L + s_L*g) for g = 1:n_g];
 
-truthful_bidding = true;
+truthful_bidding = false;
 
 if truthful_bidding == true
     C_Q = deepcopy(true_C_Q);
     C_L = deepcopy(true_C_L);
 else
+    std[1] = std[1]/5;
+    cov_mat = Diagonal(std) * corr_mat * Diagonal(std);
     fake_C_L = zeros(Float64, n_g);
-    fake_C_L[n_g] += 1.0;
+#    fake_C_L[1] += 1.0;
     C_Q = deepcopy(true_C_Q);
     C_L = deepcopy(true_C_L) .+ fake_C_L;
 end
@@ -90,28 +92,33 @@ obj, p_scheduled, alpha_scheduled, electricity_price, reserve_price, dual_max_pr
 ## Post-processing
 
 load_payment = D*electricity_price;
-wind_energy_revenue = [W[i]*electricity_price for i = 1:n_w];
-wind_reserve_penalty = reserve_price;
-LMP_payment_wind = [(wind_energy_revenue[i]-reserve_price[i]) for i = 1:n_w];
-generator_energy_revenue = [(electricity_price*p_scheduled[g]) for g = 1:n_g];
-generator_reserve_revenue = [(reserve_price'*alpha_scheduled[g,:]) for g = 1:n_g];
-LMP_payment_disp = [generator_energy_revenue[g]+generator_reserve_revenue[g] for g = 1:n_g]
-true_generator_total_cost = [(true_C_Q[g]*((p_scheduled[g] - alpha_scheduled[g,:]'*mu)^2 + alpha_scheduled[g,:]'*cov_mat*alpha_scheduled[g,:]) + true_C_L[g]*(p_scheduled[g] - alpha_scheduled[g,:]'*mu)) for g = 1:n_g];
-true_generator_profit = [(generator_energy_revenue[g] + generator_reserve_revenue[g] - true_generator_total_cost[g]) for g = 1:n_g];
-reported_generator_total_cost = [(C_Q[g]*((p_scheduled[g] - alpha_scheduled[g,:]'*mu)^2 + alpha_scheduled[g,:]'*cov_mat*alpha_scheduled[g,:]) + C_L[g]*(p_scheduled[g] - alpha_scheduled[g,:]'*mu)) for g = 1:n_g];
-reported_generator_profit = [(generator_energy_revenue[g] + generator_reserve_revenue[g] - reported_generator_total_cost[g]) for g = 1:n_g];
+energy_revenue_wind = [W[i]*electricity_price for i = 1:n_w];
+reserve_revenue_wind = reserve_price;
+LMP_payment_wind = [(energy_revenue_wind[i]-reserve_revenue_wind[i]) for i = 1:n_w];
+energy_revenue_disp = [(electricity_price*p_scheduled[g]) for g = 1:n_g];
+reserve_revenue_disp = [(reserve_price'*alpha_scheduled[g,:]) for g = 1:n_g];
+LMP_payment_disp = [energy_revenue_disp[g]+reserve_revenue_disp[g] for g = 1:n_g]
+true_cost_disp = [(true_C_Q[g]*((p_scheduled[g] - alpha_scheduled[g,:]'*mu)^2 + alpha_scheduled[g,:]'*cov_mat*alpha_scheduled[g,:]) + true_C_L[g]*(p_scheduled[g] - alpha_scheduled[g,:]'*mu)) for g = 1:n_g];
+true_LMP_profit_disp = [(LMP_payment_disp[g] - true_cost_disp[g]) for g = 1:n_g];
+reported_cost_disp = [(C_Q[g]*((p_scheduled[g] - alpha_scheduled[g,:]'*mu)^2 + alpha_scheduled[g,:]'*cov_mat*alpha_scheduled[g,:]) + C_L[g]*(p_scheduled[g] - alpha_scheduled[g,:]'*mu)) for g = 1:n_g];
+reported_LMP_profit_disp = [(LMP_payment_disp[g] - reported_cost_disp[g]) for g = 1:n_g];
 
 # Calculate VCG payments (using Clarke's pivot rule)
-val_cpr, VCG_payment_wind, VCG_payment_disp = zeros(Float64, 0), zeros(Float64, 0), zeros(Float64, 0)
+h_cpr, VCG_payment_wind, VCG_payment_disp = zeros(Float64, 0), zeros(Float64, 0), zeros(Float64, 0);
 for bo in bidder_out
-    val = clarke_pivot(C_L, C_Q, W, mu, cov_mat, bo)
-    push!(val_cpr, val)
+    h = clarke_pivot(C_L, C_Q, W, mu, cov_mat, bo);
+    push!(h_cpr, h)
     if bo["type"] == "disp"
-        push!(VCG_payment_disp, reported_generator_total_cost[bo["number"]]+val-obj)
+        push!(VCG_payment_disp, reported_cost_disp[bo["number"]]+h-obj)
     elseif bo["type"] == "wind"
-        push!(VCG_payment_wind, val-obj)
+        push!(VCG_payment_wind, h-obj)
     end
 end
+
+true_VCG_profit_disp = [(VCG_payment_disp[g] - true_cost_disp[g]) for g = 1:n_g];
+reported_VCG_profit_disp = [(VCG_payment_disp[g] - reported_cost_disp[g]) for g = 1:n_g];
+true_VCG_profit_wind = VCG_payment_wind;
+
 
 println("\n")
 println("Power generation: ", p_scheduled)
@@ -124,4 +131,7 @@ println("LMP payments to wind producers: ", LMP_payment_wind)
 println("VCG payments to wind producers: ", VCG_payment_wind)
 println("LMP payments to flexible generators: ", LMP_payment_disp)
 println("VCG payments to flexible generators: ", VCG_payment_disp)
+println("True LMP generator profit: ", true_LMP_profit_disp)
+println("True VCG generator profit: ", true_VCG_profit_disp)
+
 println("\n")
