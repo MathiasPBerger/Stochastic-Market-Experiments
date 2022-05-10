@@ -6,7 +6,7 @@ using Ipopt
 # Function defining the social choice function of the mechanism and returning
 # the optimal objective value, allocation (primal variables) and prices (dual variables)
 
-function allocation(C_L, C_Q, W, mu, cov_mat; n_g=5, n_w=3, p_max=p_max, p_min=p_min, D=900., epsilon=0.05, dr=false, solve=true)
+function allocation(C_L, C_Q, p_max, W, mu, cov_mat; n_g=5, n_w=3, p_min=p_min, D=900., epsilon=0.05, dr=false, solve=true)
 
     model = Model(Ipopt.Optimizer)
 

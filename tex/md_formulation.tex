@@ -257,21 +257,76 @@ Note that the price of anarchy and the price of stability are the same in games 
 
 We consider the case of a wholesale electricity market with inelastic demand and model it as a sealed-bid reverse auction. Let us consider a set $\mathcal{G} = \{1, \ldots, n\}$ of power generators (the bidders) and a market operator (the auctioneer). We consider a set of possible outcomes $\mathcal{D} = \bigtimes_g \mathcal{D}_g$, where $\mathcal{D}_g$ represents the set of possible outcomes of generator $g$. We assume that each generator $g \in \mathcal{G}$ has cost function $c_g(\hat{\beta}_g): \mathcal{D} \rightarrow \mathbb{R}_+$. The cost function $c_g(\beta_g)$ of generator $g$ is assumed to be parametrised by $\beta_g \in \mathcal{B}_g$, where $\mathcal{B}_g$ is the set of possible parameters for generator $g$. The functional form of the cost function of generator $g$ is known to the auctioneer but the true parameter values $\hat{\beta}_g$ are private (i.e., only known to $g$). Note that $\hat{\beta}_g$ may be a vector or scalar parameter, depending on the context, and it usually has non-negative entries. In what follows, we will use $c_g = c_g(\beta_g)$ and $\hat{c}_g = c_g(\hat{\beta}_g)$ as shorthand where appropriate.
 
-The auction process works as follows. First, each generator willing to take part in the auction is required to post a bid $\beta_g \in \mathcal{B}_g$. The collection of bids from all generators forms a bid profile $\beta \in \mathcal{B} = \bigtimes_g \mathcal{B}_g$. Then, a mechanism defines the rules of the auction, which take the form of a (social) choice function and a set of payment functions. More formally, a \textit{choice} function $f: \mathcal{B} \rightarrow \mathcal{D}$ maps bid profiles provided by participants to outcomes, indicating whether (and to what extent) bids are accepted. Note that the choice function is sometimes referred to as the \textit{decision}, \textit{outcome} or \textit{allocation} function in the literature. On the other hand, \textit{payment} functions $p_g: \mathcal{B} \rightarrow \mathbb{R}, \forall g \in \mathcal{G},$  can be interpreted as mapping bid profiles to payments made to each generator. We assume that generators have quasilinear preferences, that is, the utility functions of generators can be expressed as the difference between the monetary payments they receive for their bids and their intrinsic costs for the outcome, $u_g(\beta) = p_g(\beta) - \hat{c}_g\big(f(\beta)\big), \forall g$.
+The auction process works as follows. First, each generator willing to take part in the auction is required to post a bid $\beta_g \in \mathcal{B}_g$. The collection of bids from all generators forms a bid profile $\beta \in \mathcal{B} = \bigtimes_g \mathcal{B}_g$. Then, a mechanism defines the rules of the auction, which take the form of a (social) choice function and a set of payment functions. More formally, a \textit{choice} function $\mathfrak{f}: \mathcal{B} \rightarrow \mathcal{D}$ maps bid profiles provided by participants to outcomes, indicating whether (and to what extent) bids are accepted. Note that the choice function is sometimes referred to as the \textit{decision}, \textit{outcome} or \textit{allocation} function in the literature. On the other hand, \textit{payment} functions $\mathfrak{p}_g: \mathcal{B} \rightarrow \mathbb{R}, \forall g \in \mathcal{G},$  can be interpreted as mapping bid profiles to payments made to each generator. We assume that generators have quasilinear preferences, that is, the utility functions of generators can be expressed as the difference between the monetary payments they receive for their bids and their intrinsic costs for the outcome, $u_g(\beta) = \mathfrak{p}_g(\beta) - \hat{c}_g\big(\mathfrak{f}(\beta)\big), \forall g$.
 
 The mechanism induces a game of incomplete information.
 
-\section{Examples}
+\section{Application to Energy Market}
+
+We consider an energy-only deterministic market design and cast the problem in the framework introduced above.
+
+We assume that flexible generator $g$ gathers its production costs $c_g^L$ and $c_g^Q$ as well as its maximum power generation bound $\overline{p}_g$ into its bid $\beta_g = \{c_g^L, c_g^Q, \overline{p}_g\} \in \mathcal{B}_g$, with the understanding that these parameters define a truncated quadratic production cost curve $c_g(p_g) = c_g^L p_g + c_g^Q p_g^2$ for some generation level $0 \le p_g \le \overline{p}_g$. The true values of these parameters are assumed to be private. In this context, the choice function $\mathfrak{f}$ maps a bid profile $\beta \in \mathcal{B}$ to dispatch decisions $p_g \in \mathcal{D}_g$. For simplicity, we write $p_g = \mathfrak{f}_g(\beta)$. The choice function is defined through the solution of an economic dispatch problem, that is,
+\begin{align}
+\mathfrak{f}(\beta) \in \arg \underset{\{p_g\}_{\forall g}}{\min} \hspace{10pt} & \sum_g \Big(c_g^Lp_g + c_g^Q p_g^2 \Big)\\
+\mbox{s.t. } & p_g \le \overline{p}_g,\forall g,\\
+& 0 \le p_g,\forall g,\\
+& \sum_g p_g + \sum_i \tilde{W}_i = D, \mbox{ } (\lambda)\\
+& p_g \in \mathbb{R}, \forall g.
+\end{align}
+The set of payment functions may take several forms, as discussed below.
 
 \subsection{Pay-as-Bid}
 
+Under the pay-as-bid scheme, generator $g$ is paid the amount that it bid, that is,
+\begin{equation*}
+\mathfrak{p}_g(\beta) = c_g^L \mathfrak{f}_g(\beta) + c_g^Q \mathfrak{f}_g(\beta)^2, \forall g.
+\end{equation*}
+
 \subsection{Locational Marginal Pricing}
+
+Under locational marginal pricing, the dual variable $\lambda$ of the energy balance equation is used to compute payments,
+\begin{equation*}
+\mathfrak{p}_g(\beta) = \lambda \mathfrak{f}_g(\beta), \forall g.
+\end{equation*}
+Note that $\lambda$ also depends upon $\beta$, although this dependence is implicit.
 
 \subsection{Vickrey-Clarke-Groves}
 
-\textcolor{red}{Provide general payment rule and then Clarke Pivot rule}
+Vickrey-Clarke-Groves (VCG) payments have the following general form
+\begin{align*}
+\mathfrak{p}_g(\beta) &= c_g\big(\mathfrak{f}_g(\beta)\big) + \Big(h_g(\beta_{-g}) - \sum_{g} c_g\big(\mathfrak{f}_g(\beta)\big) \Big)\\
+&= h_g(\beta_{-g}) - \sum_{k \ne g} c_k\big(\mathfrak{f}_k(\beta)\big),
+\end{align*}
+where $h_g$ is a function that does not depend on $\beta_g$ and $\beta_{-g}$ denotes the set of all bids except $\beta_g$. The most frequent choice of $h_g$ is referred to as the \textit{Clarke pivot} rule, which is defined as
+\begin{align}
+h_g(\beta_{-g}) = \underset{\{p_k\}_{\forall k \ne g}}{\min} \hspace{10pt} & \sum_{k \ne g} \Big(c_k^Lp_k + c_k^Q p_k^2 \Big)\\
+\mbox{s.t. } & p_k \le \overline{p}_k,\forall k \ne k,\\
+& 0 \le p_k,\forall k \ne g,\\
+& \sum_{k \ne g} p_k + \sum_i \tilde{W}_i = D,\\
+& p_k \in \mathbb{R}, \forall k \ne g.
+\end{align}
+
 
 \section{Application to Chance-Constrained Markets}
+
+\subsection{Types}
+
+We assume that flexible generator $g$ bids its production costs $c_g^L$ and $c_g^Q$ as well as its maximum power generation bounds $\overline{p}_g$, with the understanding that this represents a truncated quadratic production cost curve. Thus, $\beta_g = \{c_g^L, c_g^Q, \overline{p}_g\}$, the true values of which are assumed private, $\mathcal{B}_g = \mathbb{R}_+^3$. The outcomes for flexible generator $g$ are power generation and \textcolor{red}{reserve} decisions $p_g$ and $\alpha_g$, respectively, such that $\mathcal{D}_g = \mathbb{R}_+ \times [0, 1]$. \textcolor{red}{Flexible generators do not explicitly bid for }
+
+\subsection{Choice Function}
+
+The choice function is defined by solving the economic dispatch problem under uncertainty, namely
+\begin{align}
+f(\beta) \arg \underset{\{p_g, \alpha_g\}_{\forall g}}{\min} \hspace{10pt} & \sum_g \Big(c_g^L\big(p_g - \alpha_g^\top \mu\big) + c_g^Q \Big(\big(p_g - \alpha_g^\top \mu \big)^2 + \alpha_g^\top \Sigma \alpha_g\Big)\Big)\\
+\mbox{s.t. } & p_g - \alpha_g^\top \mu\le \overline{p}_g - ||\alpha_g||_{\Sigma} \phi_g, \mbox{ }\forall g, \hspace{15pt}(\overline{\nu}_g)\\
+& ||\alpha_g||_{\Sigma} \phi_g \le p_g - \alpha_g^\top \mu, \mbox{ }\forall g, \hspace{37pt}(\underline{\nu}_g)\\
+& \sum_g p_g + \sum_i \tilde{W}_i = D, \hspace{70pt} (\lambda)\\
+& \sum_g \alpha_{gi} = 1, \forall i, \hspace{95pt} (\chi_i)\\
+& 0 \le \alpha_{gi} \le 1, \forall g, \forall i,\\
+& p_g \in \mathbb{R}, \forall g,
+\end{align}
+
+\subsection{Vickrey-Clarke-Groves Payments}
 
 \section{Comments/Questions}
 
