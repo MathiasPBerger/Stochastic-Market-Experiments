@@ -22,8 +22,8 @@ n_g = 5;
 n_w = 3;
 
 # Flexible generation parameters
-p_max = [200.0 for g = 1:n_g];
-p_min = [0.0 for g = 1:n_g];
+p_g_max = [200.0 for g = 1:n_g];
+p_g_min = [0.0 for g = 1:n_g];
 
 # Wind production parameters
 p_w_max = [250.0 for i = 1:n_w];
@@ -43,19 +43,13 @@ std[3] = 1. + std[3]/5.;
 rho_12, rho_13, rho_23 = 0.0, 0.0, 0.0;
 corr_mat = [[1. rho_12 rho_13]; [rho_12 1. rho_23]; [rho_13 rho_23 1.]];
 cov_mat = Diagonal(std) * corr_mat * Diagonal(std);
-W = [0.8*p_w_max[i] for i = 1:n_w];
+#W = [0.8*p_w_max[i] for i = 1:n_w];
 
 # Demand parameters
 D = 1000;
 
 # Risk parameters
 epsilon = 0.05;
-dr = false
-if dr == true
-    phi = sqrt((1-epsilon)/epsilon); # one-sided distributionally-robust CC
-else
-    phi = quantile(Normal(), (1-epsilon)); # one-sided CC using normal distrib.
-end
 
 # Cost parameters
 v_Q, s_Q = 0.1, 0.05;
@@ -70,13 +64,13 @@ if truthful_bidding == true
     C_Q = deepcopy(true_C_Q);
     C_L = deepcopy(true_C_L);
 else
-#    std[1] = 0.5*std[1];
-#    cov_mat = Diagonal(std) * corr_mat * Diagonal(std);
+    std[1] = 0.5*std[1];
+    cov_mat = Diagonal(std) * corr_mat * Diagonal(std);
     fake_C_L = zeros(Float64, n_g);
-    fake_p_max = zeros(Float64,n_g);
-    fake_p_max[1] = 0.5 * p_max[1];
-    p_max .-= fake_p_max;
-    #    fake_C_L[1] += 1.0;
+#    fake_p_g_max = zeros(Float64,n_g);
+#    fake_p_g_max[1] = 0.5 * p_g_max[1];
+#    p_g_max .-= fake_p_g_max;
+#    fake_C_L[1] += 1.0;
     C_Q = deepcopy(true_C_Q);
     C_L = deepcopy(true_C_L) .+ fake_C_L;
 end
@@ -92,26 +86,26 @@ bidder_out = vcat(bidder_out_disp, bidder_out_wind)
 ## Simulation
 
 # Calculate allocation
-obj, p_scheduled, alpha_scheduled, electricity_price, reserve_price, dual_max_prod, dual_min_prod = allocation(C_L, C_Q, p_max, W, mu, cov_mat; D=D)
+obj, p_g_scheduled, alpha_scheduled, p_w_scheduled, electricity_price, reserve_price, dual_max_prod, dual_min_prod = allocation(C_L, C_Q, p_g_max, p_w_max, mu, cov_mat; D=D)
 
 ## Post-processing
 
 load_payment = D*electricity_price;
-energy_revenue_wind = [W[i]*electricity_price for i = 1:n_w];
+energy_revenue_wind = [p_w_scheduled[i]*electricity_price for i = 1:n_w];
 reserve_revenue_wind = reserve_price;
 LMP_payment_wind = [(energy_revenue_wind[i]-reserve_revenue_wind[i]) for i = 1:n_w];
-energy_revenue_disp = [(electricity_price*p_scheduled[g]) for g = 1:n_g];
+energy_revenue_disp = [(electricity_price*p_g_scheduled[g]) for g = 1:n_g];
 reserve_revenue_disp = [(reserve_price'*alpha_scheduled[g,:]) for g = 1:n_g];
 LMP_payment_disp = [energy_revenue_disp[g]+reserve_revenue_disp[g] for g = 1:n_g]
-true_cost_disp = [(true_C_Q[g]*((p_scheduled[g] - alpha_scheduled[g,:]'*mu)^2 + alpha_scheduled[g,:]'*cov_mat*alpha_scheduled[g,:]) + true_C_L[g]*(p_scheduled[g] - alpha_scheduled[g,:]'*mu)) for g = 1:n_g];
+true_cost_disp = [(true_C_Q[g]*((p_g_scheduled[g] - alpha_scheduled[g,:]'*mu)^2 + alpha_scheduled[g,:]'*cov_mat*alpha_scheduled[g,:]) + true_C_L[g]*(p_g_scheduled[g] - alpha_scheduled[g,:]'*mu)) for g = 1:n_g];
 true_LMP_profit_disp = [(LMP_payment_disp[g] - true_cost_disp[g]) for g = 1:n_g];
-reported_cost_disp = [(C_Q[g]*((p_scheduled[g] - alpha_scheduled[g,:]'*mu)^2 + alpha_scheduled[g,:]'*cov_mat*alpha_scheduled[g,:]) + C_L[g]*(p_scheduled[g] - alpha_scheduled[g,:]'*mu)) for g = 1:n_g];
+reported_cost_disp = [(C_Q[g]*((p_g_scheduled[g] - alpha_scheduled[g,:]'*mu)^2 + alpha_scheduled[g,:]'*cov_mat*alpha_scheduled[g,:]) + C_L[g]*(p_g_scheduled[g] - alpha_scheduled[g,:]'*mu)) for g = 1:n_g];
 reported_LMP_profit_disp = [(LMP_payment_disp[g] - reported_cost_disp[g]) for g = 1:n_g];
 
 # Calculate VCG payments (using Clarke's pivot rule)
 h_cpr, VCG_payment_wind, VCG_payment_disp = zeros(Float64, 0), zeros(Float64, 0), zeros(Float64, 0);
 for bo in bidder_out
-    h = clarke_pivot(C_L, C_Q, W, mu, cov_mat, bo; D=D);
+    h = clarke_pivot(bo; D=D);
     push!(h_cpr, h)
     if bo["type"] == "disp"
         push!(VCG_payment_disp, reported_cost_disp[bo["number"]]+h-obj)
@@ -124,9 +118,8 @@ true_VCG_profit_disp = [(VCG_payment_disp[g] - true_cost_disp[g]) for g = 1:n_g]
 reported_VCG_profit_disp = [(VCG_payment_disp[g] - reported_cost_disp[g]) for g = 1:n_g];
 true_VCG_profit_wind = VCG_payment_wind;
 
-
 println("\n")
-println("Power generation: ", p_scheduled)
+println("Power generation: ", p_g_scheduled)
 println("Reserve procurement: ", alpha_scheduled)
 println("System cost: ", obj)
 println("Electricity price: ", electricity_price)
