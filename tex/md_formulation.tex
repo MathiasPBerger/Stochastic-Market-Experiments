@@ -261,11 +261,17 @@ The auction process works as follows. First, each generator willing to take part
 
 The mechanism induces a game of incomplete information.
 
-\section{Application to Energy Market}
+\section{Deterministic Energy-Only Market}
 
-We consider an energy-only deterministic market design and cast the problem in the framework introduced above.
+We consider an energy-only deterministic market design featuring a set of flexible generators and cast the problem in the mechanism design framework introduced above.
 
-We assume that flexible generator $g$ gathers its production costs $c_g^L$ and $c_g^Q$ as well as its maximum power generation bound $\overline{p}_g$ into its bid $\beta_g = \{c_g^L, c_g^Q, \overline{p}_g\} \in \mathcal{B}_g$, with the understanding that these parameters define a truncated quadratic production cost curve $c_g(p_g) = c_g^L p_g + c_g^Q p_g^2$ for some generation level $0 \le p_g \le \overline{p}_g$. The true values of these parameters are assumed to be private. In this context, the choice function $\mathfrak{f}$ maps a bid profile $\beta \in \mathcal{B}$ to dispatch decisions $p_g \in \mathcal{D}_g$. For simplicity, we write $p_g = \mathfrak{f}_g(\beta)$. The choice function is defined through the solution of an economic dispatch problem, that is,
+\subsection{Cost Functions \& Epistemic Types}
+
+We assume that flexible generator $g$ has a quadratic generation cost function, which can be expressed as $c_g(p_g) = c_g^L p_g + c_g^Q p_g^2$ for some generation level $0 \le p_g \le \overline{p}_g$. Production cost coefficients $c_g^L$ and $c_g^Q$ as well as the maximum power generation level $\overline{p}_g$ are gathered into a bid $\beta_g = \{c_g^L, c_g^Q, \overline{p}_g\} \in \mathcal{B}_g$. The true values of these parameters are assumed to be private and define the type of flexible generator $g$. 
+
+\subsection{Choice Function}
+
+The choice function $\mathfrak{f}$ maps a bid profile $\beta \in \mathcal{B}$ to dispatch decisions $p_g \in \mathcal{D}_g$. For simplicity, we write $p_g = \mathfrak{f}_g(\beta)$. The choice function is defined through the solution of an economic dispatch problem, that is,
 \begin{align}
 \mathfrak{f}(\beta) \in \arg \underset{\{p_g\}_{\forall g}}{\min} \hspace{10pt} & \sum_g \Big(c_g^Lp_g + c_g^Q p_g^2 \Big)\\
 \mbox{s.t. } & p_g \le \overline{p}_g,\forall g,\\
@@ -273,16 +279,19 @@ We assume that flexible generator $g$ gathers its production costs $c_g^L$ and $
 & \sum_g p_g + \sum_i \tilde{W}_i = D, \mbox{ } (\lambda)\\
 & p_g \in \mathbb{R}, \forall g.
 \end{align}
-The set of payment functions may take several forms, as discussed below.
 
-\subsection{Pay-as-Bid}
+\subsection{Payment Functions}
+
+We consider three different payment rules, namely \textit{pay-as-bid}, \textit{(locational) marginal pricing} and \textit{Vickrey-Clarke-Groves}.
+
+\subsubsection{Pay-as-Bid}
 
 Under the pay-as-bid scheme, generator $g$ is paid the amount that it bid, that is,
 \begin{equation*}
 \mathfrak{p}_g(\beta) = c_g^L \mathfrak{f}_g(\beta) + c_g^Q \mathfrak{f}_g(\beta)^2, \forall g.
 \end{equation*}
 
-\subsection{Locational Marginal Pricing}
+\subsubsection{Locational Marginal Pricing}
 
 Under locational marginal pricing, the dual variable $\lambda$ of the energy balance equation is used to compute payments,
 \begin{equation*}
@@ -290,43 +299,93 @@ Under locational marginal pricing, the dual variable $\lambda$ of the energy bal
 \end{equation*}
 Note that $\lambda$ also depends upon $\beta$, although this dependence is implicit.
 
-\subsection{Vickrey-Clarke-Groves}
+\subsubsection{Vickrey-Clarke-Groves}
 
-Vickrey-Clarke-Groves (VCG) payments have the following general form
+Vickrey-Clarke-Groves (VCG) payments have the general form
 \begin{align*}
 \mathfrak{p}_g(\beta) &= c_g\big(\mathfrak{f}_g(\beta)\big) + \Big(h_g(\beta_{-g}) - \sum_{g} c_g\big(\mathfrak{f}_g(\beta)\big) \Big)\\
 &= h_g(\beta_{-g}) - \sum_{k \ne g} c_k\big(\mathfrak{f}_k(\beta)\big),
 \end{align*}
-where $h_g$ is a function that does not depend on $\beta_g$ and $\beta_{-g}$ denotes the set of all bids except $\beta_g$. The most frequent choice of $h_g$ is referred to as the \textit{Clarke pivot} rule, which is defined as
+where $h_g$ is a function that does not depend on $\beta_g$ and $\beta_{-g}$ denotes the set of all bids except $\beta_g$. The most frequent choice of $h_g$ is the so-called \textit{Clarke pivot} rule, which is defined as
 \begin{align}
 h_g(\beta_{-g}) = \underset{\{p_k\}_{\forall k \ne g}}{\min} \hspace{10pt} & \sum_{k \ne g} \Big(c_k^Lp_k + c_k^Q p_k^2 \Big)\\
-\mbox{s.t. } & p_k \le \overline{p}_k,\forall k \ne k,\\
+\mbox{s.t. } & p_k \le \overline{p}_k,\forall k \ne g,\\
 & 0 \le p_k,\forall k \ne g,\\
 & \sum_{k \ne g} p_k + \sum_i \tilde{W}_i = D,\\
 & p_k \in \mathbb{R}, \forall k \ne g.
 \end{align}
 
+Note that this payment rule is well-defined if and only if the economic dispatch problem remains feasible if any generator is taken out of the system (which is usually the case in practice).
 
-\section{Application to Chance-Constrained Markets}
+\section{Utilities}
 
-\subsection{Types}
+The utility of generator $g$ is defined based on its cost function and the payment it receives, that is,
+\begin{equation}
+u_g(\beta) = \mathfrak{p}_g(\beta) - \hat{c}_g\big(\frak{f}_g(\beta)\big), \forall g.
+\end{equation}
 
-We assume that flexible generator $g$ bids its production costs $c_g^L$ and $c_g^Q$ as well as its maximum power generation bounds $\overline{p}_g$, with the understanding that this represents a truncated quadratic production cost curve. Thus, $\beta_g = \{c_g^L, c_g^Q, \overline{p}_g\}$, the true values of which are assumed private, $\mathcal{B}_g = \mathbb{R}_+^3$. The outcomes for flexible generator $g$ are power generation and \textcolor{red}{reserve} decisions $p_g$ and $\alpha_g$, respectively, such that $\mathcal{D}_g = \mathbb{R}_+ \times [0, 1]$. \textcolor{red}{Flexible generators do not explicitly bid for }
+\section{Stochastic Market for Energy and Reserves}
+
+We consider a stochastic market design co-optimising power generation and reserves. Two types of agents are considered, namely flexible generators and stochastic wind producers.
+
+\subsection{Cost Functions \& Epistemic Types}
+
+\paragraph{Flexible Generators} We assume that flexible generator $g$ has a quadratic cost function, which can be expressed as $c_g(p_g, \alpha_g) = c_g^L p_g + c_g^Q p_g^2 + \alpha_g^\top \Sigma \alpha_g$ for some generation level $0 \le p_g \le \overline{p}_g$ and reserve allocation $0 \le \alpha_{gi} \le 1, \forall i$. Production cost coefficients $c_g^L$ and $c_g^Q$ as well as a maximum power generation level $\overline{p}_g$ are gathered into a bid $\beta_g = \{c_g^L, c_g^Q, \overline{p}_g\} \in \mathcal{B}_g$. The true values of these parameters are assumed to be private and define the type of flexible generator $g$.  The outcomes for flexible generator $g$ are power generation and reserve allocation decisions $p_g$ and $\alpha_g$, respectively, such that $\mathcal{D}_g = \mathbb{R}_+ \times [0, 1]^N$ (with N the number of wind producers).
+
+\paragraph{Wind Producers} Wind producers are assumed to have zero cost and \textcolor{red}{this should be clarified}.
 
 \subsection{Choice Function}
 
-The choice function is defined by solving the economic dispatch problem under uncertainty, namely
+The choice function is defined through the following chance-constrained economic dispatch problem
 \begin{align}
-f(\beta) \arg \underset{\{p_g, \alpha_g\}_{\forall g}}{\min} \hspace{10pt} & \sum_g \Big(c_g^L\big(p_g - \alpha_g^\top \mu\big) + c_g^Q \Big(\big(p_g - \alpha_g^\top \mu \big)^2 + \alpha_g^\top \Sigma \alpha_g\Big)\Big)\\
-\mbox{s.t. } & p_g - \alpha_g^\top \mu\le \overline{p}_g - ||\alpha_g||_{\Sigma} \phi_g, \mbox{ }\forall g, \hspace{15pt}(\overline{\nu}_g)\\
-& ||\alpha_g||_{\Sigma} \phi_g \le p_g - \alpha_g^\top \mu, \mbox{ }\forall g, \hspace{37pt}(\underline{\nu}_g)\\
-& \sum_g p_g + \sum_i \tilde{W}_i = D, \hspace{70pt} (\lambda)\\
-& \sum_g \alpha_{gi} = 1, \forall i, \hspace{95pt} (\chi_i)\\
+\mathfrak{f}(\beta) \in \arg \underset{p_g, \alpha_g}{\min} \hspace{10pt} & \sum_g \Big(c_g^L\big(p_g - \alpha_g^\top \mu\big) + c_g^Q \Big(\big(p_g - \alpha_g^\top \mu \big)^2 + \alpha_g^\top \Sigma \alpha_g\Big)\Big)\\
+\mbox{s.t. } & p_g - \alpha_g^\top \mu\le \overline{p}_g - ||\alpha_g||_{\Sigma} \phi_g, \mbox{ }\forall g,\\
+& ||\alpha_g||_{\Sigma} \phi_g \le p_g - \alpha_g^\top \mu, \mbox{ }\forall g,\\
+& \sum_g p_g + \sum_i \tilde{W}_i = D, \hspace{60pt} (\lambda)\\
+& \sum_g \alpha_{gi} = 1, \forall i, \hspace{85pt} (\chi_i)\\
 & 0 \le \alpha_{gi} \le 1, \forall g, \forall i,\\
-& p_g \in \mathbb{R}, \forall g,
+& p_g \in \mathbb{R}, \forall g.
 \end{align}
 
-\subsection{Vickrey-Clarke-Groves Payments}
+\subsection{Payment Functions}
+
+We consider three different payment rules, namely \textit{pay-as-bid}, \textit{(locational) marginal pricing} and \textit{Vickrey-Clarke-Groves}.
+
+\subsubsection{Pay-as-Bid}
+
+\subsubsection{Marginal Pricing}
+
+\subsubsection{Vickrey-Clarke-Groves}
+
+Vickrey-Clarke-Groves (VCG) payments have the general form
+\begin{align*}
+\mathfrak{p}_k(\beta) &= c_k\big(\mathfrak{f}_k(\beta)\big) + \Big(h_k(\beta_{-k}) - \sum_{k} c_k\big(\mathfrak{f}_k(\beta)\big) \Big)\\
+&= h_k(\beta_{-k}) - \sum_{j \ne k} c_j\big(\mathfrak{f}_j(\beta)\big),
+\end{align*}
+where $h_k$ is a function that does not depend on $\beta_k$ and $\beta_{-k}$ denotes the set of all bids except $\beta_k$. The most frequent choice of $h_k$ is the so-called \textit{Clarke pivot} rule, which returns the cost of the economic dispatch solution when $k$ is taken out of the system. 
+
+
+\paragraph{Flexible Generators} In this case, the Clarke pivot can be computed via
+\begin{align*}
+h_g(\beta_{-g}) = \underset{\{p_k, \alpha_k\}_{\forall k \ne g}}{\min} \hspace{10pt} & \sum_{k \ne g} \Big(c_k^L\big(p_k - \alpha_k^\top \mu\big) + c_k^Q \Big(\big(p_k - \alpha_k^\top \mu \big)^2 + \alpha_k^\top \Sigma \alpha_k\Big)\Big)\\
+\mbox{s.t. } & p_k - \alpha_k^\top \mu\le \overline{p}_k - ||\alpha_k||_{\Sigma} \phi_k,\forall k \ne g,\\
+& ||\alpha_k||_{\Sigma} \phi_k \le p_k - \alpha_k^\top \mu,\forall k \ne g,\\
+& \sum_{k \ne g} p_k + \sum_i \tilde{W}_i = D, \hspace{60pt} (\lambda)\\
+& \sum_{k \ne g} \alpha_{ki} = 1, \forall i, \hspace{85pt} (\chi_i)\\
+& 0 \le \alpha_{ki} \le 1, \forall k, \forall i,\\
+& p_k \in \mathbb{R}, \forall k.
+\end{align*}
+
+\paragraph{Wind Producers} Recall that the Clarke pivot seeks to evaluate the value of the economic dispatch solution computed without a given agent. In the case of wind producer $i$, this implies solving the economic dispatch problem without it. In particular, this implies removing all parameters and variables associated with it (including reserves from flexible generators meant to balance its variability). Let $\mu_{-i}$, $\Sigma_{-i}$ and $\alpha_{g, -i}$ denote the vectors and matrix obtained by striking out entries associated with $i$. Then, the Clarke pivot can be obtained as
+\begin{align*}
+h_i(\beta_{-i}) = \underset{p_g, \alpha_{g,-i}}{\min} \hspace{10pt} & \sum_g \Big(c_g^L\big(p_g - \alpha_{g,-i}^\top \mu_{-i}\big) + c_g^Q \Big(\big(p_g - \alpha_{g,-i}^\top \mu_{-i} \big)^2 + \alpha_{g,-i}^\top \Sigma_{-i} \alpha_{g,-i}\Big)\Big)\\
+\mbox{s.t. } & p_g - \alpha_{g,-i}^\top \mu_{-i} \le \overline{p}_g - ||\alpha_{g,-i}||_{\Sigma_{-i}} \phi_g,\forall g,\\
+& ||\alpha_{g,-i}||_{\Sigma_{-i}} \phi_g \le p_g - \alpha_{g,-i}^\top \mu_{-i},\forall g,\\
+& \sum_g p_g + \sum_{j \ne i} \tilde{W}_j = D,\\
+& \sum_g \alpha_{gj} = 1, \forall j \ne i,\\
+& 0 \le \alpha_{gj} \le 1, \forall g, \forall j \ne i,\\
+& p_g \in \mathbb{R}, \forall g.
+\end{align*}
 
 \section{Comments/Questions}
 
@@ -339,6 +398,8 @@ f(\beta) \arg \underset{\{p_g, \alpha_g\}_{\forall g}}{\min} \hspace{10pt} & \su
 \item A theoretical result in Roughgarden's book (Chapter 9, one of the corollaries to Theorem 9.37) states that the VCG payment rule is the only one yielding an incentive-compatible mechanism when the social choice function is social welfare maximisation. I guess that this result was derived for basic social welfare maximisation without any constraints like the ones typically found in electricity market applications. To what extent is that result applicable to electricity markets? My guess is that if it does not work for the unconstrained case, it is highly unlikely to work in the constrained case (since the former can be seen as a relaxation of the 
 \item What would an application of the VCG mechanism look like for a variance product?
 \item Most of the literature on incentive compatibility in mechanism design makes use of the concept of dominant-strategy incentive-compatibility (DSIC). Would it make sense to relax these requirements and work with different notions of incentive compatibility (e.g., Bayesian-Nash or ex-Post Nash incentive compatibility)?
+\item The question of whether the allocation computed via the choice function coincides with a competitive equilibrium does not seem to be directly related to the matter of incentive compatibility for the mechanism at hand: we can thus analyse these issues separately.
+\item It's not entirely clear to me what the relation between competitive equilibria and game theoretic equilibria is, however.
 \end{itemize}
 
 \bibliographystyle{plain} % We choose the "plain" reference style

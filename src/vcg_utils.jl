@@ -10,14 +10,16 @@ function allocation(C_L, C_Q, p_max, W, mu, cov_mat; n_g=5, n_w=3, p_min=p_min, 
 
     model = Model(Ipopt.Optimizer)
 
-    @variable(model, 0.0 <= p[g = 1:n_g])
+    @variable(model, 0.0 <= p_g[g = 1:n_g])
+    @variable(model, 0.0 <= p_w[i = 1:n_w])
     @variable(model, 0.0 <= alpha[g = 1:n_g, i = 1:n_w] <= 1.0)
 
-    @constraint(model, power_balance, sum(p[g] for g = 1:n_g) + sum(W[i] for i = 1:n_w) == D)
+    @constraint(model, power_balance, sum(p_g[g] for g = 1:n_g) + sum(p_w[i] for i = 1:n_w) == D)
+    @constraint(model, wind_max_prod[i = 1:n_w], p_w[i] <= W[i])
     @constraint(model, reserve_allocation[i = 1:n_w], sum(alpha[g, i] for g = 1:n_g) == 1.0)
     @expression(model, qt[g = 1:n_g], alpha[g,:]'*cov_mat*alpha[g, :])
-    @NLconstraint(model, max_prod[g = 1:n_g], phi * sqrt(qt[g]) <= p_max[g] - p[g] + sum(alpha[g, i]*mu[i] for i = 1:n_w))
-    @NLconstraint(model, min_prod[g = 1:n_g], phi * sqrt(qt[g]) <= p[g] - p_min[g] - sum(alpha[g, i]*mu[i] for i = 1:n_w))
+    @NLconstraint(model, max_prod[g = 1:n_g], phi * sqrt(qt[g]) <= p_max[g] - p_g[g] + sum(alpha[g, i]*mu[i] for i = 1:n_w))
+    @NLconstraint(model, min_prod[g = 1:n_g], phi * sqrt(qt[g]) <= p_g[g] - p_min[g] - sum(alpha[g, i]*mu[i] for i = 1:n_w))
 
     @objective(model, Min, sum(C_Q[g]*((p[g] - alpha[g,:]'*mu)^2 + alpha[g,:]'*cov_mat*alpha[g,:]) + C_L[g]*(p[g] - alpha[g,:]'*mu) for g = 1:n_g))
 
@@ -50,6 +52,7 @@ function clarke_pivot(C_L, C_Q, W, mu, cov_mat, bidder_out; n_g=5, n_w=3, p_max=
         p_min = [p_min[g] for g = 1:n_g if g != bidder_out["number"]]
         n_g -= 1
         @variable(model, 0.0 <= p[g = 1:n_g])
+        @variable(model, 0.0 <= p_w[i = 1:n_w])
         @variable(model, 0.0 <= alpha[g = 1:n_g, i = 1:n_w] <= 1.0)
     elseif haskey(bidder_out, "type") && bidder_out["type"] == "wind"
         W = [W[i] for i = 1:n_w if i != bidder_out["number"]]
@@ -57,12 +60,15 @@ function clarke_pivot(C_L, C_Q, W, mu, cov_mat, bidder_out; n_g=5, n_w=3, p_max=
         cov_mat = get_submatrix(cov_mat, bidder_out["number"])
         n_w -= 1
         @variable(model, 0.0 <= p[g = 1:n_g])
+        @variable(model, 0.0 <= p_w[i = 1:n_w])
         @variable(model, 0.0 <= alpha[g = 1:n_g, i = 1:n_w] <= 1.0)
     else
         @variable(model, 0.0 <= p[g = 1:n_g])
+        @variable(model, 0.0 <= p_w[i = 1:n_w])
         @variable(model, 0.0 <= alpha[g = 1:n_g, i = 1:n_w] <= 1.0)
     end
 
+    @constraint(model, wind_max_prod[i = 1:n_w], p_w[i] <= W[i])
     @constraint(model, power_balance, sum(p[g] for g = 1:n_g) + sum(W[i] for i = 1:n_w) == D)
     @constraint(model, reserve_allocation[i = 1:n_w], sum(alpha[g, i] for g = 1:n_g) == 1.0)
     @expression(model, qt[g = 1:n_g], alpha[g,:]'*cov_mat*alpha[g, :])
