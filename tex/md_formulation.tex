@@ -139,16 +139,16 @@ Incomplete-information games are often referred to as \textit{Bayesian} games.
 \end{definition}
 
 \begin{definition}
-(Independent Private Values) The utility of a player depends fully on his private information and not on any information of others as it is independent from his own information.
+(Independent Private Values) The valuation of a player depends fully on his private information and not on any information of others as it is independent from his own information.
 \end{definition}
 
 This setting is sometimes simply referred to as a \textit{private values environment} in the literature.
 
 \begin{definition}
-(Interdependent Values) The utility of a player depends not only on his private information but also on that of other players.
+(Interdependent Values) The valuation of a player depends not only on his private information but also (explicitly) on that of other players.
 \end{definition}
 
-This is sometimes referred to as the \textit{common values} setting in the literature.
+This is sometimes referred to as the \textit{common values} setting in the literature. Alternatively, the concept of \textit{informational externalities} is sometimes invoked to describe a setting with interdependent valuations.
 
 \begin{definition}
 (Strategy) A strategy in a game of incomplete information is a function that maps an agent's type to
@@ -381,7 +381,7 @@ The functional forms of agents' valuations are assumed publicly known and only t
 
 \subsubsection{Valuations}
 
-In the mechanism design literature, valuation functions are traditionally used to represent agents' preferences for certain auction outcomes. In the context of reverse auctions, however, valuation functions in fact represent costs and will thus be referred to as cost functions. 
+In the mechanism design literature, valuation functions are traditionally used to represent agents' preferences for certain auction outcomes. In the context of electricity markets, agents incur costs for supplying electricity and other goods (e.g., reserves), which we count as negative valuations. Hence, the valuation function $v_k: \mathcal{D} \times \mathcal{B} \rightarrow \mathbb{R}$ of agent $k$ is expressed in terms of a cost function $c_k: \mathcal{D} \times \mathcal{B}$, with $v_k(d, \beta) = -c_k(d, \beta)$. In the following, we mostly deal with cost functions.  
 
 \paragraph{Flexible Generators} We assume that flexible generator $g$ has a quadratic cost function $c_g: \mathcal{D}_g \times \mathcal{B}_g \times \mathcal{B}_I \rightarrow \mathbb{R}$ reflecting the expected cost of producing electricity and offering reserve services, given some information about agents' types. This cost function can be expressed as
 \begin{equation*}
@@ -397,9 +397,9 @@ The linear cost coefficient $c_i^w$ often has a very small value and is frequent
 
 \subsubsection{Allocation Rule}
 
-The allocation rule $\mathfrak{f}: \mathcal{B} \rightarrow \mathcal{D}$ of the mechanism defines the set of goods effectively sold in the auction based on bids placed by agents. Since we consider a direct revelation mechanism, agents are requested to report their types directly to the mechanism, resulting in a bid profile $\beta$ (that may not be truthful) and leading to outcomes $d = \mathfrak{f}(\beta)$. For notational convenience, we also denote by $\mathfrak{f}_k(\beta)$ the outcome(s) for agent $k$.
+The allocation rule $\mathfrak{f}: \mathcal{B} \rightarrow \mathcal{D}$ of the mechanism defines the set of goods effectively sold in the auction based on bids placed by agents. Since we consider a direct revelation mechanism, agents are requested to report their types directly to the mechanism, resulting in a bid profile $\beta$ (that may not be truthful) and leading to outcomes $d = \mathfrak{f}(\beta)$. For notational convenience, we also denote by $\mathfrak{f}_k(\beta)$ the outcome(s) for agent $k$. In what follows, $\mathfrak{f}$ will also be referred to as the \textit{choice function}.
 
-In electricity markets, the allocation rule $\mathfrak{f}$ is typically defined through some kind of economic dispatch problem. In this context, we define $\mathfrak{f}$ via the deterministic-equivalent of a chance-constrained economic dispatch problem,
+In electricity markets, the allocation rule $\mathfrak{f}$ is typically defined via the solution of some kind of economic dispatch problem. In this context, we define $\mathfrak{f}$ via the deterministic-equivalent of a chance-constrained economic dispatch problem,
 \begin{align}
 \mathfrak{f}(\beta) \in \arg \underset{p_g, \alpha_g,p_i^w}{\min} \hspace{10pt} & \sum_g \Big(c_g^L p_g + c_g^Q \big(p_g^2 + \alpha_g^\top \Sigma \alpha_g\big)\Big) + \sum_i c_i^w p_i^w \\
 \mbox{s.t. } & p_g \le \overline{p}_g - ||\alpha_g||_{\Sigma} \phi_g,\forall g,\\
@@ -413,11 +413,16 @@ In electricity markets, the allocation rule $\mathfrak{f}$ is typically defined 
 & p_i^w \in \mathbb{R}, \forall i.
 \end{align}
 
-Since the economic dispatch problem above is convex and satisfies regularity conditions (e.g., it is easy to see that Slater's condition is satisfied), dual variables $\lambda$ and $\chi_i, \forall i,$ have a direct economic interpretation (stemming from strong duality). Notably, they can be obtained as by-products of the economic dispatch problem and used in payment rules, as described below.
+A choice function is said to maximise social welfare if it maximises the sum of valuations of all agents over the set of outcomes. This is notably the case of the allocation rule $\mathfrak{f}$ above, as 
+\begin{equation*}
+\mathfrak{f}(\beta) \in \arg \min_d \bigg[\sum_k c_k(d, \beta)\bigg] = \arg \max_d \bigg[\sum_k v_k(d, \beta) \bigg].
+\end{equation*}
+
+It is also worth noting that since the economic dispatch problem above is convex and satisfies standard regularity conditions (e.g., Slater's condition is satisfied), strong duality holds and dual variables $\lambda$ and $\chi_i, \forall i,$ have a direct economic interpretation. They can thus be retrieved as by-products of the economic dispatch problem and used to construct payment rules, as discussed below.
 
 \subsubsection{Transfer Functions}
 
-Transfer functions $\mathfrak{p}: \mathcal{B} \rightarrow \mathbb{R}$ determine money transfers between agents based on their collective bids. In the context of a reverse auction, transfer functions can be interpreted as payment rules rewarding agents' for their bids. We consider two different payment rules, namely some form of \textit{marginal pricing} and \textit{Vickrey-Clarke-Groves} payments.
+Transfer functions $\mathfrak{p}: \mathcal{B} \rightarrow \mathbb{R}$ determine money transfers between agents based on their collective bids. In the context of a reverse auction, transfer functions can be interpreted as payment rules rewarding agents' for their bids. We consider two different payment rules, namely some \textit{marginal pricing}-inspired and \textit{Vickrey-Clarke-Groves} (VCG) payments.
 
 \paragraph{Marginal Pricing} This payment rule is inspired by the marginal pricing scheme typically used in day-ahead electricity markets and relies on dual variables $\lambda$ and $\chi_i, \forall i$. The former is used to price electricity, while the latter is used to price reserves. Note that, implicitly, these prices depend on the bid profile $\beta$, that is, $\lambda = \lambda(\beta)$ and $\chi_i = \chi_i(\beta), \forall i$.
 
@@ -435,7 +440,7 @@ The rationale behind this rule is to reward wind producers for supplying electri
 
 \paragraph{Vickrey-Clarke-Groves}
 
-For some agent $k$, Vickrey-Clarke-Groves (VCG) payments have the general form
+For some agent $k$, Vickrey-Clarke-Groves payments have the general form
 \begin{align*}
 \mathfrak{p}_k(\beta) &= c_k\big(\mathfrak{f}_k(\beta), \beta \big) + \Big(h_k(\beta_{-k}) - \sum_{k} c_k\big(\mathfrak{f}_k(\beta), \beta \big) \Big)\\
 &= h_k(\beta_{-k}) - \sum_{j \ne k} c_j\big(\mathfrak{f}_j(\beta), \beta\big),
@@ -444,7 +449,7 @@ where $h_k: \mathcal{B}_{-k} \rightarrow \mathbb{R}$ is a function that does not
 
 In the case of flexible generators, the Clarke pivot can be computed via
 \begin{align*}
-h_g(\beta_{-g}) = \underset{p_{-g}, \alpha_{-g}, p_i^w}{\min} \hspace{10pt} & \sum_{k \ne g} \Big(c_k^L p_k+ c_k^Q \big(p_k ^2 + \alpha_k^\top \Sigma \alpha_k\big)\Big) + \sum_i p_i^w \\
+h_g(\beta_{-g}) = \underset{p_{-g}, \alpha_{-g}, p_i^w}{\min} \hspace{10pt} & \sum_{k \ne g} \Big(c_k^L p_k+ c_k^Q \big(p_k ^2 + \alpha_k^\top \Sigma \alpha_k\big)\Big) + \sum_i c_i^w p_i^w \\
 \mbox{s.t. } & p_k \le \overline{p}_k - ||\alpha_k||_{\Sigma} \phi_k,\forall k \ne g,\\
 & ||\alpha_k||_{\Sigma} \phi_k \le p_k,\forall k \ne g,\\
 & \sum_{k \ne g} p_k + \sum_i p_i^w = D, \hspace{60pt} (\lambda)\\
@@ -457,7 +462,7 @@ h_g(\beta_{-g}) = \underset{p_{-g}, \alpha_{-g}, p_i^w}{\min} \hspace{10pt} & \s
 
 Recall that the Clarke pivot seeks to evaluate the value of the economic dispatch solution computed when a given agent does not partake in the auction. In the case of wind producer $i$, this implies solving the economic dispatch problem without it. Specifically, this implies removing all parameters and variables associated with it (including reserves from flexible generators meant to balance its variability). Let $\Sigma_{-i}$ and $\alpha_{g, -i}, \forall g,$ denote the matrix and vectors obtained by striking out entries associated with $i$. Then, the Clarke pivot can be obtained as
 \begin{align*}
-h_i(\beta_{-i}) = \underset{p_g, \alpha_{g,-i}, p_{-i}^w}{\min} \hspace{10pt} & \sum_g \Big(c_g^L p_g + c_g^Q \big(p_g^2 + \alpha_{g,-i}^\top \Sigma_{-i} \alpha_{g,-i}\big)\Big) + \sum_{j \ne i} p_j^w \\
+h_i(\beta_{-i}) = \underset{p_g, \alpha_{g,-i}, p_{-i}^w}{\min} \hspace{10pt} & \sum_g \Big(c_g^L p_g + c_g^Q \big(p_g^2 + \alpha_{g,-i}^\top \Sigma_{-i} \alpha_{g,-i}\big)\Big) + \sum_{j \ne i} c_j^w p_j^w \\
 \mbox{s.t. } & p_g \le \overline{p}_g - ||\alpha_{g,-i}||_{\Sigma_{-i}} \phi_g,\forall g,\\
 & ||\alpha_{g,-i}||_{\Sigma_{-i}} \phi_g \le p_g,\forall g,\\
 & p_j^w \le \bar{p}_j^w, \forall j \ne i,\\
@@ -478,16 +483,25 @@ u_g(\beta) = \mathfrak{p}_g(\beta) - c_g(\mathfrak{f}_g(\beta), \beta_g, \beta_I
 
 \paragraph{Wind Producers} Likewise, wind producer $i$ has a utility function $u_i: \mathcal{B} \rightarrow \mathbb{R}$ such that $u_i(\beta) = \mathfrak{p}_i(\beta) - c_i(\mathfrak{f}_i(\beta), \beta_i)$.
 
-\paragraph{Market Operator} \textcolor{orange}{The market operator is also assumed to have a utility function $u_0: \mathcal{B} \rightarrow \mathbb{R}$ such that $u_0(\beta) = - \sum_g u_g(\beta) - \sum_i u_i(\beta)$.}
-
 %\subsubsection{Induced Game}
 
 \subsection{Analysis}
 
+\begin{itemize}
+\item The VCG mechanism is dominant-strategy incentive-compatible for auctions with multiple goods in the (independent) private values setting \cite{Vickrey1961,Clarke1971,Groves1973}.
+\item The only dominant-strategy incentive-compatible mechanisms that maximise social welfare are those with VCG payments \cite{GreenLaffont1977}.
+\item The only deterministic social choice functions that are ex-post implementable
+in generic mechanism design frameworks with multi-dimensional signals, in-
+terdependent valuations and transferable utilities, are constant functions \cite{Jehiel2006}. In particular, this implies that in our setting, resorting to VCG payments does not guarantee incentive compatibility.
+\item \textcolor{orange}{Say something about contingent bids (Maskin and Dasgupta).}
+\item \textcolor{orange}{Figure out what 2004 paper of Postlewaite and MacLean paper means and whether this is consistent with Maskin or Jehiel papers.}
+\end{itemize}
+
+
 \section{Comments/Questions}
 
 \begin{itemize}
-\item In the chance-constrained setting, the cost of flexible generators will depend upon the variance/covariance of the forecast error. If we assume that the latter is only known by wind producers, flexible generators will need to make assumptions about other players' information to compute their own cost. More specifically, the dependence of the cost function on these parameters would be explicit (through the term involving the covariance matrix) rather than implicit (through the outcome of the allocation process, which may be influenced by other players' strategies). Can this setting be handled in standard game theory or is it generally assumed that all players can compute their own costs based on their own private information (type)? Does some concept of Bayesian-Nash equilibrium suffice to capture this kind of set-up?
+\item If forecast errors no longer have zero mean, the types of wind producers become multi-dimensional. In addition, if forecast errors are no longer independent, correlation coefficients will need to be specified too. This implies that the type of wind producers will become multi-dimensional and they will no longer have independent private values either (since correlation coefficients are shared by pairs of wind farms).
 \item In the current setting, flexible generators are not explicitly bidding for reserves (i.e., they are not providing explicit reserve bids like they do for power generation). Would it make sense/be useful at all to introduce reserve bids as well?
 \item In the definition of the optimisation problem from which the social choice function is derived, the wind production should be turned into a variable. Indeed, in the current formulation, if the load is smaller than the expected wind production, the problem will be infeasible. It is not entirely clear how it should be bounded, however. It would probably make sense to introduce chance constraints on wind generation bounds. 
 \item The bid structure of renewable power plants should be clarified: to what product does a "variance bid" correspond? For instance, in the case of flexible generators, a "generation cost/capacity" bid will correspond to some power generation product 
@@ -498,9 +512,10 @@ u_g(\beta) = \mathfrak{p}_g(\beta) - c_g(\mathfrak{f}_g(\beta), \beta_g, \beta_I
 \item The question of whether the allocation computed via the choice function coincides with a competitive equilibrium does not seem to be directly related to the matter of incentive compatibility for the mechanism at hand: we can thus analyse these issues separately.
 \item It's not entirely clear to me what the relation between competitive equilibria and game theoretic equilibria is, however.
 \item What is the connection between complementarity/equilibrium models like the one I studied and mechanism design/game theoretic models?
+\item interpretation of day-ahead + real-time market as a multi-round auction? implications for 
 \end{itemize}
 
 \bibliographystyle{plain} % We choose the "plain" reference style
-\bibliography{references}
+\bibliography{references_md}
 
 \end{document}
