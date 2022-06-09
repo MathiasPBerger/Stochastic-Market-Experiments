@@ -6,7 +6,7 @@ using Ipopt
 # Function defining the social choice function of the mechanism and returning
 # the optimal objective value, allocation (primal variables) and prices (dual variables)
 
-function allocation(C_L, C_Q, p_g_max, p_w_max, mu, cov_mat; n_g=5, n_w=3, p_g_min=p_g_min, D=900., epsilon=0.05, dr=false, solve=true)
+function allocation(C_L, C_Q, p_g_max, p_w_exp, p_w_max, mu, cov_mat; n_g=5, n_w=3, p_g_min=p_g_min, D=900., epsilon=0.05, dr=false, solve=true)
 
     if dr == true
         phi = sqrt((1-epsilon)/epsilon); # one-sided distributionally-robust CC
@@ -25,23 +25,35 @@ function allocation(C_L, C_Q, p_g_max, p_w_max, mu, cov_mat; n_g=5, n_w=3, p_g_m
     @expression(model, qt[g = 1:n_g], alpha[g,:]'*cov_mat*alpha[g, :])
     @NLconstraint(model, gen_max_prod[g = 1:n_g], phi * sqrt(qt[g]) <= p_g_max[g] - p_g[g] + sum(alpha[g, i]*mu[i] for i = 1:n_w))
     @NLconstraint(model, gen_min_prod[g = 1:n_g], phi * sqrt(qt[g]) <= p_g[g] - p_g_min[g] - sum(alpha[g, i]*mu[i] for i = 1:n_w))
-    @constraint(model, wind_max_prod[i = 1:n_w], p_w[i] <= p_w_max[i] - mu[i] - phi * sqrt(cov_mat[i, i]))
+#    @constraint(model, wind_max_prod[i = 1:n_w], p_w[i] <= p_w_max[i] - mu[i] - phi * sqrt(cov_mat[i, i]))
+    @constraint(model, wind_max_prod[i = 1:n_w], p_w[i] <= p_w_exp[i])
 
     @objective(model, Min, sum(C_Q[g]*((p_g[g] - alpha[g,:]'*mu)^2 + alpha[g,:]'*cov_mat*alpha[g,:]) + C_L[g]*(p_g[g] - alpha[g,:]'*mu) for g = 1:n_g))
+#    @objective(model, Min, sum(C_Q[g]*((p_g[g] - alpha[g,:]'*mu)^2 + alpha[g,:]'*cov_mat*alpha[g,:]) + C_L[g]*(p_g[g] - alpha[g,:]'*mu) for g = 1:n_g) + sum((1/sqrt(cov_mat[i,i]))*p_w[i] for i = 1:n_w))
+#    @objective(model, Min, sum(C_Q[g]*(p_g[g] - alpha[g,:]'*mu)^2 + C_L[g]*(p_g[g] - alpha[g,:]'*mu) for g = 1:n_g) + sum((1/sqrt(cov_mat[i,i])) * p_w[i] for i = 1:n_w))
+#    @objective(model, Min, sum(C_Q[g]*(p_g[g] - alpha[g,:]'*mu)^2 + C_L[g]*(p_g[g] - alpha[g,:]'*mu) for g = 1:n_g) + sum((sqrt(cov_mat[i,i])) * p_w[i] for i = 1:n_w))
+
 
     if solve
         optimize!(model)
         println(termination_status(model))
         println(dual_status(model))
-        return (objective_value(model), value.(p_g), value.(alpha), value.(p_w), dual(power_balance), dual.(reserve_allocation), dual.(gen_max_prod), dual.(gen_min_prod), dual.(wind_max_prod))
+        return (objective_value(model), value.(p_g), value.(alpha), value.(p_w), dual(power_balance), dual.(reserve_allocation))#, dual.(gen_max_prod), dual.(gen_min_prod), dual.(wind_max_prod))
     else
         return model
     end
 end
 
+# Function computing objective for given outcome
+
+function compute_obj(p_g, alpha; C_L=C_L, C_Q=C_Q, mu=mu, cov_mat=cov_mat, n_g=5)
+    obj = sum(C_Q[g]*((p_g[g] - alpha[g,:]'*mu)^2 + alpha[g,:]'*cov_mat*alpha[g,:]) + C_L[g]*(p_g[g] - alpha[g,:]'*mu) for g = 1:n_g)
+    return obj
+end
+
 # Function computing the Clarke pivot term used in VCG payments for a given bidder
 
-function clarke_pivot(bidder_out; n_g=5, n_w=3, C_L=C_L, C_Q=C_Q, mu=mu, cov_mat=cov_mat, p_g_max=p_g_max, p_g_min=p_g_min, p_w_max=p_w_max, D=900., epsilon=0.05, dr=false, solve=true)
+function clarke_pivot(bidder_out; n_g=5, n_w=3, C_L=C_L, C_Q=C_Q, mu=mu, cov_mat=cov_mat, p_g_max=p_g_max, p_g_min=p_g_min, p_w_exp=p_w_exp, p_w_max=p_w_max, D=900., epsilon=0.05, dr=false, solve=true)
 
     if dr == true
         phi = sqrt((1-epsilon)/epsilon); # one-sided distributionally-robust CC
@@ -79,9 +91,13 @@ function clarke_pivot(bidder_out; n_g=5, n_w=3, C_L=C_L, C_Q=C_Q, mu=mu, cov_mat
     @expression(model, qt[g = 1:n_g], alpha[g,:]'*cov_mat*alpha[g, :])
     @NLconstraint(model, gen_max_prod[g = 1:n_g], phi * sqrt(qt[g]) <= p_g_max[g] - p_g[g] + sum(alpha[g, i]*mu[i] for i = 1:n_w))
     @NLconstraint(model, gen_min_prod[g = 1:n_g], phi * sqrt(qt[g]) <= p_g[g] - p_g_min[g] - sum(alpha[g, i]*mu[i] for i = 1:n_w))
-    @constraint(model, wind_max_prod[i = 1:n_w], p_w[i] <= p_w_max[i] - mu[i] - phi * sqrt(cov_mat[i, i]))
+#    @constraint(model, wind_max_prod[i = 1:n_w], p_w[i] <= p_w_max[i] - mu[i] - phi * sqrt(cov_mat[i, i]))
+    @constraint(model, wind_max_prod[i = 1:n_w], p_w[i] <= p_w_exp[i])
 
     @objective(model, Min, sum(C_Q[g]*((p_g[g] - alpha[g,:]'*mu)^2 + alpha[g,:]'*cov_mat*alpha[g,:]) + C_L[g]*(p_g[g] - alpha[g,:]'*mu) for g = 1:n_g))
+#    @objective(model, Min, sum(C_Q[g]*((p_g[g] - alpha[g,:]'*mu)^2 + alpha[g,:]'*cov_mat*alpha[g,:]) + C_L[g]*(p_g[g] - alpha[g,:]'*mu) for g = 1:n_g) + sum((1/sqrt(cov_mat[i,i])) * p_w[i] for i = 1:n_w))
+#    @objective(model, Min, sum(C_Q[g]*(p_g[g] - alpha[g,:]'*mu)^2 + C_L[g]*(p_g[g] - alpha[g,:]'*mu) for g = 1:n_g) + sum((1/sqrt(cov_mat[i,i])) * p_w[i] for i = 1:n_w))
+#    @objective(model, Min, sum(C_Q[g]*(p_g[g] - alpha[g,:]'*mu)^2 + C_L[g]*(p_g[g] - alpha[g,:]'*mu) for g = 1:n_g) + sum((sqrt(cov_mat[i,i])) * p_w[i] for i = 1:n_w))
 
     if solve
         optimize!(model)
