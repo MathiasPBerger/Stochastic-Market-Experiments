@@ -138,6 +138,8 @@ Incomplete-information games are often referred to as \textit{Bayesian} games.
 (Type) The private information held by an agent.
 \end{definition}
 
+Note that types may be either independent or correlated. 
+
 \begin{definition}
 (Independent Private Values) The valuation of a player depends fully on his private information and not on any information of others as it is independent from his own information.
 \end{definition}
@@ -148,7 +150,7 @@ This setting is sometimes simply referred to as a \textit{private values environ
 (Interdependent Values) The valuation of a player depends not only on his private information but also (explicitly) on that of other players.
 \end{definition}
 
-This is sometimes referred to as the \textit{common values} setting in the literature. Alternatively, the concept of \textit{informational externalities} is sometimes invoked to describe a setting with interdependent valuations.
+This is sometimes referred to as the \textit{common values} setting in the literature. Alternatively, the concept of \textit{informational externalities} is sometimes invoked to describe a setting with interdependent valuations. Note that interdependent values may arise in a context where agents have either independent types or correlated types.
 
 \begin{definition}
 (Strategy) A strategy in a game of incomplete information is a function that maps an agent's type to
@@ -377,11 +379,11 @@ The functional forms of agents' valuations are assumed publicly known and only t
 
 \paragraph{Wind Producers} Let us assume that wind generation forecast errors are statistically independent and have zero mean, and let us also assume that wind producers have a small (linear) production cost coefficient. Then, the type of wind producer $i$ is defined by the standard deviation $\sigma_i$ of its forecast error and its cost coefficient $c_i^w$. Let $\beta_i = \begin{pmatrix}\sigma_i, c_i^w\end{pmatrix}$ denote the type of wind producer $i$ and let $\mathcal{B}_i = \mathbb{R}_+^2$ be its type space. We also define $\beta_I = \bigtimes_i \beta_i$ and $\mathcal{B}_I = \bigtimes_i \mathcal{B}_i$.
 
-\paragraph{} Then, the types of all agents and the full type space are written as $\beta = \begin{pmatrix}\beta_G, \beta_I\end{pmatrix}$ and $\mathcal{B} = \mathcal{B}_G \times \mathcal{B}_I$, respectively.
+\paragraph{} Then, the types of all agents and the full type space are written as $\beta = \begin{pmatrix}\beta_G, \beta_I\end{pmatrix}$ and $\mathcal{B} = \mathcal{B}_G \times \mathcal{B}_I$, respectively. Note that the types of different agents are independent from one another.
 
 \subsubsection{Valuations}
 
-In the mechanism design literature, valuation functions are traditionally used to represent agents' preferences for certain auction outcomes. In the context of electricity markets, agents incur costs for supplying electricity and other goods (e.g., reserves), which we count as negative valuations. Hence, the valuation function $v_k: \mathcal{D} \times \mathcal{B} \rightarrow \mathbb{R}$ of agent $k$ is expressed in terms of a cost function $c_k: \mathcal{D} \times \mathcal{B}$, with $v_k(d, \beta) = -c_k(d, \beta)$. In the following, we mostly deal with cost functions.  
+In the mechanism design literature, valuation functions are traditionally used to represent agents' preferences for certain auction outcomes (given information about types). In the context of electricity markets, agents incur costs for supplying electricity and other goods (e.g., reserves), which we count as negative valuations. Hence, the valuation function $v_k: \mathcal{D} \times \mathcal{B} \rightarrow \mathbb{R}$ of agent $k$ is expressed in terms of a cost function $c_k: \mathcal{D} \times \mathcal{B} \rightarrow \mathbb{R}$, such that $v_k(d, \beta) = -c_k(d, \beta)$. In the following, we mostly deal with cost functions.  
 
 \paragraph{Flexible Generators} We assume that flexible generator $g$ has a quadratic cost function $c_g: \mathcal{D}_g \times \mathcal{B}_g \times \mathcal{B}_I \rightarrow \mathbb{R}$ reflecting the expected cost of producing electricity and offering reserve services, given some information about agents' types. This cost function can be expressed as
 \begin{equation*}
@@ -413,7 +415,7 @@ In electricity markets, the allocation rule $\mathfrak{f}$ is typically defined 
 & p_i^w \in \mathbb{R}, \forall i.
 \end{align}
 
-A choice function is said to maximise social welfare if it maximises the sum of valuations of all agents over the set of outcomes. This is notably the case of the allocation rule $\mathfrak{f}$ above, as 
+A choice function is said to maximise social welfare if it maximises the sum of valuations of all agents over the set of outcomes. This is notably the case of the allocation rule $\mathfrak{f}$ defined above, as 
 \begin{equation*}
 \mathfrak{f}(\beta) \in \arg \min_d \bigg[\sum_k c_k(d, \beta)\bigg] = \arg \max_d \bigg[\sum_k v_k(d, \beta) \bigg].
 \end{equation*}
@@ -422,7 +424,7 @@ It is also worth noting that since the economic dispatch problem above is convex
 
 \subsubsection{Transfer Functions}
 
-Transfer functions $\mathfrak{p}: \mathcal{B} \rightarrow \mathbb{R}$ determine money transfers between agents based on their collective bids. In the context of a reverse auction, transfer functions can be interpreted as payment rules rewarding agents' for their bids. We consider two different payment rules, namely some \textit{marginal pricing}-inspired and \textit{Vickrey-Clarke-Groves} (VCG) payments.
+Transfer functions $\mathfrak{p}: \mathcal{B} \rightarrow \mathbb{R}$ determine money transfers between agents based on their collective bids. In the context of a reverse auction, transfer functions can be interpreted as payment rules rewarding agents for their bids (if they are accepted). We consider two different payment rules, namely some \textit{marginal pricing}-inspired and \textit{Vickrey-Clarke-Groves} (VCG) payments.
 
 \paragraph{Marginal Pricing} This payment rule is inspired by the marginal pricing scheme typically used in day-ahead electricity markets and relies on dual variables $\lambda$ and $\chi_i, \forall i$. The former is used to price electricity, while the latter is used to price reserves. Note that, implicitly, these prices depend on the bid profile $\beta$, that is, $\lambda = \lambda(\beta)$ and $\chi_i = \chi_i(\beta), \forall i$.
 
@@ -487,21 +489,24 @@ u_g(\beta) = \mathfrak{p}_g(\beta) - c_g(\mathfrak{f}_g(\beta), \beta_g, \beta_I
 
 \subsection{Analysis}
 
+Based on the formulation above, we showed experimentally that the VCG mechanism is \textbf{not} incentive compatible in this setting: untruthful bidding by wind producers is profitable. This essentially results from the fact the their bids also influence the cost functions of flexible generators (the so-called \textit{interdependent valuations} setting). More generally, it is unclear that designing a truthful mechanism maximizing social welfare exactly (without any guarantees on revenue adequacy and cost recovery) is possible at all in our setting. This mostly stems from the fact that we are working in a setting with multi-dimensional, interdependent valuations (i.e., cost functions). A number of key results from the literature on the topic are listed below, but I still need to do some digging.
+
 \begin{itemize}
-\item The VCG mechanism is dominant-strategy incentive-compatible for auctions with multiple goods in the (independent) private values setting \cite{Vickrey1961,Clarke1971,Groves1973}.
-\item The only dominant-strategy incentive-compatible mechanisms that maximise social welfare are those with VCG payments \cite{GreenLaffont1977}.
-\item The only deterministic social choice functions that are ex-post implementable
-in generic mechanism design frameworks with multi-dimensional signals, in-
-terdependent valuations and transferable utilities, are constant functions \cite{Jehiel2006}. In particular, this implies that in our setting, resorting to VCG payments does not guarantee incentive compatibility.
-\item \textcolor{orange}{Say something about contingent bids (Maskin and Dasgupta).}
-\item \textcolor{orange}{Figure out what 2004 paper of Postlewaite and MacLean paper means and whether this is consistent with Maskin or Jehiel papers.}
+\item (Positive Result) The VCG mechanism is dominant-strategy incentive-compatible for auctions with multiple goods in the (independent) private values setting \cite{Vickrey1961,Clarke1971,Groves1973}.
+\item (Negative Result) In the independent private values setting, the only dominant-strategy incentive-compatible mechanisms that maximise social welfare are those with VCG payments \cite{GreenLaffont1977}.
+\item (Negative Result) The only deterministic social choice functions that are ex-post implementable in generic mechanism design frameworks with multi-dimensional signals, interdependent valuations and transferable utilities, are constant functions \cite{Jehiel2006} (i.e., always yielding the same outcome, irrespective of agents' type reports).
+\item (Negative Result) When at least one agent's signal is two-dimensional (and the distribution of signals is independent across agents), Jehiel and Moldovanu \cite{Jehiel2001} have shown that, for generic valuations, the efficient social choice rule is not Bayesian implementable, and hence \textit{a fortiori} not ex-post implementable.
+\item (Positive Result) Efficient ex-post implementation is possible for interdependent valuations when signals (types) are one-dimensional and satisfy a so-called single-crossing property \cite{Dasgupta2000}.
+\item (Positive Result) In a setting with interdependent valuations and multi-dimensional correlated types, McLean and Postlewaite \cite{McLeanPostlewaite2004} obtain approximate efficiency in a Bayes-Nash equilibrium. Their results rely on the concept of \textit{informational size}, which measures the amount of information the type of an agent provides about the unobserved object on which agents' types depend, given the types of other agents.
+\item \textcolor{orange}{Our valuations are separable in the sense of Jehiel et al. \cite{Jehiel2006}. There may therefore be some hope of designing an ex-post incentive-compatible mechanism based on some affine-maximization properties of implementable social choice functions. Look into Jehiel et al. \cite{Jehiel2008} and Lavi et al. \cite{Lavi2003}.}
 \end{itemize}
 
 
 \section{Comments/Questions}
 
 \begin{itemize}
-\item If forecast errors no longer have zero mean, the types of wind producers become multi-dimensional. In addition, if forecast errors are no longer independent, correlation coefficients will need to be specified too. This implies that the type of wind producers will become multi-dimensional and they will no longer have independent private values either (since correlation coefficients are shared by pairs of wind farms).
+\item If forecast errors no longer have zero mean, we are in a setting with interdependent valuations, multi-dimensional, independent types. Indeed, the types of wind producers appear in the valuations of flexible generators but they are independent of the types of flexible generators. On the other hand, if forecast errors are no longer considered independent, correlation coefficients will need to be specified too. We therefore end up in a setting with interdependent valuations and a mix of independent and correlated multi-dimensional types (since correlation coefficients are shared by pairs of wind farms).
+\item The choice function may be made belief-dependent; should clarify what this means.
 \item In the current setting, flexible generators are not explicitly bidding for reserves (i.e., they are not providing explicit reserve bids like they do for power generation). Would it make sense/be useful at all to introduce reserve bids as well?
 \item In the definition of the optimisation problem from which the social choice function is derived, the wind production should be turned into a variable. Indeed, in the current formulation, if the load is smaller than the expected wind production, the problem will be infeasible. It is not entirely clear how it should be bounded, however. It would probably make sense to introduce chance constraints on wind generation bounds. 
 \item The bid structure of renewable power plants should be clarified: to what product does a "variance bid" correspond? For instance, in the case of flexible generators, a "generation cost/capacity" bid will correspond to some power generation product 
